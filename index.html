@@ -3244,16 +3244,9 @@ window.__cursor = { x: window.innerWidth/2, y: window.innerHeight/2, moved: fals
     leaving = true;
     cursor?.classList.add('pulse');
     threshold.classList.add('leaving');
-    // Unlock scroll immediately so the smooth-scroll to #index can happen
-    root.classList.remove('threshold-active');
+    // Scroll stays locked through the full dissolve so trackpad/wheel momentum
+    // doesn't bleed through and carry the user past #index.
 
-    // Smooth scroll to #index — belt-and-suspenders; #index is at the top of flow
-    const index = document.getElementById('index');
-    if (index) {
-      try { index.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(_) {}
-    }
-
-    // After fade, hide threshold permanently + stop animations
     setTimeout(() => {
       threshold.classList.add('gone');
       dismissed = true;
@@ -3261,7 +3254,14 @@ window.__cursor = { x: window.innerWidth/2, y: window.innerHeight/2, moved: fals
       window.__stopMotes?.();
       window.__stopThresholdShader?.();
 
-      // Kick Index's entrance cascade
+      // Snap to top only when entering fresh (no deep-link hash) — preserves
+      // native hash-scroll for users landing on /#design, /#craft, etc.
+      if (!location.hash || location.hash === '#threshold') {
+        window.scrollTo({ top: 0, behavior: 'auto' });
+      }
+      // Unlock scroll now that the overlay is gone and momentum has dissipated.
+      root.classList.remove('threshold-active');
+
       document.getElementById('index')?.classList.add('is-visible');
     }, 650);
   }
@@ -3270,11 +3270,15 @@ window.__cursor = { x: window.innerWidth/2, y: window.innerHeight/2, moved: fals
   btn?.addEventListener('pointerenter', () => cursor?.classList.add('hover'));
   btn?.addEventListener('pointerleave', () => cursor?.classList.remove('hover'));
 
-  // Wheel / trackpad downward
+  // Wheel / trackpad downward — non-passive so we can block momentum
+  // from scrolling the page during and immediately after the dissolve.
   window.addEventListener('wheel', (e) => {
     if (dismissed) return;
-    if (e.deltaY > 6) dismiss();
-  }, { passive: true });
+    // While the overlay is still visible (including during the dissolve),
+    // absorb every wheel event so trackpad inertia can't cascade past #index.
+    if (leaving) { e.preventDefault(); return; }
+    if (e.deltaY > 10) { e.preventDefault(); dismiss(); }
+  }, { passive: false });
 
   // Keyboard: ArrowDown / PageDown / Space
   window.addEventListener('keydown', (e) => {
