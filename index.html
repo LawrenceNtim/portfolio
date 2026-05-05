@@ -2236,6 +2236,26 @@ body.panel-open .grid-dim { opacity: 0.3; pointer-events: none; }
   padding-top: 10px;
   border-top: 1px solid var(--cream-08);
 }
+.case-study-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "DM Mono", ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream-60);
+  text-decoration: none;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--cream-15);
+  transition: color 240ms ease, border-color 240ms ease, gap 240ms ease;
+  align-self: flex-start;
+}
+.case-study-link:hover {
+  color: var(--cream);
+  border-color: var(--cream-40);
+  gap: 14px;
+}
 .panel .panel-body {
   opacity: 0;
   transition: opacity 400ms ease;
@@ -2604,6 +2624,14 @@ body.panel-open .grid-dim { opacity: 0.3; pointer-events: none; }
       <div class="label">Collaborators</div>
       <ul class="collab-list" id="design-panel-collab"></ul>
     </div>
+
+    <hr class="panel-divider" id="design-panel-cta-divider" hidden />
+    <div class="panel-field panel-cta" id="design-panel-cta-wrap" hidden>
+      <a class="case-study-link" id="design-panel-cta" href="#" data-cursor-hover>
+        Read the case study
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
   </div>
 </aside>
 
@@ -2886,7 +2914,8 @@ const PROJECTS = {
     about: "Dropbox's first AI product, surfacing details inside documents and summarizing them instantly, without leaving the file.",
     problem: "Dropbox users store more than they can remember. As Dropbox transitioned into an AI-first company, the most valuable place to start was the oldest user pain: I know it's in here somewhere. Finding and understanding the contents of a file meant searching for it, opening it, scrolling, even when all the user needed was a quick answer. Dropbox AI was the product built to close that gap, and I was the founding designer.",
     solution: "Designed the full surface area of Dropbox AI. File-based search and document summarization, surfaced directly inside Dropbox Search and Dropbox Home. Shipped to 1.5M users within four months of launch and became the foundation for Dropbox's broader AI product line.",
-    collaborators: ["Engineering", "Product Management", "Research", "Lawrence Ntim"]
+    collaborators: ["Engineering", "Product Management", "Research", "Lawrence Ntim"],
+    caseStudyUrl: "/case-studies/dropbox-ai.html"
   },
   "03": {
     num: "03",
@@ -3405,6 +3434,20 @@ window.__cursor = { x: window.innerWidth/2, y: window.innerHeight/2, moved: fals
       if (i === p.collaborators.length - 1) li.classList.add('signature');
       el.collab.appendChild(li);
     });
+
+    // Conditional case-study CTA — only shown when the project links one
+    const ctaWrap = document.getElementById('design-panel-cta-wrap');
+    const ctaDivider = document.getElementById('design-panel-cta-divider');
+    const ctaLink = document.getElementById('design-panel-cta');
+    if (p.caseStudyUrl) {
+      ctaLink.href = p.caseStudyUrl;
+      ctaWrap.hidden = false;
+      ctaDivider.hidden = false;
+    } else {
+      ctaWrap.hidden = true;
+      ctaDivider.hidden = true;
+    }
+
     panel.classList.add('open');
     panel.setAttribute('aria-hidden', 'false');
     body.classList.add('panel-open');

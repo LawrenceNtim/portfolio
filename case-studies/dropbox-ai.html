@@ -1,0 +1,2972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dropbox AI — Lawrence Ntim</title>
+<meta name="description" content="Founding designer of Dropbox's first AI product. Launched to 1.5M users in 4 months.">
+
+<!-- Three-voice type system: Nixie One (display) · DM Sans (body) · DM Mono (technical) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nixie+One&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* Color world — cream + brown editorial, Dropbox blue as spot accent */
+    --paper:        #F4F0E8;
+    --paper-deep:   #E8E2D4;
+    --ink:          #1A1814;
+    --ink-soft:     #6B655B;
+    --ink-faint:    #A8A095;
+    --hairline:     rgba(26, 24, 20, 0.10);
+    --hairline-2:   rgba(26, 24, 20, 0.18);
+    --void:         #14110D;
+    --void-ink:     #F4F0E8;
+    --void-soft:    rgba(244, 240, 232, 0.55);
+    --void-faint:   rgba(244, 240, 232, 0.30);
+    --void-line:    rgba(244, 240, 232, 0.14);
+
+    /* Spot accent — Dropbox blue, only used in this case study */
+    --dbx:          #0061FF;
+    --dbx-soft:     rgba(0, 97, 255, 0.10);
+
+    /* Type */
+    --serif:        'Nixie One', 'Cormorant Garamond', Georgia, serif;
+    --sans:         'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono:         'DM Mono', 'JetBrains Mono', ui-monospace, monospace;
+
+    /* Motion */
+    --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out:  cubic-bezier(0.65, 0, 0.35, 1);
+
+    /* Type scale — editorial, capped intentionally */
+    --text-display:    clamp(48px, 6vw, 88px);   /* HERO COVER ONLY (slide 01) */
+    --text-chapter:    clamp(40px, 4.5vw, 64px); /* Chapter divider words */
+    --text-headline:   clamp(32px, 3.6vw, 52px); /* Slide headlines */
+    --text-subhead:    clamp(22px, 2.2vw, 32px); /* Subheadlines, pull-quote */
+    --text-stat:       clamp(36px, 4vw, 56px);   /* Big stat numbers */
+    --text-body-lg:    18px;                     /* Lede paragraphs */
+    --text-body:       16px;                     /* Default body */
+    --text-mono-sm:    11px;                     /* Eyebrows, breadcrumbs */
+    --text-mono-xs:    10px;                     /* Stat labels, footnotes */
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection { background: var(--dbx); color: var(--paper); }
+
+  /* ===== CHROME (persistent UI elements) ===== */
+
+  .chrome {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .chrome > * { pointer-events: auto; }
+
+  /* Colophon — bottom left, plain serif text */
+  .colophon {
+    position: absolute;
+    bottom: 36px;
+    left: 32px;
+    font-family: var(--serif);
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    z-index: 101;
+  }
+  .colophon:hover { opacity: 0.6; }
+  body.dark .colophon { color: var(--void-ink); }
+
+  /* Breadcrumb — top left */
+  .breadcrumb {
+    position: absolute;
+    top: 36px;
+    left: 32px;
+    font-family: var(--mono);
+    font-size: var(--text-mono-sm);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    transition: color 0.4s ease;
+  }
+  .breadcrumb .crumb-section {
+    color: var(--ink-faint);
+  }
+  .breadcrumb .crumb-current {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  body.dark .breadcrumb .crumb-section { color: var(--void-faint); }
+  body.dark .breadcrumb .crumb-current { color: var(--void-ink); }
+
+  /* Close X — top right */
+  .close-btn {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--hairline);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    transition: background 0.3s ease, transform 0.4s var(--ease-out);
+    text-decoration: none;
+  }
+  .close-btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+    transform: rotate(90deg);
+  }
+  .close-btn svg { width: 14px; height: 14px; }
+  body.dark .close-btn {
+    border-color: var(--void-line);
+    color: var(--void-ink);
+  }
+  body.dark .close-btn:hover {
+    background: var(--void-ink);
+    color: var(--void);
+  }
+
+  /* Pagination — bottom center */
+  .paginator {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .page-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  body.dark .page-num { color: var(--void-faint); }
+
+  .dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s var(--ease-out);
+    opacity: 0.6;
+  }
+  .dot:hover { opacity: 1; }
+  .dot.active {
+    width: 22px;
+    border-radius: 3px;
+    background: var(--ink);
+    opacity: 1;
+  }
+  body.dark .dot { background: var(--void-faint); }
+  body.dark .dot.active { background: var(--void-ink); }
+
+  /* Nav arrows — bottom right */
+  .nav-arrows {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    display: flex;
+    gap: 8px;
+  }
+  .arrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--hairline);
+    background: var(--paper);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    transition: all 0.3s var(--ease-out);
+  }
+  .arrow:hover:not(:disabled) {
+    background: var(--ink);
+    color: var(--paper);
+    transform: translateY(-1px);
+  }
+  .arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  .arrow svg { width: 14px; height: 14px; }
+  body.dark .arrow {
+    background: var(--void);
+    border-color: var(--void-line);
+    color: var(--void-ink);
+  }
+  body.dark .arrow:hover:not(:disabled) {
+    background: var(--void-ink);
+    color: var(--void);
+  }
+
+  /* ===== LIGHTBOX — click-to-expand figure images ===== */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 17, 13, 0.94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+  }
+  .lightbox.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .lightbox-img {
+    max-width: 92vw;
+    max-height: 88vh;
+    object-fit: contain;
+    display: block;
+    cursor: default;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--void-line);
+    background: transparent;
+    color: var(--void-ink);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.4s var(--ease-out);
+  }
+  .lightbox-close svg { width: 14px; height: 14px; }
+  .lightbox-close:hover {
+    background: var(--void-ink);
+    color: var(--void);
+    transform: rotate(90deg);
+  }
+  .figure-frame img,
+  .patent-figure img,
+  .future-media img {
+    cursor: zoom-in;
+  }
+
+  /* ===== SLIDES ===== */
+
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 80px 96px 140px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity 0.5s var(--ease-out), transform 0.6s var(--ease-out);
+  }
+  .slide[data-align="center"] {
+    align-items: center;
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .slide.dark {
+    background: var(--void);
+    color: var(--void-ink);
+  }
+
+  /* Slide content widths */
+  .slide-inner {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  /* Section eyebrow shown above slide titles */
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+  .slide.dark .section-eyebrow { color: var(--void-soft); }
+
+  /* ===== SLIDE 01 — HERO / COVER ===== */
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .hero-text { max-width: 540px; }
+  .hero-meta {
+    font-family: var(--mono);
+    font-size: var(--text-mono-sm);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .hero-meta::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--ink-soft);
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: var(--text-display);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 32px;
+  }
+  .hero-lede {
+    font-family: var(--sans);
+    font-size: var(--text-body-lg);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin-bottom: 48px;
+    max-width: 480px;
+  }
+  .hero-credits {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 40px;
+    padding-top: 28px;
+    border-top: 1px solid var(--hairline);
+  }
+  .hero-credit-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .hero-credit-value {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .hero-visual {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: var(--paper-deep);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+  }
+  .hero-visual video,
+  .hero-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .hero-visual-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    color: var(--ink-soft);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .hero-visual-fallback svg { width: 48px; height: 48px; opacity: 0.4; }
+
+  /* ===== SLIDE 02 — CONTENTS (mirrors slide 04 setup-grid DNA) ===== */
+
+  .contents-rows {
+    display: flex;
+    flex-direction: column;
+  }
+  .contents-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 32px;
+    align-items: start;
+    padding: 20px 0;
+    border: 0;
+    border-top: 1px solid rgba(26, 24, 20, 0.06);
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    transition: opacity 0.3s ease;
+  }
+  .contents-row:last-child {
+    border-bottom: 1px solid rgba(26, 24, 20, 0.06);
+  }
+  .contents-row:hover { opacity: 0.6; }
+  .contents-row-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    padding-top: 6px;
+  }
+  .contents-row-title {
+    font-family: var(--sans);
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .contents-row-text {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 540px;
+    margin: 0;
+  }
+  .contents-row-range {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    padding-top: 6px;
+    white-space: nowrap;
+  }
+  .slide.dark .contents-row { border-top-color: rgba(244, 240, 232, 0.08); }
+  .slide.dark .contents-row:last-child { border-bottom-color: rgba(244, 240, 232, 0.08); }
+  .slide.dark .contents-row-num,
+  .slide.dark .contents-row-range { color: var(--void-faint); }
+  .slide.dark .contents-row-title { color: var(--void-ink); }
+  .slide.dark .contents-row-text { color: var(--void-soft); }
+
+  /* ===== SLIDE 03 — THE CASE / THE PROMISE ===== */
+
+  .promise {
+    width: 100%;
+  }
+  .promise-headline {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 64px;
+    max-width: 1100px;
+  }
+  .promise-headline em {
+    font-style: normal;
+    color: var(--dbx);
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--hairline);
+    padding-top: 32px;
+  }
+  .stat {
+    border-left: 1px solid var(--hairline);
+    padding: 0 32px;
+  }
+  .stat:first-child { border-left: none; padding-left: 0; }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 12px;
+  }
+  .stat-value {
+    font-family: var(--serif);
+    font-size: var(--text-stat);
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .stat-detail {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+
+  /* ===== SLIDE 04 — THE CASE / THE SETUP ===== */
+
+  .setup-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.4fr;
+    gap: 96px;
+    align-items: start;
+    width: 100%;
+  }
+  .setup-headline {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .setup-headline em {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .setup-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .setup-card {
+    padding: 20px 0;
+    border: 0;
+    border-top: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 24px;
+    align-items: start;
+    background: transparent;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    width: 100%;
+  }
+  .setup-card:hover { opacity: 0.6; }
+  .setup-card:last-child { border-bottom: 1px solid var(--hairline); }
+  .setup-card-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    padding-top: 4px;
+  }
+  .setup-card-body { }
+  .setup-card-title {
+    font-family: var(--sans);
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .setup-card-text {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 540px;
+  }
+
+  /* ===== SLIDE 05 — THE CASE / THE BET ===== */
+
+  .bet {
+    max-width: 980px;
+    width: 100%;
+  }
+  .bet-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .bet-row {
+    padding: 36px 0;
+    border-bottom: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+    align-items: baseline;
+  }
+  .bet-row:first-child { border-top: 1px solid var(--hairline); }
+  .bet-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .bet-text {
+    font-family: var(--serif);
+    font-size: var(--text-subhead);
+    line-height: 1.25;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .bet-text em {
+    font-style: italic;
+    color: var(--dbx);
+  }
+  .bet-source {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 32px;
+    text-align: left;
+  }
+
+  /* ===== SLIDE 06 — TRANSITION TO THE BUILD ===== */
+
+  .transition-slide {
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .transition-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+  }
+  .transition-text {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .transition-text em { font-style: italic; }
+
+  /* ===== REUSABLE — Figure slots (editorial empty media) ===== */
+  .figure-slot { display: block; margin: 0; }
+  .figure-frame {
+    position: relative;
+    width: 100%;
+    background: var(--paper-deep);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .figure-slot[data-aspect="16/10"] .figure-frame { aspect-ratio: 16 / 10; }
+  .figure-slot[data-aspect="4/3"] .figure-frame { aspect-ratio: 4 / 3; }
+  .figure-slot[data-aspect="1/1"] .figure-frame { aspect-ratio: 1 / 1; }
+  .figure-slot[data-aspect="3/2"] .figure-frame { aspect-ratio: 3 / 2; }
+  .figure-mark {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-faint);
+    letter-spacing: 0.2em;
+  }
+  .figure-frame img,
+  .figure-frame video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .figure-slot figcaption {
+    margin-top: 14px;
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .figure-slot .cap-num { color: var(--ink-faint); flex-shrink: 0; }
+  .figure-slot .cap-text { color: var(--ink-soft); }
+  .slide.dark .figure-frame {
+    background: rgba(244, 240, 232, 0.04);
+    border-color: var(--void-line);
+  }
+  .slide.dark .figure-mark { color: var(--void-faint); }
+  .slide.dark .figure-slot .cap-num { color: var(--void-faint); }
+  .slide.dark .figure-slot .cap-text { color: var(--void-soft); }
+
+  /* ===== REUSABLE — Pull-quote ===== */
+  .pull-quote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: var(--text-subhead);
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    max-width: 720px;
+  }
+  .pull-quote em { color: var(--dbx); }
+  .slide.dark .pull-quote { color: var(--void-ink); }
+
+  /* ===== SLIDE 08 — Iteration triptych ===== */
+  .iteration-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 40px;
+    width: 100%;
+  }
+  .iteration-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .iteration-cell .iter-step {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0;
+  }
+  .iteration-cell .iter-name {
+    font-family: var(--serif);
+    font-size: 24px;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .iteration-cell .figure-slot {
+    margin: 0;
+  }
+  .iteration-cell .figure-slot[data-aspect="3/2"] .figure-frame {
+    aspect-ratio: 16 / 11;
+    max-height: 200px;
+  }
+  .iteration-cell .figure-frame img {
+    object-fit: contain;
+    padding: 12px;
+  }
+  .iteration-cell figcaption {
+    font-size: 10px;
+    margin-top: 8px;
+  }
+  .iteration-cell .iter-note {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* ===== SHARED — Surface slides 09, 10, 11 ===== */
+  .surface-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+    width: 100%;
+    margin-top: 40px;
+  }
+  .surface-left {
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+  }
+  .surface-left .figure-slot { margin: 0; }
+  .surface-left .figure-slot[data-aspect="16/10"] .figure-frame {
+    height: 380px;
+  }
+  .surface-left .figure-slot .figure-frame img {
+    object-fit: contain;
+    padding: 24px;
+  }
+  .rebuild-grid .figure-frame img {
+    object-fit: contain;
+    padding: 24px;
+  }
+  .surface-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 0;
+  }
+  .surface-right > .section-eyebrow { margin: 0; }
+  .surface-headline {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0;
+  }
+  .surface-headline em {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  .surface-text {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 540px;
+  }
+  /* Slide 11 modifier — dark figure on light slide */
+  .surface-grid.figure-dark .figure-frame {
+    background: #1f1c17;
+    border-color: rgba(244, 240, 232, 0.10);
+  }
+  .surface-grid.figure-dark .figure-mark { color: rgba(244, 240, 232, 0.45); }
+
+  /* Slide 09 — three numbered annotations in the right column */
+  .zoom-steps { display: flex; flex-direction: column; gap: 0; }
+  .zoom-step {
+    padding: 22px 0;
+    border-top: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 18px;
+  }
+  .zoom-step:last-child { border-bottom: 1px solid var(--hairline); }
+  .zoom-step-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    padding-top: 4px;
+  }
+  .zoom-step-body h4 {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.005em;
+  }
+  .zoom-step-body p {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  /* ===== SLIDE 12 — Trust crisis (DARK) ===== */
+  .crisis-stage {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .crisis-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: end;
+  }
+  .crisis-headline {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--void-ink);
+  }
+  .crisis-headline em { color: var(--dbx); font-style: normal; }
+  .crisis-context {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--void-soft);
+    max-width: 440px;
+  }
+  .tweet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-items: start;
+    width: 100%;
+  }
+  .tweet-card {
+    display: flex;
+    flex-direction: column;
+    background: rgba(244, 240, 232, 0.04);
+    border: 1px solid var(--void-line);
+    border-radius: 16px;
+    padding: 20px 22px;
+    font-family: var(--sans);
+    filter: saturate(0.85);
+    position: relative;
+  }
+  .tweet-head {
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .tweet-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--paper-deep);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    overflow: hidden;
+  }
+  .tweet-avatar.dropbox-mark {
+    background: #0061FF;
+    color: #fff;
+    font-family: var(--sans);
+    font-weight: 600;
+  }
+  .tweet-name-row {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .tweet-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--void-ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tweet-verified {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: #1D9BF0;
+  }
+  .tweet-dropbox-mark {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: #0061FF;
+  }
+  .tweet-handle {
+    font-size: 12px;
+    color: var(--void-faint);
+  }
+  .tweet-x {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--void-faint);
+    line-height: 1;
+  }
+  .tweet-body {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--void-ink);
+    margin-bottom: 14px;
+  }
+  .tweet-body p { margin: 0 0 10px 0; }
+  .tweet-body p:last-child { margin-bottom: 0; }
+  .tweet-body .hashtag,
+  .tweet-body .link,
+  .tweet-body .mention { color: #1D9BF0; }
+  .tweet-time {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--void-faint);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .tweet-divider {
+    border-top: 1px solid var(--void-line);
+    margin: 0 0 12px 0;
+  }
+  .tweet-actions {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--void-faint);
+  }
+  .tweet-actions svg {
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    vertical-align: -2px;
+  }
+  .tweet-reply-link {
+    color: #1D9BF0;
+    font-family: var(--sans);
+    font-size: 13px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--void-line);
+  }
+
+  /* Werner — embedded toggle UI screenshot */
+  .tweet-embed-toggle {
+    margin-top: 12px;
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid var(--hairline);
+    filter: saturate(1);
+  }
+  .tweet-embed-toggle-title {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .tweet-embed-toggle-body {
+    font-family: var(--sans);
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .tweet-embed-toggle-body .link { color: #1D9BF0; }
+  .tweet-embed-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 4px;
+  }
+  .tweet-embed-toggle-state {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .toggle-switch {
+    width: 36px;
+    height: 20px;
+    border-radius: 999px;
+    background: #0061FF;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+  }
+  .crisis-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--void-faint);
+    margin-top: 28px;
+    text-align: center;
+  }
+
+  /* ===== SLIDE 13 — Rebuild ===== */
+  .rebuild-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    width: 100%;
+    margin-top: 40px;
+  }
+  .rebuild-copy h3 {
+    font-family: var(--serif);
+    font-size: var(--text-subhead);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 24px;
+    letter-spacing: -0.005em;
+  }
+  .rebuild-copy p {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+    max-width: 460px;
+  }
+  .rebuild-copy .closer {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink);
+    margin-top: 24px;
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+  }
+
+  /* ===== SLIDE 15 — Team grid ===== */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    width: 100%;
+    margin-top: 56px;
+  }
+  .team-member { display: flex; flex-direction: column; }
+  .team-member .figure-slot { margin-bottom: 14px; }
+  .team-member .figure-slot .figure-frame { border-radius: 999px; }
+  .team-name {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .team-role {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ===== SLIDE 16 — Timeline curve (SET-PIECE) ===== */
+  .timeline-curve {
+    width: 100%;
+    margin-top: 48px;
+  }
+  .timeline-svg {
+    width: 100%;
+    height: auto;
+    max-width: 1200px;
+    display: block;
+    margin: 0 auto;
+    overflow: visible;
+  }
+  .timeline-svg .axis {
+    stroke: var(--hairline);
+    stroke-width: 1;
+  }
+  .timeline-svg .curve {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 1800;
+    stroke-dashoffset: 1800;
+  }
+  .slide.timeline-active .timeline-svg .curve {
+    animation: trace 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  @keyframes trace { to { stroke-dashoffset: 0; } }
+
+  /* Each milestone is a group: dot + label + week-index, fades in as a unit */
+  .timeline-marker { opacity: 0; }
+  .timeline-marker .dot { fill: var(--ink); }
+  .timeline-marker.peak .dot { fill: var(--dbx); }
+  .timeline-marker .label,
+  .timeline-marker .week {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .timeline-marker .label { fill: var(--ink-soft); }
+  .timeline-marker .week { fill: var(--ink-faint); }
+  .timeline-marker.peak .label { fill: var(--dbx); }
+
+  .slide.timeline-active .timeline-marker {
+    animation: fadeMarker 0.4s ease-out forwards;
+  }
+  .slide.timeline-active .timeline-marker[data-week="01"] { animation-delay: 0s; }
+  .slide.timeline-active .timeline-marker[data-week="03"] { animation-delay: 0.54s; }
+  .slide.timeline-active .timeline-marker[data-week="05"] { animation-delay: 0.90s; }
+  .slide.timeline-active .timeline-marker[data-week="07"] { animation-delay: 1.26s; }
+  .slide.timeline-active .timeline-marker[data-week="10"] { animation-delay: 1.86s; }
+  .slide.timeline-active .timeline-marker[data-week="13"] { animation-delay: 2.40s; }
+  .slide.timeline-active .timeline-marker[data-week="16"] { animation-delay: 3.00s; }
+
+  @keyframes fadeMarker {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== SLIDE 17 — Research artifacts (pair of mini cards) ===== */
+  .research-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+  .research-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--paper-deep);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 24px;
+    aspect-ratio: 8.5 / 11;
+    min-height: 0;
+  }
+  .research-card-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    margin-bottom: auto;
+    padding-bottom: 20px;
+  }
+  .research-card-title {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    font-weight: 400;
+    margin: 0 0 auto 0;
+  }
+  .research-card-pages {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--hairline);
+  }
+  /* Reusable surface caption (used by .surface-left when content isn't a figure-slot) */
+  .surface-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    margin-top: 14px;
+  }
+  .surface-caption .fig-num { color: var(--ink-soft); }
+  .surface-caption .fig-desc { color: var(--ink-faint); }
+
+  /* ===== SLIDE 18 — Patent (uses .surface-grid skeleton) ===== */
+  .patent-figure {
+    width: 100%;
+    aspect-ratio: 8.5 / 11;
+    max-height: 480px;
+    background: var(--paper-deep);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    align-self: start;
+    overflow: hidden;
+  }
+  .patent-figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  /* Right-column rhythm — overrides shared .surface-right gap */
+  .surface-right.patent-copy { gap: 0; }
+  .patent-copy .section-eyebrow { margin: 0 0 16px 0; }
+  .patent-copy .patent-id {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--dbx);
+    margin: 0 0 16px 0;
+  }
+  .patent-copy h3 {
+    font-family: var(--serif);
+    font-size: var(--text-subhead);
+    line-height: 1.2;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    margin: 0 0 24px 0;
+  }
+  .patent-copy .pull-quote {
+    color: var(--ink-soft);
+    margin: 0 0 32px 0;
+  }
+  .patent-copy .surface-text {
+    margin: 0 0 32px 0;
+  }
+  .patent-copy .meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--hairline);
+    padding-top: 20px;
+    margin: 0;
+  }
+
+  /* ===== SLIDE 14 — AI Guidelines ===== */
+  .guidelines-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    width: 100%;
+  }
+  .guideline-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--hairline);
+  }
+  .guideline-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+  }
+  .guideline-title {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 0;
+    font-weight: 400;
+  }
+  .guideline-text {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* ===== SLIDE 15 — The Future ===== */
+  .future-header {
+    margin-bottom: 32px;
+    max-width: 1280px;
+  }
+  .future-header .surface-text {
+    margin-top: 12px;
+    max-width: 720px;
+  }
+  .future-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    width: 100%;
+    align-items: start;
+  }
+  .future-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .future-media {
+    width: 100%;
+    height: 320px;
+    background: var(--paper-deep);
+    border: 1px solid var(--hairline);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .future-video,
+  .future-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .future-media--mobile {
+    background: #000000;
+    border-color: var(--void-line);
+  }
+  .future-media--mobile .future-video {
+    object-fit: contain;
+  }
+  .future-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .future-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .future-title {
+    font-family: var(--serif);
+    font-size: 24px;
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 0;
+    font-weight: 400;
+  }
+  .future-text {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* ===== SLIDE 19 — Keynote ===== */
+  .keynote-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 72px;
+    align-items: center;
+    width: 100%;
+    margin-top: 24px;
+  }
+  .keynote-copy h3 {
+    font-family: var(--serif);
+    font-size: var(--text-subhead);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 24px;
+    letter-spacing: -0.005em;
+  }
+  .keynote-thesis {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: var(--text-subhead);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    border-left: 2px solid var(--dbx);
+    padding-left: 20px;
+    margin-bottom: 24px;
+  }
+  .keynote-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ===== SLIDE 21 — Numbers spread ===== */
+  .numbers-spread {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .big-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px 48px;
+  }
+  .big-stat {
+    border-top: 1px solid var(--hairline);
+    padding-top: 16px;
+  }
+  .big-stat-num {
+    font-family: var(--serif);
+    font-size: var(--text-stat);
+    line-height: 0.95;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .big-stat-num.accent { color: var(--dbx); }
+  .big-stat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .numbers-side h3 {
+    font-family: var(--serif);
+    font-size: var(--text-subhead);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 18px;
+    letter-spacing: -0.005em;
+  }
+  .numbers-side p {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+
+  /* ===== SLIDE 22 — Lessons grid ===== */
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 40px;
+    border-top: 1px solid var(--hairline);
+    border-left: 1px solid var(--hairline);
+  }
+  .lesson-card {
+    padding: 28px 32px;
+    border-right: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 20px;
+  }
+  .lesson-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    padding-top: 6px;
+  }
+  .lesson-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+  .lesson-body {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* ===== SLIDE 23 — Throughline ===== */
+  .throughline {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+    align-items: start;
+  }
+  .throughline .pull-quote {
+    /* inherits from base .pull-quote token */
+  }
+  .link-forwards {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .link-forward {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 1fr 2fr auto;
+    gap: 24px;
+    align-items: baseline;
+  }
+  .link-forward:first-child { border-top: 1px solid var(--hairline); }
+  .link-forward-name {
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .link-forward-frame {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .link-forward-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ===== Responsive additions ===== */
+  @media (max-width: 900px) {
+    .iteration-grid { grid-template-columns: 1fr; gap: 32px; }
+    .surface-grid { grid-template-columns: 1fr; gap: 32px; }
+    .rebuild-grid, .keynote-grid, .numbers-spread, .throughline { grid-template-columns: 1fr; gap: 40px; }
+    .crisis-head { grid-template-columns: 1fr; gap: 24px; }
+    .tweet-grid { grid-template-columns: 1fr; gap: 16px; }
+    .tweet-card:nth-child(2), .tweet-card:nth-child(3) { transform: none; }
+    .team-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .research-pair { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .lessons-grid { grid-template-columns: 1fr; }
+    .big-stats { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .link-forward { grid-template-columns: 1fr; gap: 6px; }
+  }
+
+  /* ===== Dark theme — content elements ===== */
+  .slide.dark .transition-text,
+  .slide.dark .promise-headline,
+  .slide.dark .setup-headline,
+  .slide.dark .bet-text,
+  .slide.dark .stat-value,
+  .slide.dark .hero-title { color: var(--void-ink); }
+
+  .slide.dark .transition-eyebrow,
+  .slide.dark .section-eyebrow,
+  .slide.dark .hero-meta { color: var(--void-soft); }
+
+  .slide.dark .hero-lede,
+  .slide.dark .setup-card-text,
+  .slide.dark .stat-detail { color: var(--void-soft); }
+
+  .slide.dark .bet-label,
+  .slide.dark .bet-source,
+  .slide.dark .stat-label,
+  .slide.dark .setup-card-num,
+  .slide.dark .hero-credit-label { color: var(--void-faint); }
+
+  .slide.dark .setup-card-title,
+  .slide.dark .hero-credit-value { color: var(--void-ink); }
+
+  .slide.dark .setup-card,
+  .slide.dark .bet-row,
+  .slide.dark .stats-row,
+  .slide.dark .stat,
+  .slide.dark .hero-credits { border-color: var(--void-line); }
+
+  .slide.dark em { color: var(--dbx); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 900px) {
+    .slide { padding: 88px 24px 124px; }
+    .colophon { bottom: 28px; left: 24px; font-size: 13px; }
+    .breadcrumb { top: 28px; left: 24px; }
+    .close-btn { top: 24px; right: 24px; }
+    .paginator { bottom: 64px; }
+    .nav-arrows { bottom: 24px; right: 24px; }
+    .hero { grid-template-columns: 1fr; gap: 48px; }
+    .contents-row { grid-template-columns: 56px 1fr; }
+    .contents-row-range { grid-column: 2; padding-top: 4px; }
+    .stats-row { grid-template-columns: 1fr 1fr; gap: 32px 0; }
+    .setup-grid { grid-template-columns: 1fr; gap: 48px; }
+    .bet-row { grid-template-columns: 1fr; gap: 12px; }
+    .hero-credits { grid-template-columns: 1fr; gap: 16px; }
+    .chapter-title-display { white-space: normal; }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .slide { transition: opacity 0.2s; }
+    .slide.active { transform: none; }
+    .slide.timeline-active .timeline-svg .curve { animation: none; stroke-dashoffset: 0; }
+    .slide.timeline-active .timeline-marker { animation: none; opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     CHROME — persistent UI
+============================================================ -->
+<div class="chrome">
+  <a href="/" class="colophon" aria-label="Back to portfolio">LN</a>
+
+  <div class="breadcrumb">
+    <span class="crumb-section" id="crumb-section">DROPBOX AI</span>
+    <span class="crumb-divider"> / </span>
+    <span class="crumb-current" id="crumb-current">COVER</span>
+  </div>
+
+  <a href="/" class="close-btn" aria-label="Close case study">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="1" y1="1" x2="13" y2="13"/>
+      <line x1="13" y1="1" x2="1" y2="13"/>
+    </svg>
+  </a>
+
+  <div class="paginator">
+    <div class="page-num"><span id="page-current">01</span> / <span id="page-total">26</span></div>
+    <div class="dots" id="dots" role="tablist" aria-label="Slide navigation"></div>
+  </div>
+
+  <div class="nav-arrows">
+    <button class="arrow" id="prev-btn" aria-label="Previous slide">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 2 L4 7 L9 12"/>
+      </svg>
+    </button>
+    <button class="arrow" id="next-btn" aria-label="Next slide">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M5 2 L10 7 L5 12"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     LIGHTBOX — click-to-expand for figure images
+============================================================ -->
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Expanded figure">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close expanded figure">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="1" y1="1" x2="13" y2="13"/>
+      <line x1="13" y1="1" x2="1" y2="13"/>
+    </svg>
+  </button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="">
+</div>
+
+<!-- ============================================================
+     DECK — slides
+============================================================ -->
+<main class="deck" id="deck">
+
+  <!-- ========== SLIDE 01 — HERO / COVER ========== -->
+  <section class="slide active" data-section="dropbox-ai" data-crumb="cover" data-theme="light" data-align="center">
+    <div class="slide-inner">
+      <div class="hero">
+        <div class="hero-text">
+          <div class="hero-meta">2023 — 2024 · Case Study 01</div>
+          <h1 class="hero-title">Dropbox AI</h1>
+          <p class="hero-lede">Founding designer of Dropbox's first artificial intelligence product. A four-month sprint from blank canvas to 1.5 million users — and a four-month lesson in how trust is the only metric that compounds.</p>
+          <div class="hero-credits">
+            <div>
+              <div class="hero-credit-label">Role</div>
+              <div class="hero-credit-value">Lead Designer</div>
+            </div>
+            <div>
+              <div class="hero-credit-label">Team</div>
+              <div class="hero-credit-value">4 people · 16 weeks</div>
+            </div>
+            <div>
+              <div class="hero-credit-label">Outcome</div>
+              <div class="hero-credit-value">1.5M users · Public Beta</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <video autoplay muted loop playsinline poster="/public/images/dropbox-ai-poster.png">
+            <source src="/public/videos/dropbox-ai.mp4" type="video/mp4">
+          </video>
+          <div class="hero-visual-fallback" aria-hidden="true" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 2 L12 6 L6 10 L0 6 Z M18 2 L24 6 L18 10 L12 6 Z M6 14 L12 18 L6 22 L0 18 Z M18 14 L24 18 L18 22 L12 18 Z"/>
+            </svg>
+            <span>Product video</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 02 — CHAPTER DIVIDER ========== -->
+  <section class="slide dark" data-section="dropbox-ai" data-crumb="contents" data-theme="dark">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">Dropbox AI · Contents</div>
+          <h2 class="setup-headline"><em>Contents.</em></h2>
+        </div>
+
+        <div class="contents-rows">
+          <button class="contents-row" data-jump="2">
+            <div class="contents-row-num">01</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">The Case</h3>
+              <p class="contents-row-text">Where Dropbox stood when it bet on AI, and challenges that shaped the work.</p>
+            </div>
+            <div class="contents-row-range">03 — 06</div>
+          </button>
+
+          <button class="contents-row" data-jump="6">
+            <div class="contents-row-num">02</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">The Build</h3>
+              <p class="contents-row-text">Design surfaces. Where AI lives, doesn't intrude, is uncertain, and earns trust.</p>
+            </div>
+            <div class="contents-row-range">07 — 15</div>
+          </button>
+
+          <button class="contents-row" data-jump="15">
+            <div class="contents-row-num">03</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">The Process</h3>
+              <p class="contents-row-text">How a 4-person team shipped in 16 weeks, and what came out of the room.</p>
+            </div>
+            <div class="contents-row-range">16 — 21</div>
+          </button>
+
+          <button class="contents-row" data-jump="21">
+            <div class="contents-row-num">04</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">The Reflection</h3>
+              <p class="contents-row-text">What shipped, what it taught me, and what I'm building because of it.</p>
+            </div>
+            <div class="contents-row-range">22 — 26</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 03 — THE CASE / THE PROMISE ========== -->
+  <section class="slide" data-section="the case" data-crumb="the promise" data-theme="light">
+    <div class="slide-inner">
+      <div class="promise">
+        <div class="section-eyebrow">The Case · The Promise</div>
+        <h2 class="promise-headline">Dropbox bet on AI in 2023. <em>I drew the first surface.</em></h2>
+
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-label">Reach</div>
+            <div class="stat-value">1.5M</div>
+            <div class="stat-detail">users in the first four months of public beta</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Speed</div>
+            <div class="stat-value">16 wks</div>
+            <div class="stat-detail">from greenfield to shipped, with two scope pivots in flight</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Role</div>
+            <div class="stat-value">Lead</div>
+            <div class="stat-detail">founding designer on Dropbox's first AI product</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Team</div>
+            <div class="stat-value">4</div>
+            <div class="stat-detail">designers, PM, and one front-end engineer carrying the whole thing</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 04 — THE CASE / THE SETUP ========== -->
+  <section class="slide" data-section="the case" data-crumb="the setup" data-theme="light">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">The Case · The Setup</div>
+          <h2 class="setup-headline">Empower users. <em>Without breaking what they trusted us for.</em></h2>
+        </div>
+
+        <div class="setup-cards">
+          <button class="setup-card" data-jump="4">
+            <div class="setup-card-num">01</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Two camps of users, one product.</h3>
+              <p class="setup-card-text">Filers want organization. Pilers want answers. We had to serve both.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="4">
+            <div class="setup-card-num">02</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Build AI inside a public company.</h3>
+              <p class="setup-card-text">Speed, UX, and cost all under scrutiny. New muscles to build, fast.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="4">
+            <div class="setup-card-num">03</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">New to the AI race, late to the conversation.</h3>
+              <p class="setup-card-text">A year behind Microsoft, Notion, Box. Dropbox had just declared itself AI-first.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="4">
+            <div class="setup-card-num">04</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Trust is hard won, easily lost.</h3>
+              <p class="setup-card-text">Sixteen years of "your files are safe here." AI brought new challenges to that.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 05 — THE CASE / THE BET ========== -->
+  <section class="slide" data-section="the case" data-crumb="the bet" data-theme="light">
+    <div class="slide-inner">
+      <div class="bet">
+        <div class="section-eyebrow">The Case · The Bet</div>
+
+        <div class="bet-rows">
+          <div class="bet-row">
+            <div class="bet-label">If we</div>
+            <div class="bet-text">give users AI that materially improves their work efficiency,</div>
+          </div>
+          <div class="bet-row">
+            <div class="bet-label">We will see</div>
+            <div class="bet-text">users <em>upgrade SKUs</em> to keep using it,</div>
+          </div>
+          <div class="bet-row">
+            <div class="bet-label">Because</div>
+            <div class="bet-text">they're seeing more value in Dropbox than they did the day before.</div>
+          </div>
+        </div>
+
+        <div class="bet-source">Hypothesis · Kickoff · Q2 2023</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 06 — TRANSITION INTO THE BUILD ========== -->
+  <section class="slide" data-section="the case" data-crumb="hand-off" data-theme="light" data-align="center">
+    <div class="slide-inner">
+      <div class="transition-slide">
+        <div class="transition-eyebrow">End of Chapter 01</div>
+        <h2 class="transition-text">That was the case. <em>The next chapter is the surfaces built because of it.</em></h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SCAFFOLDED CHAPTERS — to be filled in over the weekend
+  ============================================================ -->
+
+  <!-- ========== SLIDE 07 — THE BUILD / FOUR SURFACES ========== -->
+  <section class="slide" data-section="the build" data-crumb="four surfaces" data-theme="light">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">The Build · Chapter 02</div>
+          <h2 class="setup-headline"><em>Surfaces.</em></h2>
+        </div>
+
+        <div class="contents-rows">
+          <button class="contents-row" data-jump="7">
+            <div class="contents-row-num">01</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Where AI lives.</h3>
+              <p class="contents-row-text">The right rail vs. the search bar vs. its own surface.</p>
+            </div>
+            <div class="contents-row-range">08 — 09</div>
+          </button>
+
+          <button class="contents-row" data-jump="9">
+            <div class="contents-row-num">02</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">How it doesn't intrude.</h3>
+              <p class="contents-row-text">Designing AI that's available without being in the way.</p>
+            </div>
+            <div class="contents-row-range">10</div>
+          </button>
+
+          <button class="contents-row" data-jump="10">
+            <div class="contents-row-num">03</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">How it represents uncertainty.</h3>
+              <p class="contents-row-text">AI is wrong sometimes, it was up to us to make that clear and approachable.</p>
+            </div>
+            <div class="contents-row-range">11</div>
+          </button>
+
+          <button class="contents-row" data-jump="11">
+            <div class="contents-row-num">04</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">How it earns trust.</h3>
+              <p class="contents-row-text">When the CEO had to tweet back. Forty-eight hours of public response.</p>
+            </div>
+            <div class="contents-row-range">12 — 13</div>
+          </button>
+
+          <button class="contents-row" data-jump="13">
+            <div class="contents-row-num">05</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">AI Guidelines.</h3>
+              <p class="contents-row-text">Six principles, authored with PM and Legal, that now direct every AI feature.</p>
+            </div>
+            <div class="contents-row-range">14</div>
+          </button>
+
+          <button class="contents-row" data-jump="14">
+            <div class="contents-row-num">06</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">The future.</h3>
+              <p class="contents-row-text">Mobile as a voice-first surface, and AI extended into workflow-level automation.</p>
+            </div>
+            <div class="contents-row-range">15</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 08 — SURFACE 01 / WHERE AI LIVES ========== -->
+  <section class="slide" data-section="the build" data-crumb="surface 01 — where ai lives" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">The Build · Surface 01</div>
+        <h2 class="setup-headline" style="max-width:1100px;">Where AI lives — and where it doesn't. <em>Iterations, guiding the pattern.</em></h2>
+
+        <div class="iteration-grid">
+          <div class="iteration-cell">
+            <div class="iter-step">Iteration 01</div>
+            <div class="iter-name">AI Right Rail.</div>
+            <figure class="figure-slot" data-aspect="3/2">
+              <div class="figure-frame"><img src="/public/images/dropbox-ai-iteration-01-rightrail.png" alt="AI Right Rail iteration — persistent panel alongside files"></div>
+              <figcaption>
+                <span class="cap-num">Fig. 01</span>
+                <span class="cap-text">Right-rail panel exploration.</span>
+              </figcaption>
+            </figure>
+            <p class="iter-note">A persistent panel that lived alongside files. Discoverable but heavy. A constant reminder that AI was watching.</p>
+          </div>
+          <div class="iteration-cell">
+            <div class="iter-step">Iteration 02</div>
+            <div class="iter-name">Search Toggle.</div>
+            <figure class="figure-slot" data-aspect="3/2">
+              <div class="figure-frame"><img src="/public/images/dropbox-ai-iteration-02-toggle.png" alt="Search Toggle iteration — AI as a mode inside Search"></div>
+              <figcaption>
+                <span class="cap-num">Fig. 02</span>
+                <span class="cap-text">Toggle inside Search.</span>
+              </figcaption>
+            </figure>
+            <p class="iter-note">AI as a mode of search. Closer to user intent, but the toggle was a tax we kept making them pay.</p>
+          </div>
+          <div class="iteration-cell">
+            <div class="iter-step">Shipped</div>
+            <div class="iter-name">Result.</div>
+            <figure class="figure-slot" data-aspect="3/2">
+              <div class="figure-frame"><img src="/public/images/dropbox-ai-iteration-03-result.png" alt="Shipped Result pattern — AI surfaced inside the result"></div>
+              <figcaption>
+                <span class="cap-num">Fig. 03</span>
+                <span class="cap-text">AI surfaced inside the result itself.</span>
+              </figcaption>
+            </figure>
+            <p class="iter-note">AI inside the result, not adjacent to it. Available where the user was already looking. Never asked to switch contexts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 09 — SURFACE 01 / ZOOM ========== -->
+  <section class="slide" data-section="the build" data-crumb="surface 01 / zoom" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">The Build · Surface 01 / Why Result won</div>
+        <h2 class="setup-headline" style="max-width:1080px;">The shipped pattern doesn't ask permission. <em>It just answers.</em></h2>
+
+        <div class="surface-grid">
+          <div class="surface-left">
+            <figure class="figure-slot" data-aspect="16/10">
+              <div class="figure-frame"><img src="/public/images/dropbox-ai-result-zoom.png" alt="Result pattern close-up — inline summary, source citations, follow-up Q&amp;A"></div>
+              <figcaption>
+                <span class="cap-num">Fig. 04</span>
+                <span class="cap-text">Result pattern, shipped surface. Inline summary, source citations, follow-up Q&amp;A.</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="zoom-steps">
+              <div class="zoom-step">
+                <div class="zoom-step-num">01</div>
+                <div class="zoom-step-body">
+                  <h4>The user's task is the surface.</h4>
+                  <p>If you came in looking for a file, the AI answer arrives where the file would have. No new place to learn, no new place to dismiss.</p>
+                </div>
+              </div>
+              <div class="zoom-step">
+                <div class="zoom-step-num">02</div>
+                <div class="zoom-step-body">
+                  <h4>AI generated summaries.</h4>
+                  <p>Files are summarized when searches return, giving users maximum view into their files, quickly and easily.</p>
+                </div>
+              </div>
+              <div class="zoom-step">
+                <div class="zoom-step-num">03</div>
+                <div class="zoom-step-body">
+                  <h4>The follow-up is the same surface.</h4>
+                  <p>Refining a question doesn't relocate the user. The conversation deepens in place. No chat panel, no context switch.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 10 — SURFACE 02 / DOESN'T INTRUDE ========== -->
+  <section class="slide" data-section="the build" data-crumb="surface 02 — doesn't intrude" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="surface-grid">
+          <div class="surface-left">
+            <figure class="figure-slot" data-aspect="16/10">
+              <div class="figure-frame"><img src="/public/images/dropbox-ai-pitch-template.png" alt="Pitch Template — opt-in disclosure on first use"></div>
+              <figcaption>
+                <span class="cap-num">Fig. 05</span>
+                <span class="cap-text">Pitch Template — opt-in disclosure on first use.</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="section-eyebrow">The Build · Surface 02</div>
+            <h2 class="surface-headline">Available, <em>not in<br>the way.</em></h2>
+            <p class="surface-text">Half the user base wanted AI yesterday. The other half didn't want their files anywhere near a model. The same product had to read as both, without picking a side.</p>
+            <p class="surface-text">The answer was disclosure, not promotion. AI showed up the first time you'd benefit from it, never the moment you opened the app. After that, it sat where it sat. Quiet by default, summoned on demand.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 11 — SURFACE 03 / UNCERTAINTY ========== -->
+  <section class="slide" data-section="the build" data-crumb="surface 03 — uncertainty" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="surface-grid">
+          <div class="surface-left">
+            <figure class="figure-slot" data-aspect="16/10">
+              <div class="figure-frame"><img src="/public/images/dropbox-ai-early-prototype.png" alt="Early Prototype — confidence treatment, source citation, edit-in-place"></div>
+              <figcaption>
+                <span class="cap-num">Fig. 06</span>
+                <span class="cap-text">Feedback Mechanism - Multi Select, Select-in-place</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="section-eyebrow">The Build · Surface 03</div>
+            <h2 class="surface-headline">AI is wrong sometimes. <em>Making that clear and approachable.</em></h2>
+            <p class="pull-quote">Workflow efficiency is paramount for Dropbox, it's critical to find ways that AI can help maintain <em>flow state.</em></p>
+            <p style="font-family:var(--mono); font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-faint); margin: 0;">Design thesis</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 12 — SURFACE 04 / THE TRUST CRISIS (DARK, SET-PIECE) ========== -->
+  <section class="slide dark" data-section="the build" data-crumb="surface 04 — the trust crisis" data-theme="dark">
+    <div class="slide-inner">
+      <div class="crisis-stage">
+        <div class="crisis-head">
+          <h2 class="crisis-headline">When the CEO <em>had to tweet back.</em></h2>
+          <p class="crisis-context">Days after Dropbox AI's public beta, a thread broke on tech Twitter accusing Dropbox of sharing user files with OpenAI by default. The CTO of Amazon weighed in personally, our CEO weighed in next. This is where stakes reached a new level.</p>
+        </div>
+
+        <div class="tweet-grid">
+          <!-- Marsha Collier — Dec 15, 2023 -->
+          <article class="tweet-card">
+            <header class="tweet-head">
+              <div class="tweet-avatar" aria-hidden="true">M</div>
+              <div class="tweet-name-row">
+                <span class="tweet-name">Marsha Collier
+                  <svg class="tweet-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19l-5.5-5.5 1.4-1.4L9 16.2 19.6 5.6 21 7l-12 12z" stroke-width="0"/><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                </span>
+                <span class="tweet-handle">@MarshaCollier</span>
+              </div>
+              <span class="tweet-x" aria-hidden="true">𝕏</span>
+            </header>
+            <div class="tweet-body">
+              <p>How to Stop Dropbox From Sharing Your Personal Files with <span class="hashtag">#OpenAI</span></p>
+              <p>👉 Dropbox <span class="hashtag">#AI</span> customer documents are stored on OpenAI's servers for up to 30 days. The "third-party AI" toggle is turned on by default in account settings, so turn it off</p>
+              <p><span class="hashtag">#futureofwork</span><br><span class="link">cnb.cx/3RKgygv</span></p>
+            </div>
+            <div class="tweet-time">4:01 PM · Dec 15, 2023 · 428 Views</div>
+          </article>
+
+          <!-- Werner Vogels — Dec 14, 2023 (with embedded toggle UI) -->
+          <article class="tweet-card">
+            <header class="tweet-head">
+              <div class="tweet-avatar" aria-hidden="true">W</div>
+              <div class="tweet-name-row">
+                <span class="tweet-name">Werner Vogels
+                  <svg class="tweet-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19l-5.5-5.5 1.4-1.4L9 16.2 19.6 5.6 21 7l-12 12z" stroke-width="0"/><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                </span>
+                <span class="tweet-handle">@Werner</span>
+              </div>
+              <span class="tweet-x" aria-hidden="true">𝕏</span>
+            </header>
+            <div class="tweet-body">
+              <p>If you are using <span class="mention">@dropbox</span> and do not want 3rd party AI technology partners to have access to your dropbox files, flip this switch (on by default, or did I agree to this somewhere?) (web-&gt;account-&gt;settings-3rd party AI) /cc <span class="mention">@EU_EDPS</span></p>
+              <div class="tweet-embed-toggle" aria-hidden="true">
+                <div class="tweet-embed-toggle-title">Third-party AI</div>
+                <div class="tweet-embed-toggle-body">Use artificial intelligence (AI) from third-party partners so you can work faster in Dropbox. We only use technology partners we have vetted. Your data is never used to train their internal models, and is deleted from third-party servers within 30 days. <span class="link">Learn more</span></div>
+                <div class="tweet-embed-toggle-row">
+                  <span class="tweet-embed-toggle-state">On</span>
+                  <span class="toggle-switch"></span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Drew Houston — Dec 13, 2023 -->
+          <article class="tweet-card">
+            <header class="tweet-head">
+              <div class="tweet-avatar dropbox-mark" aria-hidden="true">D</div>
+              <div class="tweet-name-row">
+                <span class="tweet-name">Drew Houston
+                  <svg class="tweet-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M9 19l-5.5-5.5 1.4-1.4L9 16.2 19.6 5.6 21 7l-12 12z" stroke-width="0"/><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                  <svg class="tweet-dropbox-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 2 L12 6 L6 10 L0 6 Z M18 2 L24 6 L18 10 L12 6 Z M6 14 L12 18 L6 22 L0 18 Z M18 14 L24 18 L18 22 L12 18 Z"/></svg>
+                </span>
+                <span class="tweet-handle">@drewhouston</span>
+              </div>
+              <span class="tweet-x" aria-hidden="true">𝕏</span>
+            </header>
+            <div class="tweet-body">
+              <p>The third-party AI toggle in the settings menu enables or disables access to DBX AI features and functionality. Neither this nor any other setting automatically or passively sends any Dropbox customer data to a third-party AI service.</p>
+            </div>
+            <div class="tweet-time">11:54 AM · Dec 13, 2023</div>
+            <div class="tweet-divider"></div>
+            <div class="tweet-actions">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>9</span>
+              <span>Reply</span>
+              <span>Copy link</span>
+            </div>
+            <div class="tweet-reply-link">Read 1 reply</div>
+          </article>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 13 — SURFACE 04 / THE 48-HOUR REBUILD ========== -->
+  <section class="slide" data-section="the build" data-crumb="surface 04 / the rebuild" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">The Build · Surface 04 / Response</div>
+
+        <div class="rebuild-grid">
+          <figure class="figure-slot" data-aspect="4/3">
+            <div class="figure-frame"><img src="/public/images/dropbox-ai-settings-redesigned.png" alt="AI Settings redesigned — third-party toggle promoted, plain-language disclosure"></div>
+            <figcaption>
+              <span class="cap-num">Fig. 07</span>
+              <span class="cap-text">AI Settings, redesigned. Third-party toggle promoted to the top, plain-language disclosure, in-product link from every AI surface. Shipped Dec 17, 2023.</span>
+            </figcaption>
+          </figure>
+
+          <div class="rebuild-copy">
+            <h3>The forty-eight hour rebuild.</h3>
+            <p>The toggle wasn't broken. The disclosure was. The team rewrote AI Settings from the user's reading level up: what's on, what's off, what each thing does in one sentence.</p>
+            <p>We promoted third-party AI to the top of the panel. Added an in-product link from every AI surface so the answer to "where is this controlled" was always one click away. Replaced legalese with plain English, reviewed by Erin and signed off directly by Drew.</p>
+            <p>Shipped 48 hours after the first thread. The conversation didn't stop, but it moved on.</p>
+            <p class="closer">Designing under public pressure with humility and understanding.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 14 — AI GUIDELINES ========== -->
+  <section class="slide" data-section="the build" data-crumb="ai guidelines" data-theme="light">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">The Build · AI Guidelines</div>
+          <h2 class="setup-headline">Six principles, <em>committed to.</em></h2>
+          <p class="surface-text" style="margin-top: 24px; max-width: 380px;">When the trust crisis ended, we extracted what we'd learned into a set of guidelines we now design every AI feature against. Co-Authors: PM, Legal.</p>
+        </div>
+
+        <div class="guidelines-grid">
+          <div class="guideline-card">
+            <div class="guideline-num">01</div>
+            <h3 class="guideline-title">Leverage AI to serve our customers.</h3>
+            <p class="guideline-text">We use AI when it helps us deliver better experiences for our customers. At no point will we use it as a means to sell customer data.</p>
+          </div>
+          <div class="guideline-card">
+            <div class="guideline-num">02</div>
+            <h3 class="guideline-title">Keep customers in control of their data.</h3>
+            <p class="guideline-text">Customer trust and the privacy of their data are our foundation. We will not use customer data to train AI models without consent.</p>
+          </div>
+          <div class="guideline-card">
+            <div class="guideline-num">03</div>
+            <h3 class="guideline-title">Be transparent about how we use AI.</h3>
+            <p class="guideline-text">We are committed to transparency with our customers. We will provide clear explanations of how our AI experiences work so that our customers understand how these technologies can benefit them.</p>
+          </div>
+          <div class="guideline-card">
+            <div class="guideline-num">04</div>
+            <h3 class="guideline-title">Respect people, their safety, and their rights.</h3>
+            <p class="guideline-text">We will work to ensure that our AI innovations not only serve people, but also respect their rights and their safety.</p>
+          </div>
+          <div class="guideline-card">
+            <div class="guideline-num">05</div>
+            <h3 class="guideline-title">Be accountable to our customers.</h3>
+            <p class="guideline-text">We will continuously seek feedback from our customers about our AI-powered experiences, and ensure these experiences remain under human direction.</p>
+          </div>
+          <div class="guideline-card">
+            <div class="guideline-num">06</div>
+            <h3 class="guideline-title">Champion fairness in AI technology.</h3>
+            <p class="guideline-text">We are committed to inclusiveness, non-discrimination, and fairness. We will strive to limit bias in our AI technologies, and ensure that they are<br>reliable and robust.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 15 — THE FUTURE ========== -->
+  <section class="slide" data-section="the build" data-crumb="the future" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="future-header">
+          <div class="section-eyebrow">The Build · The Future</div>
+          <h2 class="setup-headline">Where the work <em>kept going.</em></h2>
+          <p class="surface-text">After the rebuild, we kept extending Dropbox AI — onto mobile, and into workflow-level automation across the rest of the product.</p>
+        </div>
+
+        <div class="future-grid">
+          <div class="future-card">
+            <div class="future-media future-media--mobile">
+              <video class="future-video" autoplay loop muted playsinline poster="/public/images/dbxai-mobile-poster.png">
+                <source src="/public/videos/dbxai-mobile.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="future-meta">
+              <span class="future-eyebrow">Fig. 08</span>
+              <h3 class="future-title">Mobile.</h3>
+              <p class="future-text">Voice-first mobile experience.</p>
+            </div>
+          </div>
+
+          <div class="future-card">
+            <div class="future-media future-media--workflow">
+              <img class="future-video" src="/public/images/dropbox-ai-workflow.png" alt="AI-powered workflows — moving AI from search to integral parts of the user's workflow">
+            </div>
+            <div class="future-meta">
+              <span class="future-eyebrow">Fig. 09</span>
+              <h3 class="future-title">AI-powered workflows.</h3>
+              <p class="future-text">Moving AI from search to integral parts of the user's workflow.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 16 — THE PROCESS / CHAPTER INTRO ========== -->
+  <section class="slide" data-section="the process" data-crumb="how we shipped" data-theme="light">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">The Process · Chapter 03</div>
+          <h2 class="setup-headline">Four people. <em>Sixteen weeks.</em></h2>
+        </div>
+
+        <div class="contents-rows">
+          <button class="contents-row" data-jump="16">
+            <div class="contents-row-num">01</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">The team.</h3>
+              <p class="contents-row-text">1 designer, 1 writer, 1 PM and 1 front-end engineer. A small, agile team.</p>
+            </div>
+            <div class="contents-row-range">17</div>
+          </button>
+
+          <button class="contents-row" data-jump="17">
+            <div class="contents-row-num">02</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">The arc.</h3>
+              <p class="contents-row-text">Sixteen weeks, two scope pivots, three peaks, and one public beta.</p>
+            </div>
+            <div class="contents-row-range">18</div>
+          </button>
+
+          <button class="contents-row" data-jump="18">
+            <div class="contents-row-num">03</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Research.</h3>
+              <p class="contents-row-text">In partnership with DBX Research. Two studies that grounded everything.</p>
+            </div>
+            <div class="contents-row-range">19</div>
+          </button>
+
+          <button class="contents-row" data-jump="19">
+            <div class="contents-row-num">04</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">The patent.</h3>
+              <p class="contents-row-text">US 2026/0044368. The idea that came out while building something else.</p>
+            </div>
+            <div class="contents-row-range">20</div>
+          </button>
+
+          <button class="contents-row" data-jump="20">
+            <div class="contents-row-num">05</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">The keynote.</h3>
+              <p class="contents-row-text">A talk at the Core Offsite, mid-build. The first time our AI thesis verbalized.</p>
+            </div>
+            <div class="contents-row-range">21</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 15 — THE TEAM ========== -->
+  <section class="slide" data-section="the process" data-crumb="the team" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">The Process · The Team</div>
+        <h2 class="setup-headline" style="max-width:1080px;">The Team.</h2>
+
+        <div class="team-grid">
+          <div class="team-member">
+            <figure class="figure-slot" data-aspect="1/1">
+              <div class="figure-frame"><img src="/public/images/team/lawrence.jpg" alt="Lawrence Ntim"></div>
+            </figure>
+            <div class="team-name">Lawrence Ntim</div>
+            <div class="team-role">Lead Designer</div>
+          </div>
+          <div class="team-member">
+            <figure class="figure-slot" data-aspect="1/1">
+              <div class="figure-frame"><img src="/public/images/team/patricia.jpg" alt="Patricia Balik"></div>
+            </figure>
+            <div class="team-name">Patricia Balik</div>
+            <div class="team-role">Principal PM</div>
+          </div>
+          <div class="team-member">
+            <figure class="figure-slot" data-aspect="1/1">
+              <div class="figure-frame"><img src="/public/images/team/theo.jpg" alt="Theo Champlin"></div>
+            </figure>
+            <div class="team-name">Theo Champlin</div>
+            <div class="team-role">Lead Front-End</div>
+          </div>
+          <div class="team-member">
+            <figure class="figure-slot" data-aspect="1/1">
+              <div class="figure-frame"><img src="/public/images/team/erin.jpg" alt="Erin Cullum"></div>
+            </figure>
+            <div class="team-name">Erin Cullum</div>
+            <div class="team-role">Content Designer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 16 — THE ARC (ANIMATED TIMELINE) ========== -->
+  <section class="slide timeline-slide" data-section="the process" data-crumb="the arc" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">The Process · The Arc</div>
+        <h2 class="setup-headline" style="max-width:1100px; margin-bottom: 24px;">The shape of sixteen weeks. <em>Two dips, three peaks, one beta.</em></h2>
+
+        <div class="timeline-curve">
+          <svg class="timeline-svg" viewBox="0 0 1200 380" role="img" aria-label="16-week emotional timeline of Dropbox AI build">
+            <line class="axis" x1="60" y1="310" x2="1140" y2="310"/>
+
+            <path class="curve" d="M 80 240 C 149 240 149 120 220 120 C 288 120 288 200 357 200 C 426 200 426 160 496 160 C 600 160 600 110 704 110 C 808 110 808 210 912 210 C 1016 210 1016 80 1120 80"/>
+
+            <g class="timeline-marker" data-week="01">
+              <circle class="dot" cx="80" cy="240" r="5"/>
+              <text class="label" x="80" y="278" text-anchor="middle">Offsite</text>
+              <text class="week" x="80" y="332" text-anchor="middle">Wk 01</text>
+            </g>
+            <g class="timeline-marker" data-week="03">
+              <circle class="dot" cx="220" cy="120" r="5"/>
+              <text class="label" x="220" y="100" text-anchor="middle">First Phase</text>
+              <text class="week" x="220" y="332" text-anchor="middle">Wk 03</text>
+            </g>
+            <g class="timeline-marker" data-week="05">
+              <circle class="dot" cx="357" cy="200" r="5"/>
+              <text class="label" x="357" y="232" text-anchor="middle">Re-Scoping</text>
+              <text class="week" x="357" y="332" text-anchor="middle">Wk 05</text>
+            </g>
+            <g class="timeline-marker" data-week="07">
+              <circle class="dot" cx="496" cy="160" r="5"/>
+              <text class="label" x="496" y="140" text-anchor="middle">XFN Deepdive</text>
+              <text class="week" x="496" y="332" text-anchor="middle">Wk 07</text>
+            </g>
+            <g class="timeline-marker" data-week="10">
+              <circle class="dot" cx="704" cy="110" r="5"/>
+              <text class="label" x="704" y="90" text-anchor="middle">Second Phase</text>
+              <text class="week" x="704" y="332" text-anchor="middle">Wk 10</text>
+            </g>
+            <g class="timeline-marker" data-week="13">
+              <circle class="dot" cx="912" cy="210" r="5"/>
+              <text class="label" x="912" y="242" text-anchor="middle">Model Issues</text>
+              <text class="week" x="912" y="332" text-anchor="middle">Wk 13</text>
+            </g>
+            <g class="timeline-marker peak" data-week="16">
+              <circle class="dot" cx="1120" cy="80" r="7"/>
+              <text class="label" x="1120" y="60" text-anchor="middle">Public Beta</text>
+              <text class="week" x="1120" y="332" text-anchor="middle">Wk 16</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 17 — RESEARCH ========== -->
+  <section class="slide" data-section="the process" data-crumb="research" data-theme="light">
+    <div class="slide-inner">
+      <div class="surface-grid">
+        <div class="surface-right">
+          <div class="section-eyebrow">The Process · Research</div>
+          <h2 class="surface-headline">Research wasn't a phase. <em>It was the floor we built on.</em></h2>
+          <p class="surface-text">In partnership with DBX Research, we ran two studies before any pixels left the canvas: one on what users wanted from AI inside Dropbox, one on whether they'd opt in.</p>
+          <p class="surface-text">The second study is what told us the toggle had to be off by default. We didn't get there from gut. We got there from 22 pages of customer conversation about willingness, disclosure, and trust.</p>
+        </div>
+
+        <div class="surface-left">
+          <div class="research-pair">
+            <article class="research-card">
+              <div class="research-card-meta">
+                <span>DBX Research</span>
+                <span>·</span>
+                <span>Memo 04</span>
+              </div>
+              <h3 class="research-card-title">AI — Customer Perspective &amp; Opportunities Summary</h3>
+              <div class="research-card-pages">14 pp.</div>
+            </article>
+            <article class="research-card">
+              <div class="research-card-meta">
+                <span>DBX Research</span>
+                <span>·</span>
+                <span>Memo 09</span>
+              </div>
+              <h3 class="research-card-title">Q&amp;A in Search — Willingness, Disclosure, Trust</h3>
+              <div class="research-card-pages">22 pp.</div>
+            </article>
+          </div>
+          <figcaption class="surface-caption">
+            <span class="fig-num">Fig. 10</span>
+            <span class="fig-desc">DBX Research artifacts.</span>
+          </figcaption>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 18 — THE PATENT ========== -->
+  <section class="slide" data-section="the process" data-crumb="the patent" data-theme="light">
+    <div class="slide-inner">
+      <div class="surface-grid">
+        <div class="surface-left">
+          <div class="patent-figure">
+            <img src="/public/images/patent-figure.png" alt="Patent figure — workflow state diagram">
+          </div>
+          <figcaption class="surface-caption">
+            <span class="fig-num">Fig. 11</span>
+            <span class="fig-desc">Patent application first page.</span>
+          </figcaption>
+        </div>
+
+        <div class="surface-right patent-copy">
+          <div class="section-eyebrow">The Process · The Patent</div>
+          <div class="patent-id">US 2026/0044368</div>
+          <h3>Generating and Implementing Workflow States Across Multiple Client Devices.</h3>
+          <p class="pull-quote">Sometimes the work makes a thing <em>the work didn't ship.</em></p>
+          <p class="surface-text">The idea didn't ship as part of Dropbox AI. It came out of the room while we were building it — a way to keep AI workflow context coherent across devices without users re-explaining themselves. Filed as lead inventor.</p>
+          <div class="meta">Filed · Lead Inventor: Lawrence Ntim</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 19 — THE KEYNOTE ========== -->
+  <section class="slide" data-section="the process" data-crumb="the keynote" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">The Process · The Keynote</div>
+
+        <div class="keynote-grid">
+          <figure class="figure-slot" data-aspect="4/3">
+            <div class="figure-frame">
+              <video autoplay loop muted playsinline poster="/public/images/dbxai-keynote-poster.png">
+                <source src="/public/videos/dbxai-keynote.mp4" type="video/mp4">
+              </video>
+            </div>
+            <figcaption>
+              <span class="cap-num">Fig. 12</span>
+              <span class="cap-text">Core Offsite — AI Design Vision keynote. Mid-build.</span>
+            </figcaption>
+          </figure>
+
+          <div class="keynote-copy">
+            <h3>AI Design Vision.</h3>
+            <p class="keynote-thesis">The next decade of Dropbox isn't AI added to files. It's files becoming work — a state the user moves through, not a place they store. The job of design is to make that state legible the moment a user enters it, and invisible the moment they don't need it.</p>
+            <div class="keynote-meta">Keynote · Core Offsite · Lawrence Ntim</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 20 — THE REFLECTION / CHAPTER INTRO ========== -->
+  <section class="slide" data-section="the reflection" data-crumb="what shipped" data-theme="light">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">The Reflection · Chapter 04</div>
+          <h2 class="setup-headline">What shipped, <em>and what stayed with me.</em></h2>
+        </div>
+
+        <div class="contents-rows">
+          <button class="contents-row" data-jump="22">
+            <div class="contents-row-num">01</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">The numbers.</h3>
+              <p class="contents-row-text">1.5 million users. Public beta. Patent filed. The bet paid out.</p>
+            </div>
+            <div class="contents-row-range">23</div>
+          </button>
+
+          <button class="contents-row" data-jump="23">
+            <div class="contents-row-num">02</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">The lessons.</h3>
+              <p class="contents-row-text">Four things I do differently now because of how the work actually went.</p>
+            </div>
+            <div class="contents-row-range">24</div>
+          </button>
+
+          <button class="contents-row" data-jump="24">
+            <div class="contents-row-num">03</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">The throughline.</h3>
+              <p class="contents-row-text">Why this made everything I've done possible: Agentic Commerce, Eighty Labs.</p>
+            </div>
+            <div class="contents-row-range">25</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 21 — THE NUMBERS ========== -->
+  <section class="slide" data-section="the reflection" data-crumb="the numbers" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">The Reflection · The Numbers</div>
+
+        <div class="numbers-spread">
+          <div class="big-stats">
+            <div class="big-stat">
+              <div class="big-stat-num accent">1.5M</div>
+              <div class="big-stat-label">Users · 4 mo public beta</div>
+            </div>
+            <div class="big-stat">
+              <div class="big-stat-num">16</div>
+              <div class="big-stat-label">Weeks · greenfield to ship</div>
+            </div>
+            <div class="big-stat">
+              <div class="big-stat-num">04</div>
+              <div class="big-stat-label">People · core team</div>
+            </div>
+            <div class="big-stat">
+              <div class="big-stat-num">01</div>
+              <div class="big-stat-label">Patent · US 2026/0044368</div>
+            </div>
+          </div>
+
+          <div class="numbers-side">
+            <h3>The bet paid out.</h3>
+            <p>1.5 million users in the first four months of public beta. Dropbox AI went on to become the foundation for Dropbox Dash and the company's broader AI product line.</p>
+            <p>The patent kept its own track. The team kept going on theirs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 22 — THE LESSONS ========== -->
+  <section class="slide" data-section="the reflection" data-crumb="the lessons" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">The Reflection · The Lessons</div>
+        <h2 class="setup-headline" style="max-width:1080px;">Four things I learned in public, <em>that I do differently now.</em></h2>
+
+        <div class="lessons-grid">
+          <div class="lesson-card">
+            <div class="lesson-num">01</div>
+            <div>
+              <div class="lesson-title">Over-communicate.</div>
+              <p class="lesson-body">When the work is novel, the team is small, and the timeline is tight, the bottleneck isn't decisions, it's shared context. I now write the working brief weekly, post the open questions before standup, and treat "did I say this twice" as a feature, not a tax.</p>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <div class="lesson-num">02</div>
+            <div>
+              <div class="lesson-title">Tighter team loops.</div>
+              <p class="lesson-body">Big XFN reviews are the wrong unit of work for AI. I run smaller, faster, three-person loops now (designer, PM, engineer) and bring the wider room in only when there's a decision to make, not a decision to socialize.</p>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <div class="lesson-num">03</div>
+            <div>
+              <div class="lesson-title">New patterns, on purpose.</div>
+              <p class="lesson-body">AI products invite reuse of chat patterns that don't fit the work. I now start every AI surface with the user's existing task and ask what shape AI takes inside that task. Not what shape AI takes when it's the task itself.</p>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <div class="lesson-num">04</div>
+            <div>
+              <div class="lesson-title">Even more HCD.</div>
+              <p class="lesson-body">Trust is a research problem before it's a UI problem. I now bring research into AI work earlier than feels comfortable, and I push the bar on disclosure and consent design specifically, because the cost of getting it wrong compounds faster than any other surface.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 23 — THE THROUGHLINE ========== -->
+  <section class="slide" data-section="the reflection" data-crumb="the throughline" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">The Reflection · The Throughline</div>
+
+        <div class="throughline">
+          <div>
+            <p class="pull-quote">Why this work made<br><em>everything I've done</em> possible.</p>
+            <p style="margin-top:32px; font-family:var(--sans); font-size:15px; line-height:1.6; color:var(--ink-soft); max-width:460px;">Dropbox AI taught me how to design for AI's real shape: uncertain, fast, trust-sensitive. That's the substrate of everything I've built.</p>
+          </div>
+
+          <div class="link-forwards">
+            <div class="link-forward">
+              <div class="link-forward-name">Stripe AI Native Training</div>
+              <div class="link-forward-frame">Training Stripe's full design org on AI-native workflows and corresponding design patterns.</div>
+              <div class="link-forward-tag">Stripe</div>
+            </div>
+            <div class="link-forward">
+              <div class="link-forward-name">Agentic Commerce</div>
+              <div class="link-forward-frame">Designing for agents and merchants in commerce 3.0. Stripe's bet on the next platform.</div>
+              <div class="link-forward-tag">Stripe</div>
+            </div>
+            <div class="link-forward">
+              <div class="link-forward-name">Eighty Labs</div>
+              <div class="link-forward-frame">A studio built around AI-native product practice. Wing is the first ship.</div>
+              <div class="link-forward-tag">Founder</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide dark" data-section="the reflection" data-crumb="next" data-theme="dark" data-align="center">
+    <div class="slide-inner">
+      <div class="transition-slide">
+        <div class="transition-eyebrow" style="color: var(--void-soft);">End of Case Study 01</div>
+        <h2 class="transition-text" style="color: var(--void-ink);">Thanks for reading.</h2>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     SCRIPT — pagination, keyboard, breadcrumb sync, theme sync
+============================================================ -->
+<script>
+(function() {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsEl = document.getElementById('dots');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const pageCurrent = document.getElementById('page-current');
+  const pageTotal = document.getElementById('page-total');
+  const crumbSection = document.getElementById('crumb-section');
+  const crumbCurrent = document.getElementById('crumb-current');
+  const body = document.body;
+
+  let current = 0;
+  const total = slides.length;
+
+  // Build dots
+  pageTotal.textContent = String(total).padStart(2, '0');
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('role', 'tab');
+    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+    dot.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(dot);
+  });
+
+  function goTo(index) {
+    if (index < 0 || index >= total || index === current) return;
+    slides[current].classList.remove('active');
+    slides[current].classList.remove('timeline-active');
+    slides[index].classList.add('active');
+    dotsEl.children[current].classList.remove('active');
+    dotsEl.children[index].classList.add('active');
+    current = index;
+    syncChrome();
+
+    // Re-trigger timeline animation each entry on slide 16 (timeline-slide)
+    if (slides[index].classList.contains('timeline-slide')) {
+      void slides[index].offsetWidth; // force reflow to reset CSS animation
+      requestAnimationFrame(() => slides[index].classList.add('timeline-active'));
+    }
+  }
+
+  function syncChrome() {
+    const slide = slides[current];
+    pageCurrent.textContent = String(current + 1).padStart(2, '0');
+    crumbSection.textContent = (slide.dataset.section || 'Dropbox AI').toUpperCase();
+    crumbCurrent.textContent = (slide.dataset.crumb || '').toUpperCase();
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+
+    // Theme sync
+    if (slide.dataset.theme === 'dark') {
+      body.classList.add('dark');
+    } else {
+      body.classList.remove('dark');
+    }
+  }
+
+  // Buttons
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+
+  // Chapter card jump targets (slide 02) and transition CTAs
+  document.querySelectorAll('[data-jump]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const target = parseInt(e.currentTarget.dataset.jump, 10);
+      if (!isNaN(target)) goTo(target);
+    });
+  });
+
+  // Lightbox — click any figure image to expand
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxClose = document.getElementById('lightbox-close');
+  function openLightbox(src, alt) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    setTimeout(() => { lightboxImg.src = ''; }, 300);
+  }
+  document.querySelectorAll('.figure-frame img, .patent-figure img, .future-media img').forEach(img => {
+    img.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightbox(img.src, img.alt);
+    });
+  });
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Keyboard nav (lightbox-aware)
+  document.addEventListener('keydown', (e) => {
+    if (lightbox.classList.contains('open')) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeLightbox();
+      }
+      return;
+    }
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+      e.preventDefault();
+      goTo(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      goTo(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goTo(total - 1);
+    } else if (e.key === 'Escape') {
+      window.location.href = '/';
+    }
+  });
+
+  // Video graceful fallback if asset not present
+  const heroVideo = document.querySelector('.hero-visual video');
+  if (heroVideo) {
+    heroVideo.addEventListener('error', () => {
+      heroVideo.style.display = 'none';
+      const fallback = document.querySelector('.hero-visual-fallback');
+      if (fallback) fallback.style.display = 'flex';
+    });
+  }
+
+  // Hash deep-linking (e.g., #the-build jumps to slide 7)
+  function applyHash() {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    const map = {
+      'cover': 0,
+      'contents': 1,
+      'the-case': 2,
+      'the-build': 6,
+      'the-process': 15,
+      'the-reflection': 21,
+    };
+    if (map[hash] !== undefined) goTo(map[hash]);
+  }
+  window.addEventListener('hashchange', applyHash);
+  applyHash();
+
+  // Initial sync
+  syncChrome();
+})();
+</script>
+
+</body>
+</html>
