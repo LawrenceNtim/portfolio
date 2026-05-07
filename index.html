@@ -2489,15 +2489,33 @@ body.panel-open .grid-dim { opacity: 0.3; pointer-events: none; }
     <div class="scroll-hint" aria-hidden="true">
       <span>Scroll</span>
       <span class="line"></span>
-      <span>03 projects</span>
+      <span>04 projects</span>
     </div>
   </div>
 
   <div class="content-axis content-axis-wide">
     <div class="project-grid" role="list">
 
-      <!-- Card 01 — iOS 26 Redesign (mobile) -->
-      <button class="card" role="listitem" data-project="01" data-cursor-hover aria-label="Open project details — iOS 26 Redesign">
+      <!-- Card 01 — Tap to Add (mobile) -->
+      <button class="card" role="listitem" data-project="01" data-cursor-hover aria-label="Open project details — Tap to Add">
+        <div class="card-well">
+          <div class="device-iphone">
+            <div class="screen"></div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <span class="card-glyph" aria-hidden="true">
+            <img src="public/logos/stripe.svg" alt="Stripe" width="24" height="24">
+          </span>
+          <div class="card-text">
+            <h3 class="card-name">Tap to Add<span class="card-arrow" aria-hidden="true">→</span></h3>
+            <p class="card-impact">Card-present enrollment, built into Stripe's Mobile Payment Element.</p>
+          </div>
+        </div>
+      </button>
+
+      <!-- Card 02 — iOS 26 Redesign (mobile) -->
+      <button class="card" role="listitem" data-project="02" data-cursor-hover aria-label="Open project details — iOS 26 Redesign">
         <div class="card-well">
           <div class="ios-carousel" data-carousel data-interval="4000" data-fade="800" aria-label="iOS 26 Redesign">
             <img class="ios-carousel-img is-active" src="public/images/ios-26-1.png" alt="iOS 26 Redesign">
@@ -2516,8 +2534,8 @@ body.panel-open .grid-dim { opacity: 0.3; pointer-events: none; }
         </div>
       </button>
 
-      <!-- Card 02 — Dropbox AI (desktop/web) -->
-      <button class="card" role="listitem" data-project="02" data-cursor-hover aria-label="Open project details — Dropbox AI">
+      <!-- Card 03 — Dropbox AI (desktop/web) -->
+      <button class="card" role="listitem" data-project="03" data-cursor-hover aria-label="Open project details — Dropbox AI">
         <div class="card-well">
           <div class="device-macbook">
             <div class="lid">
@@ -2542,8 +2560,8 @@ body.panel-open .grid-dim { opacity: 0.3; pointer-events: none; }
         </div>
       </button>
 
-      <!-- Card 03 — DocSend Redesign (desktop/web) -->
-      <button class="card" role="listitem" data-project="03" data-cursor-hover aria-label="Open project details — DocSend Redesign">
+      <!-- Card 04 — DocSend Redesign (desktop/web) -->
+      <button class="card" role="listitem" data-project="04" data-cursor-hover aria-label="Open project details — DocSend Redesign">
         <div class="card-well">
           <div class="device-macbook">
             <div class="lid">
@@ -2894,6 +2912,19 @@ body.panel-open .grid-dim { opacity: 0.3; pointer-events: none; }
 const PROJECTS = {
   "01": {
     num: "01",
+    name: "Tap to Add",
+    year: "2026",
+    status: "Private Preview",
+    role: "Senior Product Designer (sole)",
+    company: "Stripe",
+    about: "The first card-present interaction designed for enrollment, not payment. Built into the Stripe Mobile Payment Element.",
+    problem: "Adding a card was the slowest moment in checkout, and the most fraud-prone. Every existing method — manual entry, OCR, autofill, wallet provisioning — was authenticated by typing. Card-not-present by default, with all the auth-rate, fraud, and friction costs that follow. No competitor offered a card-present primitive at the moment of saving a card.",
+    solution: "Repointed Stripe Terminal's Tap to Pay infrastructure at a different moment — enrollment, not payment. A SetupIntent with card_present, surfaced through the Mobile Payment Element. Visa pilot data: 85–90% reduction in provisioning fraud, +11% lift in authorization. Shipped to private preview on Android, April 29, 2026. Sole designer; led cross-team alignment with Stripe Terminal.",
+    collaborators: ["Engineering", "Product Management", "Stripe Terminal", "Lawrence Ntim"],
+    caseStudyUrl: "/case-studies/tap-to-add.html"
+  },
+  "02": {
+    num: "02",
     name: "iOS 26 Redesign",
     year: "2025",
     status: "Shipped",
@@ -2904,8 +2935,8 @@ const PROJECTS = {
     solution: "Redesigned the full mobile surface area end to end, translating Stripe's brand into iOS 26's new design language while preserving the payment flows enterprise customers rely on. Shipped on time for GA. Now in production across Stripe's mobile stack, used by startups and enterprise merchants alike.",
     collaborators: ["Engineering", "Product Management", "Brand Design", "Lawrence Ntim"]
   },
-  "02": {
-    num: "02",
+  "03": {
+    num: "03",
     name: "Dropbox AI",
     year: "2024",
     status: "Shipped",
@@ -2917,8 +2948,8 @@ const PROJECTS = {
     collaborators: ["Engineering", "Product Management", "Research", "Lawrence Ntim"],
     caseStudyUrl: "/case-studies/dropbox-ai.html"
   },
-  "03": {
-    num: "03",
+  "04": {
+    num: "04",
     name: "DocSend Redesign",
     year: "2024",
     status: "Shipped",
