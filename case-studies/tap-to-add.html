@@ -14,7 +14,7 @@
 <style>
   :root {
     /* Color world — cream + brown editorial, Stripe purple as spot accent */
-    --paper:        #F4F0E8;
+    --paper:        #FFFFFF;
     --paper-deep:   #E8E2D4;
     --ink:          #1A1814;
     --ink-soft:     #6B655B;
@@ -761,6 +761,18 @@
   }
   .surface-left .figure-slot { margin: 0; }
   .surface-left .figure-slot[data-aspect="16/10"] .figure-frame { height: 380px; }
+  .surface-left .figure-slot[data-aspect="9/16"] {
+    max-width: 280px;
+    align-self: center;
+  }
+  .surface-left .figure-slot[data-aspect="9/16"] .figure-frame {
+    aspect-ratio: 9 / 16;
+    max-height: 60vh;
+  }
+  .surface-left .figure-slot[data-aspect="9/16"] .figure-frame video {
+    object-fit: contain;
+    background: var(--ink);
+  }
   .surface-left .figure-slot .figure-frame img { object-fit: contain; padding: 24px; }
   .surface-right {
     display: flex;
@@ -805,9 +817,16 @@
   .surface-caption .fig-desc { color: var(--ink-faint); }
 
   /* ===== SLIDE 08 — REFERENCE WALL (set piece) ===== */
+  .ref-slide .section-eyebrow { margin-bottom: 16px; }
+  .ref-slide .setup-headline {
+    font-size: clamp(28px, 3vw, 44px);
+    line-height: 1.15;
+  }
+  .ref-slide .surface-text { font-size: 14px; }
+  .ref-slide .source-line { margin-top: 12px !important; font-size: 12px; }
   .ref-table-wrap {
     width: 100%;
-    margin-top: 24px;
+    margin-top: 16px;
     overflow-x: auto;
   }
   .ref-table {
@@ -835,9 +854,9 @@
 
   .ref-table tbody tr { border-bottom: 1px solid var(--hairline); }
   .ref-table tbody td {
-    padding: 18px 12px;
-    font-size: 13px;
-    line-height: 1.45;
+    padding: 12px 12px;
+    font-size: 12.5px;
+    line-height: 1.4;
     color: var(--ink);
     vertical-align: top;
   }
@@ -846,8 +865,8 @@
 
   .ref-method {
     font-family: var(--serif);
-    font-size: 17px;
-    line-height: 1.2;
+    font-size: 15.5px;
+    line-height: 1.15;
     color: var(--ink);
     font-weight: 400;
     display: block;
@@ -855,10 +874,10 @@
   .ref-method .sub {
     display: block;
     font-family: var(--sans);
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 400;
     color: var(--ink-soft);
-    margin-top: 4px;
+    margin-top: 2px;
     letter-spacing: 0;
     text-transform: none;
   }
@@ -892,8 +911,8 @@
     border-bottom: 2px solid var(--stripe);
   }
   .ref-table tbody tr.feature td {
-    padding-top: 22px;
-    padding-bottom: 22px;
+    padding-top: 14px;
+    padding-bottom: 14px;
   }
   .ref-table tbody tr.feature .ref-method {
     font-weight: 400;
@@ -931,13 +950,13 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 16px;
-    margin-top: 40px;
+    margin-top: 28px;
     width: 100%;
   }
   .flow-cell {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
   .flow-cell .flow-step {
     font-family: var(--mono);
@@ -954,13 +973,37 @@
     letter-spacing: -0.005em;
   }
   .flow-cell .figure-slot { margin: 0; }
-  .flow-cell .figure-slot .figure-frame { aspect-ratio: 9 / 16; }
+  .flow-cell .figure-slot .figure-frame {
+    aspect-ratio: 9 / 16;
+    max-height: 36vh;
+  }
   .flow-cell .figure-frame img { object-fit: contain; padding: 12px; }
   .flow-cell .flow-body {
     font-family: var(--sans);
     font-size: 13px;
     line-height: 1.5;
     color: var(--ink-soft);
+  }
+
+  /* ===== SLIDE 11 — Reference divider cell ===== */
+  .flow-cell--divider {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 14px;
+    padding-top: 36px;
+  }
+  .flow-cell--divider .divider-rule {
+    width: 1px;
+    background: var(--hairline-2);
+    height: 280px;
+  }
+  .flow-cell--divider .divider-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
   }
 
   /* ===== SLIDE 11 — Architecture body styling ===== */
@@ -1126,11 +1169,11 @@
     animation: fadeMarker 0.4s ease-out forwards;
   }
   .slide.timeline-active .timeline-marker[data-week="01"] { animation-delay: 0s; }
-  .slide.timeline-active .timeline-marker[data-week="06"] { animation-delay: 0.60s; }
-  .slide.timeline-active .timeline-marker[data-week="10"] { animation-delay: 1.20s; }
-  .slide.timeline-active .timeline-marker[data-week="11"] { animation-delay: 1.60s; }
-  .slide.timeline-active .timeline-marker[data-week="13"] { animation-delay: 2.10s; }
-  .slide.timeline-active .timeline-marker[data-week="16"] { animation-delay: 2.80s; }
+  .slide.timeline-active .timeline-marker[data-week="05"] { animation-delay: 0.60s; }
+  .slide.timeline-active .timeline-marker[data-week="08"] { animation-delay: 1.20s; }
+  .slide.timeline-active .timeline-marker[data-week="09"] { animation-delay: 1.60s; }
+  .slide.timeline-active .timeline-marker[data-week="10"] { animation-delay: 2.10s; }
+  .slide.timeline-active .timeline-marker[data-week="12"] { animation-delay: 2.80s; }
 
   @keyframes fadeMarker {
     from { opacity: 0; transform: translateY(4px); }
@@ -1445,9 +1488,12 @@
         </div>
 
         <div class="hero-visual">
-          <div class="hero-visual-fallback" aria-hidden="true">
+          <video autoplay muted loop playsinline>
+            <source src="/public/videos/tap-to-add-hero.mp4" type="video/mp4">
+          </video>
+          <div class="hero-visual-fallback" aria-hidden="true" style="display:none;">
             <span class="figure-mark">[ HERO MEDIA ]</span>
-            <span>Looped tap interaction · TBD</span>
+            <span>Looped tap interaction</span>
           </div>
         </div>
       </div>
@@ -1478,27 +1524,27 @@
             <div class="contents-row-num">02</div>
             <div class="contents-row-body">
               <h3 class="contents-row-title">The Build.</h3>
-              <p class="contents-row-text">Six surfaces, one physical gesture.</p>
+              <p class="contents-row-text">Five surfaces, one physical gesture.</p>
             </div>
-            <div class="contents-row-range">07 — 13</div>
+            <div class="contents-row-range">07 — 12</div>
           </button>
 
-          <button class="contents-row" data-jump="13">
+          <button class="contents-row" data-jump="12">
             <div class="contents-row-num">03</div>
             <div class="contents-row-body">
               <h3 class="contents-row-title">The Process.</h3>
-              <p class="contents-row-text">How a team of four shipped private preview in sixteen weeks.</p>
+              <p class="contents-row-text">How a team of four shipped private preview in 12 weeks.</p>
             </div>
-            <div class="contents-row-range">14 — 19</div>
+            <div class="contents-row-range">13 — 21</div>
           </button>
 
-          <button class="contents-row" data-jump="19">
+          <button class="contents-row" data-jump="21">
             <div class="contents-row-num">04</div>
             <div class="contents-row-body">
               <h3 class="contents-row-title">The Reflection.</h3>
               <p class="contents-row-text">What Visa saw, what it taught me, what comes next.</p>
             </div>
-            <div class="contents-row-range">20 — 24</div>
+            <div class="contents-row-range">22 — 26</div>
           </button>
         </div>
       </div>
@@ -1590,15 +1636,15 @@
         <div class="bet-rows">
           <div class="bet-row">
             <div class="bet-label">For buyers</div>
-            <div class="bet-text">less typing, less cognitive load, fewer errors than card scan or autofill.</div>
+            <div class="bet-text">less typing, less cognitive load, fewer errors than card scan.</div>
           </div>
           <div class="bet-row">
             <div class="bet-label">For merchants</div>
-            <div class="bet-text">higher first-transaction auth, lower fraud, fewer fields to hand-hold.</div>
+            <div class="bet-text">higher transaction auth, lower fraud, fewer fields to hand-hold.</div>
           </div>
           <div class="bet-row">
             <div class="bet-label">For Stripe</div>
-            <div class="bet-text">meaningful SDK differentiation. Streamlined Link signup. <em>New ONR.</em></div>
+            <div class="bet-text">SDK differentiation. Streamlined Link signup. <em>New merchants.</em></div>
           </div>
         </div>
       </div>
@@ -1615,7 +1661,7 @@
     </div>
   </section>
 
-  <!-- ========== SLIDE 07 — THE BUILD / SIX SURFACES ========== -->
+  <!-- ========== SLIDE 07 — THE BUILD / CHAPTER INTRO ========== -->
   <section class="slide" data-section="the build" data-crumb="six surfaces" data-theme="light">
     <div class="slide-inner">
       <div class="setup-grid">
@@ -1637,7 +1683,7 @@
           <button class="contents-row" data-jump="8">
             <div class="contents-row-num">02</div>
             <div class="contents-row-body">
-              <h3 class="contents-row-title">The 3% move.</h3>
+              <h3 class="contents-row-title">The reposition.</h3>
               <p class="contents-row-text">Repointing infrastructure built for payment.</p>
             </div>
             <div class="contents-row-range">09</div>
@@ -1646,8 +1692,8 @@
           <button class="contents-row" data-jump="9">
             <div class="contents-row-num">03</div>
             <div class="contents-row-body">
-              <h3 class="contents-row-title">The interaction.</h3>
-              <p class="contents-row-text">Five screens. One physical gesture.</p>
+              <h3 class="contents-row-title">The references.</h3>
+              <p class="contents-row-text">Where tap lives today. Apple Wallet, Google Pay.</p>
             </div>
             <div class="contents-row-range">10</div>
           </button>
@@ -1655,8 +1701,8 @@
           <button class="contents-row" data-jump="10">
             <div class="contents-row-num">04</div>
             <div class="contents-row-body">
-              <h3 class="contents-row-title">The architecture.</h3>
-              <p class="contents-row-text">SetupIntent, card_present, Terminal SDK.</p>
+              <h3 class="contents-row-title">The design language.</h3>
+              <p class="contents-row-text">Two teams. One buyer.</p>
             </div>
             <div class="contents-row-range">11</div>
           </button>
@@ -1664,19 +1710,10 @@
           <button class="contents-row" data-jump="11">
             <div class="contents-row-num">05</div>
             <div class="contents-row-body">
-              <h3 class="contents-row-title">The tradeoffs collapsed.</h3>
-              <p class="contents-row-text">Auth, fraud, CVC, effort. All four.</p>
+              <h3 class="contents-row-title">The interaction.</h3>
+              <p class="contents-row-text">Five screens. One physical gesture.</p>
             </div>
             <div class="contents-row-range">12</div>
-          </button>
-
-          <button class="contents-row" data-jump="12">
-            <div class="contents-row-num">06</div>
-            <div class="contents-row-body">
-              <h3 class="contents-row-title">The design language.</h3>
-              <p class="contents-row-text">Two teams. One buyer.</p>
-            </div>
-            <div class="contents-row-range">13</div>
           </button>
         </div>
       </div>
@@ -1684,12 +1721,12 @@
   </section>
 
   <!-- ========== SLIDE 08 — THE REFERENCE WALL (set piece) ========== -->
-  <section class="slide" data-section="the build" data-crumb="reference wall" data-theme="light">
+  <section class="slide ref-slide" data-section="the build" data-crumb="reference wall" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">The Build · Reference Wall</div>
         <h2 class="setup-headline" style="max-width:1200px;">Every existing way to get a card into a checkout <em>was built for a different job.</em></h2>
-        <p class="surface-text" style="margin-top: 16px; max-width: 720px;">Card entry has been treated as a single problem with multiple solutions. It isn't.</p>
+        <p class="surface-text" style="margin-top: 12px; max-width: 720px;">Card entry has been treated as a single problem with multiple solutions. It isn't.</p>
 
         <div class="ref-table-wrap">
           <table class="ref-table">
@@ -1724,15 +1761,6 @@
                 <td>Camera capture + manual CVC + verification fields</td>
               </tr>
               <tr>
-                <td><span class="ref-method">Autofill / saved card<span class="sub">Browser or keychain</span></span></td>
-                <td><span class="ref-designed">Returning-user shortcut</span></td>
-                <td><span class="ref-no">No</span></td>
-                <td><span class="ref-standard">Standard CNP</span></td>
-                <td><span class="ref-merch">Merchant</span></td>
-                <td><span class="ref-opt">Often required</span></td>
-                <td>One tap — but only after a prior CNP enrollment somewhere</td>
-              </tr>
-              <tr>
                 <td><span class="ref-method">Apple / Google Pay<span class="sub">Add-card / provisioning</span></span></td>
                 <td><span class="ref-designed">Wallet provisioning</span></td>
                 <td><span class="ref-no">No</span></td>
@@ -1751,7 +1779,7 @@
                 <td>Same primitive — but pointed at the wrong moment for enrollment</td>
               </tr>
               <tr class="feature">
-                <td><span class="ref-method">Tap to Add<span class="sub">Mobile Payment Element · Android · private preview</span></span></td>
+                <td><span class="ref-method">Tap to Add<span class="sub">Mobile Payment Element</span></span></td>
                 <td><span class="ref-designed">Enrolling a card for future use</span></td>
                 <td><span class="ref-yes">Yes</span></td>
                 <td><span class="ref-higher">Higher (CP)</span></td>
@@ -1768,14 +1796,14 @@
     </div>
   </section>
 
-  <!-- ========== SLIDE 09 — THE 3% MOVE ========== -->
-  <section class="slide" data-section="the build" data-crumb="the 3% move" data-theme="light">
+  <!-- ========== SLIDE 09 — THE REPOSITION ========== -->
+  <section class="slide" data-section="the build" data-crumb="the reposition" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="surface-grid">
           <div class="surface-left">
             <figure class="figure-slot" data-aspect="16/10">
-              <div class="figure-frame"><span class="figure-mark">[ FIG. 01 — TWO-PANEL DIAGRAM ]</span></div>
+              <div class="figure-frame"><img src="/public/images/tap-to-add-fig-01.png" alt="Tap to Pay (merchant POS) → Tap to Add (consumer phone). Same NFC primitive, different intent."></div>
               <figcaption>
                 <span class="cap-num">Fig. 01</span>
                 <span class="cap-text">Tap to Pay (merchant POS) → Tap to Add (consumer phone). Same NFC primitive, different intent.</span>
@@ -1784,9 +1812,10 @@
           </div>
 
           <div class="surface-right">
-            <div class="section-eyebrow">The Build · The 3% Move</div>
+            <div class="section-eyebrow">The Build · The Reposition</div>
             <h2 class="surface-headline">Same primitive. <em>Different moment.</em></h2>
-            <p class="surface-text">Stripe Terminal's Tap to Pay was built for merchants accepting payment. The hardware, the cryptogram, the card-present authentication path — all of it pointed at <em style="font-style:italic; color:var(--ink);">the moment of charging</em>. We pointed it at <em style="font-style:italic; color:var(--ink);">the moment of saving</em>. The infrastructure didn't change. What changed was what it was for.</p>
+            <p class="surface-text">Stripe Terminal's Tap to Pay was built for merchants accepting payment. The hardware, the cryptogram, the card-present authentication path: all pointed at <em style="font-style:italic; color:var(--ink);">the moment of charging</em>.</p>
+            <p class="surface-text">We pointed it at <em style="font-style:italic; color:var(--ink);">the moment of saving</em>. The infrastructure didn't change. What changed was what it was for.</p>
             <p class="pull-quote" style="margin-top: 12px;">Infrastructure can be repointed, <em>not just built.</em></p>
           </div>
         </div>
@@ -1794,141 +1823,81 @@
     </div>
   </section>
 
-  <!-- ========== SLIDE 10 — THE INTERACTION ========== -->
-  <section class="slide" data-section="the build" data-crumb="the interaction" data-theme="light">
+  <!-- ========== SLIDE 10 — THE REFERENCES ========== -->
+  <section class="slide" data-section="the build" data-crumb="the references" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
-        <div class="section-eyebrow">The Build · The Interaction</div>
-        <h2 class="setup-headline" style="max-width:1100px;">Five screens. <em>One physical gesture.</em></h2>
+        <div class="section-eyebrow">The Build · The References</div>
+        <h2 class="setup-headline" style="max-width:1100px;">Where tap lives today. <em>Apple Wallet. GPay.</em></h2>
 
         <div class="flow-grid">
           <div class="flow-cell">
-            <div class="flow-step">Screen 01</div>
-            <div class="flow-name">Payment Element.</div>
+            <div class="flow-step">Wallet</div>
+            <div class="flow-name">Add to Wallet.</div>
             <figure class="figure-slot">
-              <div class="figure-frame"><span class="figure-mark">[ 01 ]</span></div>
+              <div class="figure-frame"><img src="/public/images/tap-to-add-ref-01.png" alt="Apple Wallet — Add to Wallet entry screen."></div>
               <figcaption>
-                <span class="cap-num">Fig. 01</span>
-                <span class="cap-text">MPE entry.</span>
+                <span class="cap-num">Ref. 01</span>
+                <span class="cap-text">Wallet — entry.</span>
               </figcaption>
             </figure>
-            <p class="flow-body">Buyer sees Mobile Payment Element. Selects "Card."</p>
+            <p class="flow-body">Buyer adds card from Wallet, Settings, or partner app.</p>
           </div>
           <div class="flow-cell">
-            <div class="flow-step">Screen 02</div>
-            <div class="flow-name">Tap screen.</div>
+            <div class="flow-step">Wallet</div>
+            <div class="flow-name">Verify.</div>
             <figure class="figure-slot">
-              <div class="figure-frame"><span class="figure-mark">[ 02 ]</span></div>
+              <div class="figure-frame"><img src="/public/images/tap-to-add-ref-02.png" alt="Apple Wallet — issuer verification screen."></div>
               <figcaption>
-                <span class="cap-num">Fig. 02</span>
-                <span class="cap-text">NFC zone animation.</span>
+                <span class="cap-num">Ref. 02</span>
+                <span class="cap-text">Wallet — verify.</span>
               </figcaption>
             </figure>
-            <p class="flow-body">Animation positioned over the device's NFC zone. Buyer taps card to phone.</p>
+            <p class="flow-body">Issuer-side verify: call, SMS, or in-app handoff.</p>
           </div>
           <div class="flow-cell">
-            <div class="flow-step">Screen 03</div>
-            <div class="flow-name">Acknowledgement.</div>
+            <div class="flow-step">Wallet</div>
+            <div class="flow-name">Added.</div>
             <figure class="figure-slot">
-              <div class="figure-frame"><span class="figure-mark">[ 03 ]</span></div>
+              <div class="figure-frame"><img src="/public/images/tap-to-add-ref-03.png" alt="Apple Wallet — card added confirmation."></div>
               <figcaption>
-                <span class="cap-num">Fig. 03</span>
-                <span class="cap-text">Tap success.</span>
+                <span class="cap-num">Ref. 03</span>
+                <span class="cap-text">Wallet — added.</span>
               </figcaption>
             </figure>
-            <p class="flow-body">Successful tap confirmed. Card art surfaces.</p>
+            <p class="flow-body">Card lives in Wallet. Tap to Add is the buyer-side primitive that put it there.</p>
+          </div>
+          <div class="flow-cell flow-cell--divider">
+            <div class="divider-rule"></div>
+            <div class="divider-label">Tap to Add vs. Tap to Pay</div>
           </div>
           <div class="flow-cell">
-            <div class="flow-step">Screen 04</div>
-            <div class="flow-name">Confirm + Link.</div>
+            <div class="flow-step">GPay</div>
+            <div class="flow-name">Pay.</div>
             <figure class="figure-slot">
-              <div class="figure-frame"><span class="figure-mark">[ 04 ]</span></div>
+              <div class="figure-frame"><img src="/public/images/tap-to-add-ref-04.png" alt="Google Pay — tap to pay screen."></div>
               <figcaption>
-                <span class="cap-num">Fig. 04</span>
-                <span class="cap-text">Confirm & save.</span>
+                <span class="cap-num">Ref. 04</span>
+                <span class="cap-text">GPay — pay.</span>
               </figcaption>
             </figure>
-            <p class="flow-body">Buyer confirms card. Optional Link signup, optional immediate payment.</p>
-          </div>
-          <div class="flow-cell">
-            <div class="flow-step">Screen 05</div>
-            <div class="flow-name">Payment success.</div>
-            <figure class="figure-slot">
-              <div class="figure-frame"><span class="figure-mark">[ 05 ]</span></div>
-              <figcaption>
-                <span class="cap-num">Fig. 05</span>
-                <span class="cap-text">Sheet dismiss.</span>
-              </figcaption>
-            </figure>
-            <p class="flow-body">Animated confirmation. Sheet dismisses.</p>
+            <p class="flow-body">Google's tap primitive is only for paying. No equivalent Tap to Add path.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ========== SLIDE 11 — THE ARCHITECTURE ========== -->
-  <section class="slide" data-section="the build" data-crumb="the architecture" data-theme="light">
-    <div class="slide-inner">
-      <div style="width:100%;">
-        <div class="surface-grid">
-          <div class="surface-left">
-            <figure class="figure-slot" data-aspect="16/10">
-              <div class="figure-frame"><span class="figure-mark">[ FIG. 02 — SYSTEM DIAGRAM ]</span></div>
-              <figcaption>
-                <span class="cap-num">Fig. 02</span>
-                <span class="cap-text">Merchant app → MPE → Terminal SDK → SetupIntent / PaymentMethod → Stripe core. card_present branch highlighted.</span>
-              </figcaption>
-            </figure>
-          </div>
-
-          <div class="surface-right">
-            <div class="section-eyebrow">The Build · The Architecture</div>
-            <h2 class="surface-headline">A SetupIntent with <code class="inline-code">card_present</code>. <em>And everything that means.</em></h2>
-            <p class="surface-text">The merchant calls a SetupIntent with the <code class="inline-code">card_present</code> payment method type. The Mobile Payment Element handles the buyer-facing flow. Under the hood, Stripe Terminal's SDK provides the cryptogram-backed NFC read, validates card-presence, and returns a PaymentMethod the merchant can use immediately or save for future charges.</p>
-            <p class="surface-text" style="margin-top: 8px;">Three things follow from the <code class="inline-code">card_present</code> classification: card-present interchange treatment, issuer-side liability for fraud, and CVC bypass eligibility on supported networks.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== SLIDE 12 — THE TRADEOFFS COLLAPSED ========== -->
-  <section class="slide" data-section="the build" data-crumb="tradeoffs collapsed" data-theme="light">
-    <div class="slide-inner">
-      <div style="width:100%;">
-        <div class="surface-grid">
-          <div class="surface-left">
-            <figure class="figure-slot" data-aspect="16/10">
-              <div class="figure-frame"><span class="figure-mark">[ FIG. 03 — FOUR-AXIS COMPARISON ]</span></div>
-              <figcaption>
-                <span class="cap-num">Fig. 03</span>
-                <span class="cap-text">Traditional methods (one or two axes win) vs. Tap to Add (all four).</span>
-              </figcaption>
-            </figure>
-          </div>
-
-          <div class="surface-right">
-            <div class="section-eyebrow">The Build · Tradeoffs Collapsed</div>
-            <h2 class="surface-headline">Auth, fraud, CVC, effort. <em>Normally a tradeoff. Not here.</em></h2>
-            <p class="surface-text">Cutting CVC normally raises fraud. Raising auth normally requires more verification friction. Removing fields normally costs verification. Each pair is a known tradeoff in payments.</p>
-            <p class="surface-text" style="margin-top: 8px;">Tap to Add wins on all four simultaneously — and the only reason it can is the card-present primitive underneath. The economic asymmetry is the design.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== SLIDE 13 — THE DESIGN LANGUAGE ========== -->
+  <!-- ========== SLIDE 11 — THE DESIGN LANGUAGE ========== -->
   <section class="slide" data-section="the build" data-crumb="design language" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="surface-grid">
           <div class="surface-left">
             <figure class="figure-slot" data-aspect="16/10">
-              <div class="figure-frame"><span class="figure-mark">[ FIG. 04 — BEFORE / AFTER ]</span></div>
+              <div class="figure-frame"><img src="/public/images/tap-to-add-fig-02.png" alt="Before: Terminal's existing merchant-facing tap screen. After: the unified buyer-facing screen, ready for MPE."></div>
               <figcaption>
-                <span class="cap-num">Fig. 04</span>
+                <span class="cap-num">Fig. 02</span>
                 <span class="cap-text">Before: Terminal's existing merchant-facing tap screen. After: the unified buyer-facing screen, ready for MPE.</span>
               </figcaption>
             </figure>
@@ -1945,66 +1914,139 @@
     </div>
   </section>
 
-  <!-- ========== SLIDE 14 — THE PROCESS / CHAPTER INTRO ========== -->
+  <!-- ========== SLIDE 12 — THE INTERACTION ========== -->
+  <section class="slide" data-section="the build" data-crumb="the interaction" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">The Build · The Interaction</div>
+        <h2 class="setup-headline" style="max-width:1100px;">Five screens. <em>One physical gesture.</em></h2>
+
+        <div class="flow-grid">
+          <div class="flow-cell">
+            <div class="flow-step">Screen 01</div>
+            <div class="flow-name">Payment Element.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-scr-01.png" alt="MPE entry — buyer sees Mobile Payment Element."></div>
+              <figcaption>
+                <span class="cap-num">Scr. 01</span>
+                <span class="cap-text">MPE entry.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Buyer sees Mobile Payment Element. Selects "Card."</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Screen 02</div>
+            <div class="flow-name">Tap screen.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-scr-02.png" alt="NFC zone animation prompting the tap."></div>
+              <figcaption>
+                <span class="cap-num">Scr. 02</span>
+                <span class="cap-text">NFC animation.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Animation positioned over the device's NFC zone. Buyer taps card to phone.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Screen 03</div>
+            <div class="flow-name">Acknowledgement.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-scr-03.png" alt="Tap success — acknowledgement and card art."></div>
+              <figcaption>
+                <span class="cap-num">Scr. 03</span>
+                <span class="cap-text">Tap success.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Successful tap confirmed. Card art surfaces.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Screen 04</div>
+            <div class="flow-name">Confirm + Link.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-scr-04.png" alt="Confirm and save — buyer confirms card, optional Link signup."></div>
+              <figcaption>
+                <span class="cap-num">Scr. 04</span>
+                <span class="cap-text">Confirm & save.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Buyer confirms card. Optional Link signup, optional immediate payment.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Screen 05</div>
+            <div class="flow-name">Payment success.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-scr-05.png" alt="Payment success — sheet dismisses."></div>
+              <figcaption>
+                <span class="cap-num">Scr. 05</span>
+                <span class="cap-text">Sheet dismiss.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Animated confirmation. Sheet dismisses.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 13 — THE PROCESS / CHAPTER INTRO ========== -->
   <section class="slide" data-section="the process" data-crumb="how it shipped" data-theme="light">
     <div class="slide-inner">
       <div class="setup-grid">
         <div>
           <div class="section-eyebrow">The Process · Chapter 03</div>
-          <h2 class="setup-headline">How it shipped. <em>Sixteen weeks.</em></h2>
+          <h2 class="setup-headline">How it shipped. <em>12 weeks.</em></h2>
         </div>
 
         <div class="contents-rows">
-          <button class="contents-row" data-jump="14">
+          <button class="contents-row" data-jump="13">
             <div class="contents-row-num">01</div>
             <div class="contents-row-body">
               <h3 class="contents-row-title">The team.</h3>
-              <p class="contents-row-text">One designer, one PM, two engineers. One Terminal partner.</p>
+              <p class="contents-row-text">One designer, one PM, two engineers. Three Terminal partners.</p>
+            </div>
+            <div class="contents-row-range">14</div>
+          </button>
+
+          <button class="contents-row" data-jump="14">
+            <div class="contents-row-num">02</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">The arc.</h3>
+              <p class="contents-row-text">Kickoff to private preview, 12 weeks.</p>
             </div>
             <div class="contents-row-range">15</div>
           </button>
 
           <button class="contents-row" data-jump="15">
-            <div class="contents-row-num">02</div>
-            <div class="contents-row-body">
-              <h3 class="contents-row-title">The arc.</h3>
-              <p class="contents-row-text">Kickoff to private preview, sixteen weeks.</p>
-            </div>
-            <div class="contents-row-range">16</div>
-          </button>
-
-          <button class="contents-row" data-jump="16">
             <div class="contents-row-num">03</div>
             <div class="contents-row-body">
-              <h3 class="contents-row-title">The constraints.</h3>
-              <p class="contents-row-text">SDK size, default-on, the bifurcated tap screen.</p>
+              <h3 class="contents-row-title">Iterations & challenges.</h3>
+              <p class="contents-row-text">Entry point. Tap screen. Solved across the device matrix.</p>
             </div>
-            <div class="contents-row-range">17</div>
-          </button>
-
-          <button class="contents-row" data-jump="17">
-            <div class="contents-row-num">04</div>
-            <div class="contents-row-body">
-              <h3 class="contents-row-title">The cross-team argument.</h3>
-              <p class="contents-row-text">When two design systems had to converge.</p>
-            </div>
-            <div class="contents-row-range">18</div>
+            <div class="contents-row-range">16 — 18</div>
           </button>
 
           <button class="contents-row" data-jump="18">
+            <div class="contents-row-num">04</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Release constraints.</h3>
+              <p class="contents-row-text">Cross-team alignment. SDK size. Bifurcated tap.</p>
+            </div>
+            <div class="contents-row-range">19 — 20</div>
+          </button>
+
+          <button class="contents-row" data-jump="20">
             <div class="contents-row-num">05</div>
             <div class="contents-row-body">
               <h3 class="contents-row-title">The private preview.</h3>
-              <p class="contents-row-text">What shipped April 29.</p>
+              <p class="contents-row-text">What shipped at launch.</p>
             </div>
-            <div class="contents-row-range">19</div>
+            <div class="contents-row-range">21</div>
           </button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ========== SLIDE 15 — THE TEAM ========== -->
+  <!-- ========== SLIDE 14 — THE TEAM ========== -->
   <section class="slide" data-section="the process" data-crumb="the team" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
@@ -2015,28 +2057,28 @@
         <div class="team-grid">
           <div class="team-member">
             <figure class="figure-slot" data-aspect="1/1">
-              <div class="figure-frame"><span class="figure-mark">[ LN ]</span></div>
+              <div class="figure-frame"><img src="/public/images/team/lawrence.jpg" alt="Lawrence Ntim"></div>
             </figure>
             <div class="team-name">Lawrence Ntim</div>
-            <div class="team-role">Senior Product Designer · OCS Mobile</div>
+            <div class="team-role">Senior Product Designer · OCS</div>
           </div>
           <div class="team-member">
             <figure class="figure-slot" data-aspect="1/1">
-              <div class="figure-frame"><span class="figure-mark">[ YL ]</span></div>
+              <div class="figure-frame"><img src="/public/images/team/yateesh.jpeg" alt="Yateesh Lulla"></div>
             </figure>
             <div class="team-name">Yateesh Lulla</div>
             <div class="team-role">Product Manager · OCS Mobile</div>
           </div>
           <div class="team-member">
             <figure class="figure-slot" data-aspect="1/1">
-              <div class="figure-frame"><span class="figure-mark">[ SA ]</span></div>
+              <div class="figure-frame"><img src="/public/images/team/samer.jpeg" alt="Samer Alabi"></div>
             </figure>
             <div class="team-name">Samer Alabi</div>
             <div class="team-role">Android Engineer · OCS Mobile</div>
           </div>
           <div class="team-member">
             <figure class="figure-slot" data-aspect="1/1">
-              <div class="figure-frame"><span class="figure-mark">[ BK ]</span></div>
+              <div class="figure-frame"><img src="/public/images/team/bella.jpeg" alt="Bella Koch"></div>
             </figure>
             <div class="team-name">Bella Koch</div>
             <div class="team-role">Android Engineer · OCS Mobile</div>
@@ -2045,54 +2087,54 @@
 
         <div class="team-partners">
           <b>In partnership with Stripe Terminal</b>
-          Tim Fisher · Kelly Moriarty · David Estes · Phil Machalski.
+          Kelly Moriarty · Maggie White · Phil Machalski.
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ========== SLIDE 16 — THE ARC (animated timeline) ========== -->
+  <!-- ========== SLIDE 15 — THE ARC (animated timeline) ========== -->
   <section class="slide timeline-slide" data-section="the process" data-crumb="the arc" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">The Process · The Arc</div>
-        <h2 class="setup-headline" style="max-width:1100px; margin-bottom: 24px;">Sixteen weeks. <em>Kickoff to private preview.</em></h2>
+        <h2 class="setup-headline" style="max-width:1100px; margin-bottom: 24px;">12 weeks. <em>Kickoff to private preview.</em></h2>
 
         <div class="timeline-curve">
-          <svg class="timeline-svg" viewBox="0 0 1200 380" role="img" aria-label="16-week timeline of Tap to Add build">
+          <svg class="timeline-svg" viewBox="0 0 1200 380" role="img" aria-label="12-week timeline of Tap to Add build">
             <line class="axis" x1="60" y1="310" x2="1140" y2="310"/>
 
-            <path class="curve" d="M 80 240 C 200 240 200 180 320 180 C 440 180 440 150 560 150 C 640 150 640 140 720 140 C 820 140 820 130 920 130 C 1020 130 1020 80 1120 80"/>
+            <path class="curve" d="M 80 240 C 240 240 240 180 458 180 C 600 180 600 150 741 150 C 790 150 790 140 836 140 C 880 140 880 130 930 130 C 1020 130 1020 80 1120 80"/>
 
             <g class="timeline-marker" data-week="01">
               <circle class="dot" cx="80" cy="240" r="5"/>
               <text class="label" x="80" y="220" text-anchor="middle">Kickoff</text>
               <text class="week" x="80" y="332" text-anchor="middle">Wk 01</text>
             </g>
-            <g class="timeline-marker" data-week="06">
-              <circle class="dot" cx="320" cy="180" r="5"/>
-              <text class="label" x="320" y="160" text-anchor="middle">Design Gaveling</text>
-              <text class="week" x="320" y="332" text-anchor="middle">Wk 06 · Jan 26</text>
+            <g class="timeline-marker" data-week="05">
+              <circle class="dot" cx="458" cy="180" r="5"/>
+              <text class="label" x="458" y="160" text-anchor="middle">Design Gaveling</text>
+              <text class="week" x="458" y="332" text-anchor="middle">Wk 05 · Dec 29</text>
+            </g>
+            <g class="timeline-marker" data-week="08">
+              <circle class="dot" cx="741" cy="150" r="5"/>
+              <text class="label" x="741" y="130" text-anchor="middle">Product Review</text>
+              <text class="week" x="741" y="332" text-anchor="middle">Wk 08</text>
+            </g>
+            <g class="timeline-marker" data-week="09">
+              <circle class="dot" cx="836" cy="140" r="5"/>
+              <text class="label" x="836" y="120" text-anchor="middle">Working Group</text>
+              <text class="week" x="836" y="332" text-anchor="middle">Wk 09</text>
             </g>
             <g class="timeline-marker" data-week="10">
-              <circle class="dot" cx="560" cy="150" r="5"/>
-              <text class="label" x="560" y="130" text-anchor="middle">Product Review</text>
-              <text class="week" x="560" y="332" text-anchor="middle">Wk 10 · Feb 25</text>
+              <circle class="dot" cx="930" cy="130" r="5"/>
+              <text class="label" x="930" y="110" text-anchor="middle">Sessions Milestone</text>
+              <text class="week" x="930" y="332" text-anchor="middle">Wk 10</text>
             </g>
-            <g class="timeline-marker" data-week="11">
-              <circle class="dot" cx="720" cy="140" r="5"/>
-              <text class="label" x="720" y="120" text-anchor="middle">Working Group</text>
-              <text class="week" x="720" y="332" text-anchor="middle">Wk 11 · Mar 2</text>
-            </g>
-            <g class="timeline-marker" data-week="13">
-              <circle class="dot" cx="920" cy="130" r="5"/>
-              <text class="label" x="920" y="110" text-anchor="middle">Sessions Milestone</text>
-              <text class="week" x="920" y="332" text-anchor="middle">Wk 13 · Mar 16</text>
-            </g>
-            <g class="timeline-marker peak" data-week="16">
+            <g class="timeline-marker peak" data-week="12">
               <circle class="dot" cx="1120" cy="80" r="7"/>
               <text class="label" x="1120" y="60" text-anchor="middle">Private Preview</text>
-              <text class="week" x="1120" y="332" text-anchor="middle">Wk 16 · Apr 29</text>
+              <text class="week" x="1120" y="332" text-anchor="middle">Wk 12 · Apr 01</text>
             </g>
           </svg>
         </div>
@@ -2100,13 +2142,212 @@
     </div>
   </section>
 
-  <!-- ========== SLIDE 17 — THE CONSTRAINTS ========== -->
-  <section class="slide" data-section="the process" data-crumb="the constraints" data-theme="light">
+  <!-- ========== SLIDE 16 — ITERATIONS · ENTRY POINT ========== -->
+  <section class="slide" data-section="the process" data-crumb="entry iterations" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">The Process · Iterations · Entry</div>
+        <h2 class="setup-headline" style="max-width:1100px;">Entry point. <em>Iterations.</em></h2>
+
+        <div class="flow-grid">
+          <div class="flow-cell">
+            <div class="flow-step">Entry</div>
+            <div class="flow-name">v.01</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-entry-01.png" alt="Entry point iteration 01."></div>
+              <figcaption>
+                <span class="cap-num">v. 01</span>
+                <span class="cap-text">First take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Tap to add as express checkout.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Entry</div>
+            <div class="flow-name">v.02</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-entry-02.png" alt="Entry point iteration 02."></div>
+              <figcaption>
+                <span class="cap-num">v. 02</span>
+                <span class="cap-text">Second take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Dedicated NFC button on card selector.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Entry</div>
+            <div class="flow-name">v.03</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-entry-03.png" alt="Entry point iteration 03."></div>
+              <figcaption>
+                <span class="cap-num">v. 03</span>
+                <span class="cap-text">Third take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Tap to add as dedicated section.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Entry</div>
+            <div class="flow-name">v.04</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-entry-04.png" alt="Entry point iteration 04."></div>
+              <figcaption>
+                <span class="cap-num">v. 04</span>
+                <span class="cap-text">Fourth take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Replacing scan card.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Entry</div>
+            <div class="flow-name">v.05</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-entry-05.png" alt="Entry point iteration 05."></div>
+              <figcaption>
+                <span class="cap-num">v. 05</span>
+                <span class="cap-text">Landed.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Polish.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 17 — ITERATIONS · TAP SCREEN ========== -->
+  <section class="slide" data-section="the process" data-crumb="tap iterations" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">The Process · Iterations · Tap</div>
+        <h2 class="setup-headline" style="max-width:1100px;">Tap screen. <em>Iterations.</em></h2>
+
+        <div class="flow-grid">
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">v.01</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-screen-01.png" alt="Tap screen iteration 01."></div>
+              <figcaption>
+                <span class="cap-num">v. 01</span>
+                <span class="cap-text">First take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Re-styling the terminal screen.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">v.02</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-screen-02.png" alt="Tap screen iteration 02."></div>
+              <figcaption>
+                <span class="cap-num">v. 02</span>
+                <span class="cap-text">Second take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">More visual focus on the card.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">v.03</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-screen-03.png" alt="Tap screen iteration 03."></div>
+              <figcaption>
+                <span class="cap-num">v. 03</span>
+                <span class="cap-text">Third take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Restyling icon and giving focus.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">v.04</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-screen-04.png" alt="Tap screen iteration 04."></div>
+              <figcaption>
+                <span class="cap-num">v. 04</span>
+                <span class="cap-text">Fourth take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Intermediate step, unified experience.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">v.05</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-screen-05.png" alt="Tap screen iteration 05."></div>
+              <figcaption>
+                <span class="cap-num">v. 05</span>
+                <span class="cap-text">Landed.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Dynamic and mobile first.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 18 — THE CHALLENGE ========== -->
+  <section class="slide" data-section="the process" data-crumb="the challenge" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="surface-grid">
           <div class="surface-left">
-            <div class="section-eyebrow">The Process · The Constraints</div>
+            <figure class="figure-slot" data-aspect="4/3">
+              <div class="figure-frame"><video autoplay muted loop playsinline><source src="/public/videos/tap-to-add-fig-03.mp4" type="video/mp4"></video></div>
+              <figcaption>
+                <span class="cap-num">Fig. 03</span>
+                <span class="cap-text">Device-aware tap animation. Anchored to the detected NFC zone at runtime.</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="section-eyebrow">The Process · The Challenge</div>
+            <h2 class="surface-headline">The tap zone moves. <em>Solved with device-aware animation.</em></h2>
+            <p class="surface-text">Apple has one NFC zone in a known location on every iPhone. Android doesn't. NFC antennas sit at the top, the back, the middle — different OEM, different placement, no shared convention. A single tap animation can't land on the right physical spot across the device matrix.</p>
+            <p class="surface-text">Worked with Terminal's hardware team on a device → NFC zone lookup. The animation's anchor adapts at runtime to the buyer's specific phone, so the prompt always lands on the actual antenna location. Buyer sees the right zone for their phone. The interaction stops being abstract.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 19 — THE CROSS-TEAM ARGUMENT (set piece) ========== -->
+  <section class="slide" data-section="the process" data-crumb="cross-team" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="surface-grid">
+          <div class="surface-left">
+            <figure class="figure-slot" data-aspect="4/3">
+              <div class="figure-frame"><img src="/public/images/tap-to-add-fig-04.png" alt="Buyer-side design recommendations from the product review. Two shipped at preview; one held for GA."></div>
+              <figcaption>
+                <span class="cap-num">Fig. 04</span>
+                <span class="cap-text">Buyer-side design recommendations from the product review. Two shipped at preview; one held for GA.</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="section-eyebrow">The Process · The Cross-Team Argument</div>
+            <h2 class="surface-headline">Terminal's screen was for merchants. <em>Ours wasn't.</em></h2>
+            <p class="surface-text">Terminal's existing tap screen had been built and battle-tested for merchant-facing point-of-sale. Buyers in MPE land on a merchant screen if no design intervention happens. The "X" button takes them back to the card form (confusing). The animation isn't device-aware. The visual language belongs to a different product.</p>
+            <p class="surface-text">Three buyer-side recommendations went into the gaveled designs: a device-specific NFC animation, a clear "Enter card info manually" exit, and an "X" that returns to the payment methods screen. Two shipped at preview; one held for GA.</p>
+            <p class="pull-quote" style="font-size: 13px; line-height: 1.5;">Sole designer doesn't mean solo work. <em>Cross-team alignment was the highest-leverage thing I did this project.</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 20 — PRIVATE PREVIEW CONSTRAINTS ========== -->
+  <section class="slide" data-section="the process" data-crumb="preview constraints" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="surface-grid">
+          <div class="surface-left">
+            <div class="section-eyebrow">The Process · Private Preview Constraints</div>
             <h2 class="surface-headline">What private preview meant. <em>And what it didn't.</em></h2>
             <p class="surface-text" style="margin-top: 16px;">Three known tradeoffs accepted at private preview, documented for GA.</p>
           </div>
@@ -2117,7 +2358,7 @@
                 <div class="constraint-num">01 · SDK Size</div>
                 <div>
                   <h4 class="constraint-title">20–30MB at preview. Target: under 2MB at GA.</h4>
-                  <p class="constraint-body">A lightweight NFC fallback is under exploration to scale Tap to Add to merchants who can't accept the full Terminal SDK binary.</p>
+                  <p class="constraint-body">A lightweight NFC fallback is under exploration to scale Tap to Add to merchants who can't accept the full Terminal SDK.</p>
                 </div>
               </div>
               <div class="constraint-card">
@@ -2141,40 +2382,14 @@
     </div>
   </section>
 
-  <!-- ========== SLIDE 18 — THE CROSS-TEAM ARGUMENT (set piece) ========== -->
-  <section class="slide" data-section="the process" data-crumb="cross-team" data-theme="light">
-    <div class="slide-inner">
-      <div style="width:100%;">
-        <div class="section-eyebrow">The Process · The Cross-Team Argument</div>
-
-        <div class="crossteam-grid">
-          <figure class="figure-slot" data-aspect="4/3">
-            <div class="figure-frame"><span class="figure-mark">[ FIG. 06 — DESIGN RECOMMENDATION ARTIFACT ]</span></div>
-            <figcaption>
-              <span class="cap-num">Fig. 06</span>
-              <span class="cap-text">Buyer-side design recommendations from the product review. Two shipped at preview; one held for GA.</span>
-            </figcaption>
-          </figure>
-
-          <div class="crossteam-copy">
-            <h3>Terminal's screen was for merchants. <em>Ours wasn't.</em></h3>
-            <p>Terminal's existing tap screen had been built and battle-tested for merchant-facing point-of-sale. Buyers in MPE land on a merchant screen if no design intervention happens. The "X" button takes them back to the card form (confusing). The animation isn't device-aware. The visual language belongs to a different product.</p>
-            <p>Three buyer-side recommendations went into the gaveled designs: a device-specific NFC animation, a clear "Enter card info manually" exit, and an "X" that returns to the payment methods screen. Two shipped at preview; one held for GA.</p>
-            <p class="pull-quote">Sole designer doesn't mean solo work. <em>Cross-team alignment was the highest-leverage thing I did this project.</em></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== SLIDE 19 — THE PRIVATE PREVIEW ========== -->
+  <!-- ========== SLIDE 21 — THE PRIVATE PREVIEW ========== -->
   <section class="slide" data-section="the process" data-crumb="private preview" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="surface-grid">
           <div class="surface-left">
-            <figure class="figure-slot" data-aspect="16/10">
-              <div class="figure-frame"><span class="figure-mark">[ FIG. 05 — LIVE PREVIEW ]</span></div>
+            <figure class="figure-slot" data-aspect="9/16">
+              <div class="figure-frame"><video autoplay muted loop playsinline><source src="/public/videos/tap-to-add-fig-05.mp4" type="video/mp4"></video></div>
               <figcaption>
                 <span class="cap-num">Fig. 05</span>
                 <span class="cap-text">Live tap screen. Stripe Mobile Payment Element · Android.</span>
@@ -2193,7 +2408,7 @@
     </div>
   </section>
 
-  <!-- ========== SLIDE 20 — THE REFLECTION / CHAPTER INTRO ========== -->
+  <!-- ========== SLIDE 22 — THE REFLECTION / CHAPTER INTRO ========== -->
   <section class="slide" data-section="the reflection" data-crumb="what shipped" data-theme="light">
     <div class="slide-inner">
       <div class="setup-grid">
@@ -2203,38 +2418,38 @@
         </div>
 
         <div class="contents-rows">
-          <button class="contents-row" data-jump="20">
+          <button class="contents-row" data-jump="22">
             <div class="contents-row-num">01</div>
             <div class="contents-row-body">
               <h3 class="contents-row-title">The numbers.</h3>
               <p class="contents-row-text">Visa's pilot data. Externally validated.</p>
             </div>
-            <div class="contents-row-range">21</div>
+            <div class="contents-row-range">23</div>
           </button>
 
-          <button class="contents-row" data-jump="21">
+          <button class="contents-row" data-jump="23">
             <div class="contents-row-num">02</div>
             <div class="contents-row-body">
               <h3 class="contents-row-title">The lessons.</h3>
               <p class="contents-row-text">What this work taught me about category creation.</p>
             </div>
-            <div class="contents-row-range">22</div>
+            <div class="contents-row-range">24</div>
           </button>
 
-          <button class="contents-row" data-jump="22">
+          <button class="contents-row" data-jump="24">
             <div class="contents-row-num">03</div>
             <div class="contents-row-body">
               <h3 class="contents-row-title">The throughline.</h3>
-              <p class="contents-row-text">Why this work made everything I'm doing now possible.</p>
+              <p class="contents-row-text">Why this work made everything I've done possible.</p>
             </div>
-            <div class="contents-row-range">23</div>
+            <div class="contents-row-range">25</div>
           </button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ========== SLIDE 21 — THE NUMBERS (set piece) ========== -->
+  <!-- ========== SLIDE 23 — THE NUMBERS (set piece) ========== -->
   <section class="slide" data-section="the reflection" data-crumb="the numbers" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
@@ -2267,7 +2482,7 @@
     </div>
   </section>
 
-  <!-- ========== SLIDE 22 — THE LESSONS ========== -->
+  <!-- ========== SLIDE 24 — THE LESSONS ========== -->
   <section class="slide" data-section="the reflection" data-crumb="the lessons" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
@@ -2308,7 +2523,7 @@
     </div>
   </section>
 
-  <!-- ========== SLIDE 23 — THE THROUGHLINE ========== -->
+  <!-- ========== SLIDE 25 — THE THROUGHLINE ========== -->
   <section class="slide" data-section="the reflection" data-crumb="the throughline" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
@@ -2316,25 +2531,25 @@
 
         <div class="throughline">
           <div>
-            <p class="pull-quote">Why this work made<br><em>everything I'm doing now</em> possible.</p>
-            <p class="throughline-lede">Tap to Add taught me how to design across infrastructure boundaries — repointing existing primitives toward new economic outcomes. That's the substrate of everything I've built since.</p>
+            <p class="pull-quote">Why this work made<br><em>everything I've done</em> possible.</p>
+            <p class="throughline-lede">Tap to Add taught me how to design across infrastructure boundaries: repointing existing primitives toward new economic outcomes. That's the thread I've continued to pull on.</p>
           </div>
 
           <div class="link-forwards">
             <div class="link-forward">
               <div class="link-forward-name">Agentic Commerce</div>
-              <div class="link-forward-frame">Card-present trust, but for AI agents transacting on behalf of users.</div>
+              <div class="link-forward-frame">Understanding infrastructure complexity, critical for understanding AI agents transacting on behalf of users.</div>
               <div class="link-forward-tag">Stripe</div>
             </div>
             <div class="link-forward">
               <div class="link-forward-name">Eighty Labs</div>
-              <div class="link-forward-frame">A studio built around repointing existing primitives — across product, brand, and technology.</div>
+              <div class="link-forward-frame">A studio built around repointing existing primitives across product, brand, and technology.</div>
               <div class="link-forward-tag">Founder</div>
             </div>
             <div class="link-forward">
               <div class="link-forward-name">Wing</div>
               <div class="link-forward-frame">An AI-powered travel platform built on agentic infrastructure.</div>
-              <div class="link-forward-tag">Eighty Labs</div>
+              <div class="link-forward-tag">Product</div>
             </div>
           </div>
         </div>
@@ -2342,7 +2557,7 @@
     </div>
   </section>
 
-  <!-- ========== SLIDE 24 — CLOSING ========== -->
+  <!-- ========== SLIDE 26 — CLOSING ========== -->
   <section class="slide dark" data-section="the reflection" data-crumb="next" data-theme="dark" data-align="center">
     <div class="slide-inner">
       <div class="transition-slide">
@@ -2483,8 +2698,8 @@
       'contents': 1,
       'the-case': 2,
       'the-build': 6,
-      'the-process': 13,
-      'the-reflection': 19,
+      'the-process': 12,
+      'the-reflection': 21,
     };
     if (map[hash] !== undefined) goTo(map[hash]);
   }
