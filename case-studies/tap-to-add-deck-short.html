@@ -1,0 +1,2360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tap to Add — 10 min — Lawrence Ntim</title>
+<meta name="description" content="The first card-present interaction designed for enrollment, not payment. Stripe Mobile Payment Element. Private preview, Apr 2026.">
+
+<!-- Three-voice type system: Nixie One (display) · DM Sans (body) · DM Mono (technical) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nixie+One&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* Color world — cream + brown editorial, Stripe purple as spot accent */
+    --paper:        #FFFFFF;
+    --paper-deep:   #E8E2D4;
+    --ink:          #1A1814;
+    --ink-soft:     #6B655B;
+    --ink-faint:    #A8A095;
+    --hairline:     rgba(26, 24, 20, 0.10);
+    --hairline-2:   rgba(26, 24, 20, 0.18);
+    --void:         #14110D;
+    --void-ink:     #F4F0E8;
+    --void-soft:    rgba(244, 240, 232, 0.55);
+    --void-faint:   rgba(244, 240, 232, 0.30);
+    --void-line:    rgba(244, 240, 232, 0.14);
+
+    /* Spot accent — Stripe purple, only used in this case study */
+    --stripe:       #635BFF;
+    --stripe-soft:  rgba(99, 91, 255, 0.10);
+
+    /* Type */
+    --serif:        'Nixie One', 'Cormorant Garamond', Georgia, serif;
+    --sans:         'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono:         'DM Mono', 'JetBrains Mono', ui-monospace, monospace;
+
+    /* Motion */
+    --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out:  cubic-bezier(0.65, 0, 0.35, 1);
+
+    /* Type scale — editorial, capped intentionally */
+    --text-display:    clamp(48px, 6vw, 88px);
+    --text-chapter:    clamp(40px, 4.5vw, 64px);
+    --text-headline:   clamp(32px, 3.6vw, 52px);
+    --text-subhead:    clamp(22px, 2.2vw, 32px);
+    --text-stat:       clamp(36px, 4vw, 56px);
+    --text-body-lg:    18px;
+    --text-body:       16px;
+    --text-mono-sm:    11px;
+    --text-mono-xs:    10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection { background: var(--stripe); color: var(--paper); }
+
+  /* ===== CHROME (persistent UI elements) ===== */
+
+  .chrome {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .chrome > * { pointer-events: auto; }
+
+  .colophon {
+    position: absolute;
+    bottom: 36px;
+    left: 32px;
+    font-family: var(--serif);
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    z-index: 101;
+  }
+  .colophon:hover { opacity: 0.6; }
+  body.dark .colophon { color: var(--void-ink); }
+
+  .breadcrumb {
+    position: absolute;
+    top: 36px;
+    left: 32px;
+    font-family: var(--mono);
+    font-size: var(--text-mono-sm);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    transition: color 0.4s ease;
+  }
+  .breadcrumb .crumb-section { color: var(--ink-faint); }
+  .breadcrumb .crumb-current { color: var(--ink); font-weight: 500; }
+  body.dark .breadcrumb .crumb-section { color: var(--void-faint); }
+  body.dark .breadcrumb .crumb-current { color: var(--void-ink); }
+
+  .close-btn {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--hairline);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    transition: background 0.3s ease, transform 0.4s var(--ease-out);
+    text-decoration: none;
+  }
+  .close-btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+    transform: rotate(90deg);
+  }
+  .close-btn svg { width: 14px; height: 14px; }
+  body.dark .close-btn {
+    border-color: var(--void-line);
+    color: var(--void-ink);
+  }
+  body.dark .close-btn:hover {
+    background: var(--void-ink);
+    color: var(--void);
+  }
+
+  .paginator {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .page-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  body.dark .page-num { color: var(--void-faint); }
+
+  .dots { display: flex; gap: 6px; align-items: center; }
+  .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s var(--ease-out);
+    opacity: 0.6;
+  }
+  .dot:hover { opacity: 1; }
+  .dot.active {
+    width: 22px;
+    border-radius: 3px;
+    background: var(--ink);
+    opacity: 1;
+  }
+  body.dark .dot { background: var(--void-faint); }
+  body.dark .dot.active { background: var(--void-ink); }
+
+  .nav-arrows {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    display: flex;
+    gap: 8px;
+  }
+  .arrow {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--hairline);
+    background: var(--paper);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    transition: all 0.3s var(--ease-out);
+  }
+  .arrow:hover:not(:disabled) {
+    background: var(--ink);
+    color: var(--paper);
+    transform: translateY(-1px);
+  }
+  .arrow:disabled { opacity: 0.3; cursor: not-allowed; }
+  .arrow svg { width: 14px; height: 14px; }
+  body.dark .arrow {
+    background: var(--void);
+    border-color: var(--void-line);
+    color: var(--void-ink);
+  }
+  body.dark .arrow:hover:not(:disabled) {
+    background: var(--void-ink);
+    color: var(--void);
+  }
+
+  /* ===== LIGHTBOX ===== */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 17, 13, 0.94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+  }
+  .lightbox.open { opacity: 1; pointer-events: auto; }
+  .lightbox-img {
+    max-width: 92vw;
+    max-height: 88vh;
+    object-fit: contain;
+    display: block;
+    cursor: default;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 32px; right: 32px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--void-line);
+    background: transparent;
+    color: var(--void-ink);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.4s var(--ease-out);
+  }
+  .lightbox-close svg { width: 14px; height: 14px; }
+  .lightbox-close:hover {
+    background: var(--void-ink);
+    color: var(--void);
+    transform: rotate(90deg);
+  }
+  .figure-frame img,
+  .ref-figure img {
+    cursor: zoom-in;
+  }
+
+  /* ===== SLIDES ===== */
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 80px 96px 140px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity 0.5s var(--ease-out), transform 0.6s var(--ease-out);
+    overflow-y: auto;
+  }
+  .slide[data-align="center"] { align-items: center; }
+  .slide.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .slide.dark { background: var(--void); color: var(--void-ink); }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+  .slide.dark .section-eyebrow { color: var(--void-soft); }
+
+  /* ===== SLIDE 01 — HERO / COVER ===== */
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+    width: 100%;
+  }
+  .hero-text { max-width: 540px; }
+  .hero-meta {
+    font-family: var(--mono);
+    font-size: var(--text-mono-sm);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .hero-meta::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--ink-soft);
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: var(--text-display);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 32px;
+  }
+  .hero-lede {
+    font-family: var(--sans);
+    font-size: var(--text-body-lg);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin-bottom: 48px;
+    max-width: 480px;
+  }
+  .hero-credits {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 40px;
+    padding-top: 28px;
+    border-top: 1px solid var(--hairline);
+  }
+  .hero-credit-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .hero-credit-value {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .hero-visual {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: var(--paper-deep);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+  }
+  .hero-visual video,
+  .hero-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .hero-visual-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    color: var(--ink-soft);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .slide.dark .hero-visual {
+    background: rgba(244, 240, 232, 0.04);
+    border-color: var(--void-line);
+  }
+  .slide.dark .hero-visual-fallback { color: var(--void-soft); }
+
+  /* ===== SLIDE 02 — CONTENTS ===== */
+  .contents-rows { display: flex; flex-direction: column; }
+  .contents-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 32px;
+    align-items: start;
+    padding: 20px 0;
+    border: 0;
+    border-top: 1px solid rgba(26, 24, 20, 0.06);
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    transition: opacity 0.3s ease;
+  }
+  .contents-row:last-child { border-bottom: 1px solid rgba(26, 24, 20, 0.06); }
+  .contents-row:hover { opacity: 0.6; }
+  .contents-row-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    padding-top: 6px;
+  }
+  .contents-row-title {
+    font-family: var(--sans);
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .contents-row-text {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 540px;
+    margin: 0;
+  }
+  .contents-row-range {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    padding-top: 6px;
+    white-space: nowrap;
+  }
+  .slide.dark .contents-row { border-top-color: rgba(244, 240, 232, 0.08); }
+  .slide.dark .contents-row:last-child { border-bottom-color: rgba(244, 240, 232, 0.08); }
+  .slide.dark .contents-row-num,
+  .slide.dark .contents-row-range { color: var(--void-faint); }
+  .slide.dark .contents-row-title { color: var(--void-ink); }
+  .slide.dark .contents-row-text { color: var(--void-soft); }
+
+  /* ===== SLIDE 03 — THE PROMISE ===== */
+  .promise { width: 100%; }
+  .promise-headline {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 64px;
+    max-width: 1100px;
+  }
+  .promise-headline em {
+    font-style: normal;
+    color: var(--stripe);
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--hairline);
+    padding-top: 32px;
+  }
+  .stats-row.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .stat {
+    border-left: 1px solid var(--hairline);
+    padding: 0 32px;
+  }
+  .stat:first-child { border-left: none; padding-left: 0; }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 12px;
+  }
+  .stat-value {
+    font-family: var(--serif);
+    font-size: var(--text-stat);
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .stat-value.accent { color: var(--stripe); }
+  .stat-detail {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+  .source-line {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+    margin-top: 28px;
+  }
+
+  /* ===== SLIDE 04 — THE SETUP ===== */
+  .setup-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.4fr;
+    gap: 96px;
+    align-items: start;
+    width: 100%;
+  }
+  .setup-headline {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .setup-headline em {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .setup-cards { display: flex; flex-direction: column; gap: 0; }
+  .setup-card {
+    padding: 20px 0;
+    border: 0;
+    border-top: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 24px;
+    align-items: start;
+    background: transparent;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    width: 100%;
+  }
+  .setup-card:hover { opacity: 0.6; }
+  .setup-card:last-child { border-bottom: 1px solid var(--hairline); }
+  .setup-card-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    padding-top: 4px;
+  }
+  .setup-card-title {
+    font-family: var(--sans);
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .setup-card-text {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 540px;
+  }
+
+  /* ===== SLIDE 05 — THE BET ===== */
+  .bet { max-width: 980px; width: 100%; }
+  .bet-headline {
+    font-family: var(--serif);
+    font-size: var(--text-subhead);
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+    margin: 16px 0 40px;
+    max-width: 880px;
+  }
+  .bet-headline em {
+    font-style: italic;
+    color: var(--stripe);
+  }
+  .bet-rows { display: flex; flex-direction: column; gap: 0; }
+  .bet-row {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+    align-items: baseline;
+  }
+  .bet-row:first-child { border-top: 1px solid var(--hairline); }
+  .bet-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .bet-text {
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .bet-text em { font-style: italic; color: var(--stripe); }
+  .bet-source {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+
+  /* ===== SLIDE 06 — TRANSITION ===== */
+  .transition-slide {
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .transition-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+  }
+  .transition-text {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .transition-text em { font-style: italic; }
+
+  /* ===== REUSABLE — Figure slots ===== */
+  .figure-slot { display: block; margin: 0; }
+  .figure-frame {
+    position: relative;
+    width: 100%;
+    background: var(--paper-deep);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .figure-slot[data-aspect="16/10"] .figure-frame { aspect-ratio: 16 / 10; }
+  .figure-slot[data-aspect="4/3"] .figure-frame { aspect-ratio: 4 / 3; }
+  .figure-slot[data-aspect="1/1"] .figure-frame { aspect-ratio: 1 / 1; }
+  .figure-slot[data-aspect="3/2"] .figure-frame { aspect-ratio: 3 / 2; }
+  .figure-slot[data-aspect="9/16"] .figure-frame { aspect-ratio: 9 / 16; }
+  .figure-mark {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-faint);
+    letter-spacing: 0.2em;
+  }
+  .figure-frame img,
+  .figure-frame video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .figure-slot figcaption {
+    margin-top: 14px;
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .figure-slot .cap-num { color: var(--ink-faint); flex-shrink: 0; }
+  .figure-slot .cap-text { color: var(--ink-soft); }
+  .slide.dark .figure-frame {
+    background: rgba(244, 240, 232, 0.04);
+    border-color: var(--void-line);
+  }
+  .slide.dark .figure-mark { color: var(--void-faint); }
+  .slide.dark .figure-slot .cap-num { color: var(--void-faint); }
+  .slide.dark .figure-slot .cap-text { color: var(--void-soft); }
+
+  /* ===== REUSABLE — Pull-quote ===== */
+  .pull-quote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: var(--text-subhead);
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    max-width: 720px;
+  }
+  .pull-quote em { color: var(--stripe); }
+  .slide.dark .pull-quote { color: var(--void-ink); }
+
+  .quote-attr {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 16px;
+  }
+
+  /* ===== Inline code styling (used in headlines) ===== */
+  code.inline-code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    color: var(--stripe);
+    letter-spacing: 0;
+    background: var(--stripe-soft);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-style: normal;
+  }
+  .pull-quote code.inline-code { font-size: 0.78em; }
+
+  /* ===== SHARED — Surface slides ===== */
+  .surface-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+    width: 100%;
+    margin-top: 40px;
+  }
+  .surface-left {
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+  }
+  .surface-left .figure-slot { margin: 0; }
+  .surface-left .figure-slot[data-aspect="16/10"] .figure-frame { height: 380px; }
+  .surface-left .figure-slot[data-aspect="9/16"] {
+    max-width: 280px;
+    align-self: center;
+  }
+  .surface-left .figure-slot[data-aspect="9/16"] .figure-frame {
+    aspect-ratio: 9 / 16;
+    max-height: 60vh;
+  }
+  .surface-left .figure-slot[data-aspect="9/16"] .figure-frame video {
+    object-fit: contain;
+    background: var(--ink);
+  }
+  .surface-left .figure-slot .figure-frame img { object-fit: contain; padding: 24px; }
+  .surface-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 0;
+  }
+  .surface-right > .section-eyebrow { margin: 0; }
+  .surface-headline {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0;
+  }
+  .surface-headline em {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  .surface-headline em.accent { color: var(--stripe); font-style: italic; }
+  .surface-text {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 540px;
+  }
+  .surface-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    margin-top: 14px;
+  }
+  .surface-caption .fig-num { color: var(--ink-soft); }
+  .surface-caption .fig-desc { color: var(--ink-faint); }
+
+  /* ===== SLIDE 08 — REFERENCE WALL (set piece) ===== */
+  .ref-slide .section-eyebrow { margin-bottom: 16px; }
+  .ref-slide .setup-headline {
+    font-size: clamp(28px, 3vw, 44px);
+    line-height: 1.15;
+  }
+  .ref-slide .surface-text { font-size: 14px; }
+  .ref-slide .source-line { margin-top: 12px !important; font-size: 12px; }
+  .ref-table-wrap {
+    width: 100%;
+    margin-top: 16px;
+    overflow-x: auto;
+  }
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sans);
+  }
+  .ref-table thead tr {
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+  }
+  .ref-table th {
+    text-align: left;
+    padding: 14px 12px 12px;
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    vertical-align: bottom;
+  }
+  .ref-table th:first-child { padding-left: 4px; }
+  .ref-table th:last-child  { padding-right: 4px; }
+
+  .ref-table tbody tr { border-bottom: 1px solid var(--hairline); }
+  .ref-table tbody td {
+    padding: 12px 12px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: var(--ink);
+    vertical-align: top;
+  }
+  .ref-table tbody td:first-child { padding-left: 4px; }
+  .ref-table tbody td:last-child  { padding-right: 4px; }
+
+  .ref-method {
+    font-family: var(--serif);
+    font-size: 15.5px;
+    line-height: 1.15;
+    color: var(--ink);
+    font-weight: 400;
+    display: block;
+  }
+  .ref-method .sub {
+    display: block;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--ink-soft);
+    margin-top: 2px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .ref-designed { color: var(--ink); font-weight: 400; font-style: italic; }
+  .ref-yes,
+  .ref-no,
+  .ref-standard,
+  .ref-higher,
+  .ref-none,
+  .ref-req,
+  .ref-opt,
+  .ref-issuer,
+  .ref-merch {
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .ref-yes      { color: var(--ink); }
+  .ref-no       { color: var(--ink-faint); }
+  .ref-higher   { color: var(--stripe); }
+  .ref-standard { color: var(--ink-faint); }
+  .ref-req      { color: var(--ink); }
+  .ref-opt      { color: var(--ink-faint); }
+  .ref-none     { color: var(--ink-faint); }
+  .ref-issuer   { color: var(--stripe); font-weight: 500; }
+  .ref-merch    { color: var(--ink-faint); font-weight: 400; }
+
+  .ref-table tbody tr.feature {
+    background: var(--stripe-soft);
+    border-top: 2px solid var(--stripe);
+    border-bottom: 2px solid var(--stripe);
+  }
+  .ref-table tbody tr.feature td {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .ref-table tbody tr.feature .ref-method {
+    font-weight: 400;
+    color: var(--ink);
+    position: relative;
+    padding-left: 18px;
+  }
+  .ref-table tbody tr.feature .ref-method::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px;
+    width: 8px; height: 8px;
+    background: var(--stripe);
+    border-radius: 50%;
+  }
+  .ref-table tbody tr.feature .ref-method .sub {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .ref-table tbody tr.feature .ref-yes,
+  .ref-table tbody tr.feature .ref-higher,
+  .ref-table tbody tr.feature .ref-none,
+  .ref-table tbody tr.feature .ref-issuer {
+    color: var(--stripe);
+    font-weight: 600;
+  }
+  .ref-table tbody tr.feature .ref-designed {
+    color: var(--ink);
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  /* ===== SLIDE 10 — INTERACTION (5-cell horizontal flow) ===== */
+  .flow-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-top: 28px;
+    width: 100%;
+  }
+  .flow-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .flow-cell .flow-step {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .flow-cell .flow-name {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.2;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .flow-cell .figure-slot { margin: 0; }
+  .flow-cell .figure-slot .figure-frame {
+    aspect-ratio: 9 / 16;
+    max-height: 36vh;
+  }
+  .flow-cell .figure-frame img { object-fit: contain; padding: 12px; }
+  .flow-cell .flow-body {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+
+  /* ===== SLIDE 11 — Reference divider cell ===== */
+  .flow-cell--divider {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 14px;
+    padding-top: 36px;
+  }
+  .flow-cell--divider .divider-rule {
+    width: 1px;
+    background: var(--hairline-2);
+    height: 280px;
+  }
+  .flow-cell--divider .divider-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ===== SLIDE 11 — Architecture body styling ===== */
+  .surface-right .surface-text + .surface-text { margin-top: 0; }
+
+  /* ===== SLIDE 17 — Constraints (right column cards) ===== */
+  .constraint-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+  }
+  .constraint-card {
+    padding: 20px 0;
+    border-top: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .constraint-card:last-child { border-bottom: 1px solid var(--hairline); }
+  .constraint-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--stripe);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding-top: 4px;
+  }
+  .constraint-title {
+    font-family: var(--sans);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.005em;
+  }
+  .constraint-body {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  /* ===== SLIDE 18 — Cross-team (set piece) ===== */
+  .crossteam-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    width: 100%;
+    margin-top: 40px;
+  }
+  .crossteam-copy h3 {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.1;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+  .crossteam-copy h3 em { font-style: italic; color: var(--stripe); }
+  .crossteam-copy p {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+    max-width: 460px;
+  }
+  .crossteam-copy .pull-quote {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hairline);
+    font-size: 19px;
+  }
+
+  /* ===== SLIDE 15 — Team grid ===== */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    width: 100%;
+    margin-top: 40px;
+  }
+  .team-member { display: flex; flex-direction: column; }
+  .team-member .figure-slot { margin-bottom: 14px; }
+  .team-member .figure-slot .figure-frame { border-radius: 999px; }
+  .team-name {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .team-role {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .team-partners {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hairline);
+    max-width: 720px;
+  }
+  .team-partners b {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* ===== SLIDE 16 — Timeline curve (SET-PIECE) ===== */
+  .timeline-curve { width: 100%; margin-top: 48px; }
+  .timeline-svg {
+    width: 100%;
+    height: auto;
+    max-width: 1200px;
+    display: block;
+    margin: 0 auto;
+    overflow: visible;
+  }
+  .timeline-svg .axis { stroke: var(--hairline); stroke-width: 1; }
+  .timeline-svg .curve {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 1800;
+    stroke-dashoffset: 1800;
+  }
+  .slide.timeline-active .timeline-svg .curve {
+    animation: trace 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  @keyframes trace { to { stroke-dashoffset: 0; } }
+
+  .timeline-marker { opacity: 0; }
+  .timeline-marker .dot { fill: var(--ink); }
+  .timeline-marker.peak .dot { fill: var(--stripe); }
+  .timeline-marker .label,
+  .timeline-marker .week {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .timeline-marker .label { fill: var(--ink-soft); }
+  .timeline-marker .week { fill: var(--ink-faint); }
+  .timeline-marker.peak .label { fill: var(--stripe); }
+
+  .slide.timeline-active .timeline-marker {
+    animation: fadeMarker 0.4s ease-out forwards;
+  }
+  .slide.timeline-active .timeline-marker[data-week="01"] { animation-delay: 0s; }
+  .slide.timeline-active .timeline-marker[data-week="05"] { animation-delay: 0.60s; }
+  .slide.timeline-active .timeline-marker[data-week="08"] { animation-delay: 1.20s; }
+  .slide.timeline-active .timeline-marker[data-week="09"] { animation-delay: 1.60s; }
+  .slide.timeline-active .timeline-marker[data-week="10"] { animation-delay: 2.10s; }
+  .slide.timeline-active .timeline-marker[data-week="12"] { animation-delay: 2.80s; }
+
+  @keyframes fadeMarker {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== SLIDE 21 — Numbers spread ===== */
+  .numbers-spread {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 32px;
+  }
+  .big-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px 32px;
+  }
+  .big-stat {
+    border-top: 1px solid var(--hairline);
+    padding-top: 16px;
+  }
+  .big-stat-num {
+    font-family: var(--serif);
+    font-size: clamp(44px, 5vw, 72px);
+    line-height: 0.95;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .big-stat-num.accent { color: var(--stripe); }
+  .big-stat-label {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+  .numbers-side h3 {
+    font-family: var(--serif);
+    font-size: var(--text-subhead);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 18px;
+    letter-spacing: -0.005em;
+  }
+  .numbers-side p {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+  .numbers-side .source {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+    margin-top: 16px;
+  }
+
+  /* ===== SLIDE 22 — Lessons grid ===== */
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 40px;
+    border-top: 1px solid var(--hairline);
+    border-left: 1px solid var(--hairline);
+  }
+  .lesson-card {
+    padding: 28px 32px;
+    border-right: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 20px;
+  }
+  .lesson-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    padding-top: 6px;
+  }
+  .lesson-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+  .lesson-body {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* ===== SLIDE 23 — Throughline ===== */
+  .throughline {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+    align-items: start;
+  }
+  .throughline-lede {
+    margin-top: 32px;
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 460px;
+  }
+  .link-forwards { display: flex; flex-direction: column; gap: 0; }
+  .link-forward {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 1fr 2fr auto;
+    gap: 24px;
+    align-items: baseline;
+  }
+  .link-forward:first-child { border-top: 1px solid var(--hairline); }
+  .link-forward-name {
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .link-forward-frame {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .link-forward-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ===== Responsive additions ===== */
+  @media (max-width: 1100px) {
+    .flow-grid { grid-template-columns: repeat(3, 1fr); }
+    .flow-cell:nth-child(n+4) { grid-column: span 1; }
+    .ref-table th, .ref-table tbody td { font-size: 11.5px; padding: 12px 8px; }
+    .ref-method { font-size: 15px; }
+  }
+  @media (max-width: 900px) {
+    .surface-grid { grid-template-columns: 1fr; gap: 32px; }
+    .crossteam-grid, .numbers-spread, .throughline { grid-template-columns: 1fr; gap: 40px; }
+    .team-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .lessons-grid { grid-template-columns: 1fr; }
+    .big-stats { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .link-forward { grid-template-columns: 1fr; gap: 6px; }
+    .flow-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .ref-table-wrap { overflow-x: scroll; }
+    .ref-table { min-width: 800px; }
+    .constraint-card { grid-template-columns: 1fr; gap: 8px; }
+  }
+
+  /* ===== Dark theme — content elements ===== */
+  .slide.dark .transition-text,
+  .slide.dark .promise-headline,
+  .slide.dark .setup-headline,
+  .slide.dark .bet-text,
+  .slide.dark .bet-headline,
+  .slide.dark .stat-value,
+  .slide.dark .hero-title { color: var(--void-ink); }
+
+  .slide.dark .transition-eyebrow,
+  .slide.dark .section-eyebrow,
+  .slide.dark .hero-meta { color: var(--void-soft); }
+
+  .slide.dark .hero-lede,
+  .slide.dark .setup-card-text,
+  .slide.dark .stat-detail { color: var(--void-soft); }
+
+  .slide.dark .bet-label,
+  .slide.dark .bet-source,
+  .slide.dark .stat-label,
+  .slide.dark .setup-card-num,
+  .slide.dark .source-line,
+  .slide.dark .hero-credit-label { color: var(--void-faint); }
+
+  .slide.dark .setup-card-title,
+  .slide.dark .hero-credit-value { color: var(--void-ink); }
+
+  .slide.dark .setup-card,
+  .slide.dark .bet-row,
+  .slide.dark .stats-row,
+  .slide.dark .stat,
+  .slide.dark .hero-credits { border-color: var(--void-line); }
+
+  .slide.dark em { color: var(--stripe); }
+
+  /* ===== Responsive (chrome) ===== */
+  @media (max-width: 900px) {
+    .slide { padding: 88px 24px 124px; }
+    .colophon { bottom: 28px; left: 24px; font-size: 13px; }
+    .breadcrumb { top: 28px; left: 24px; }
+    .close-btn { top: 24px; right: 24px; }
+    .paginator { bottom: 64px; }
+    .nav-arrows { bottom: 24px; right: 24px; }
+    .hero { grid-template-columns: 1fr; gap: 48px; }
+    .contents-row { grid-template-columns: 56px 1fr; }
+    .contents-row-range { grid-column: 2; padding-top: 4px; }
+    .stats-row { grid-template-columns: 1fr; gap: 24px 0; }
+    .stats-row.cols-4 { grid-template-columns: 1fr 1fr; }
+    .setup-grid { grid-template-columns: 1fr; gap: 48px; }
+    .bet-row { grid-template-columns: 1fr; gap: 12px; }
+    .hero-credits { grid-template-columns: 1fr; gap: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide { transition: opacity 0.2s; }
+    .slide.active { transform: none; }
+    .slide.timeline-active .timeline-svg .curve { animation: none; stroke-dashoffset: 0; }
+    .slide.timeline-active .timeline-marker { animation: none; opacity: 1; }
+  }
+
+  /* ===== TEAM & TIMELINE (merged Problem-chapter slide) ===== */
+  .team-timeline-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 96px;
+    margin-top: 56px;
+    align-items: start;
+    width: 100%;
+  }
+  .team-portraits {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    align-items: center;
+  }
+  .team-portrait-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    width: 100%;
+  }
+  .team-portrait {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .team-portrait img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 14px;
+  }
+  .team-portrait-name {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .team-portrait-role {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  /* ===== HYPOTHESIS — sans body override (matches Dropbox AI deck) ===== */
+  .bet-sans .bet-text {
+    font-family: var(--sans);
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     CHROME — persistent UI
+============================================================ -->
+<div class="chrome">
+  <a href="/" class="colophon" aria-label="Back to portfolio">LN</a>
+
+  <div class="breadcrumb">
+    <span class="crumb-section" id="crumb-section">TAP TO ADD</span>
+    <span class="crumb-divider"> / </span>
+    <span class="crumb-current" id="crumb-current">COVER</span>
+  </div>
+
+  <a href="/" class="close-btn" aria-label="Close case study">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="1" y1="1" x2="13" y2="13"/>
+      <line x1="13" y1="1" x2="1" y2="13"/>
+    </svg>
+  </a>
+
+  <div class="paginator">
+    <div class="page-num"><span id="page-current">01</span> / <span id="page-total">24</span></div>
+    <div class="dots" id="dots" role="tablist" aria-label="Slide navigation"></div>
+  </div>
+
+  <div class="nav-arrows">
+    <button class="arrow" id="prev-btn" aria-label="Previous slide">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 2 L4 7 L9 12"/>
+      </svg>
+    </button>
+    <button class="arrow" id="next-btn" aria-label="Next slide">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M5 2 L10 7 L5 12"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     LIGHTBOX
+============================================================ -->
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Expanded figure">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close expanded figure">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="1" y1="1" x2="13" y2="13"/>
+      <line x1="13" y1="1" x2="1" y2="13"/>
+    </svg>
+  </button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="">
+</div>
+
+<!-- ============================================================
+     DECK — slides
+============================================================ -->
+<main class="deck" id="deck">
+
+  <!-- ========== SLIDE 01 — HERO / COVER ========== -->
+  <section class="slide active dark" data-section="tap to add" data-crumb="cover" data-theme="dark" data-align="center">
+    <div class="slide-inner">
+      <div class="hero">
+        <div class="hero-text">
+          <div class="hero-meta">2025 — 2026 · Case Study 02</div>
+          <h1 class="hero-title">Tap to Add.</h1>
+          <p class="hero-lede">The first card-present interaction designed for enrollment, not payment. Built into the Stripe Mobile Payment Element. Private preview on Android, April 2026.</p>
+          <div class="hero-credits">
+            <div>
+              <div class="hero-credit-label">Role</div>
+              <div class="hero-credit-value">Senior Product Designer (sole)</div>
+            </div>
+            <div>
+              <div class="hero-credit-label">Org</div>
+              <div class="hero-credit-value">OCS Mobile · Stripe</div>
+            </div>
+            <div>
+              <div class="hero-credit-label">Launch</div>
+              <div class="hero-credit-value">Apr 29, 2026 · Android</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <video autoplay muted loop playsinline>
+            <source src="../public/videos/tap-to-add-hero.mp4" type="video/mp4">
+          </video>
+          <div class="hero-visual-fallback" aria-hidden="true" style="display:none;">
+            <span class="figure-mark">[ HERO MEDIA ]</span>
+            <span>Looped tap interaction</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 02 — CONTENTS ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="context" data-theme="light">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">Problem · Context</div>
+          <h2 class="setup-headline">What is Tap to Add? <em>A breakdown of quick points.</em></h2>
+        </div>
+
+        <div class="setup-cards">
+          <button class="setup-card" data-jump="3">
+            <div class="setup-card-num">01</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">A new way to save a card.</h3>
+              <p class="setup-card-text">Tap a physical card to a phone instead of typing forty digits. Card-present trust at the moment of enrollment.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="3">
+            <div class="setup-card-num">02</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Built inside the Mobile Payment Element.</h3>
+              <p class="setup-card-text">Shipped as a first-class option in Stripe's consumer SDK. The first time tap-to-NFC was repointed away from payment.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="3">
+            <div class="setup-card-num">03</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">A category nobody had built.</h3>
+              <p class="setup-card-text">No competitor offered Tap to Add in a consumer SDK. Stripe's was the first.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 04 — THE SETUP ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="the setup" data-theme="light">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">Problem · The Setup</div>
+          <h2 class="setup-headline">Adding a card was the slowest moment in checkout. <em>And the most fraud-prone.</em></h2>
+        </div>
+
+        <div class="setup-cards">
+          <button class="setup-card" data-jump="4">
+            <div class="setup-card-num">01</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Forty keystrokes.</h3>
+              <p class="setup-card-text">PAN, expiry, CVC, ZIP. Every field a place where the user typed wrong, gave up, or got declined.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="4">
+            <div class="setup-card-num">02</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Card-not-present, by default.</h3>
+              <p class="setup-card-text">Every method of saving a card was authenticated by typing. Issuers had to trust credentials, not presence. First-transaction auth rates suffered.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="4">
+            <div class="setup-card-num">03</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Two primitives, two jobs.</h3>
+              <p class="setup-card-text">Stripe Terminal's Tap to Pay existed. So did the Mobile Payment Element. Both touched cards. Neither touched the moment of saving one.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="4">
+            <div class="setup-card-num">04</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">The category nobody built.</h3>
+              <p class="setup-card-text">We checked Adyen, Braintree, Square, Checkout, and Paymentech. No competitor offered Tap to Add in a consumer SDK.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 05 — HYPOTHESIS ========== -->
+  <section class="slide bet-sans" data-section="tap to add" data-crumb="hypothesis" data-theme="light">
+    <div class="slide-inner">
+      <div class="bet">
+        <div class="section-eyebrow">Problem · Hypothesis</div>
+
+        <h2 class="bet-headline">What if the gesture itself <em>could carry card-present trust into a digital flow?</em></h2>
+
+        <div class="bet-rows">
+          <div class="bet-row">
+            <div class="bet-label">For buyers</div>
+            <div class="bet-text">less typing, less cognitive load, fewer errors than card scan.</div>
+          </div>
+          <div class="bet-row">
+            <div class="bet-label">For merchants</div>
+            <div class="bet-text">higher transaction auth, lower fraud, fewer fields to hand-hold.</div>
+          </div>
+          <div class="bet-row">
+            <div class="bet-label">For Stripe</div>
+            <div class="bet-text">SDK differentiation. Streamlined Link signup. <em>New merchants.</em></div>
+          </div>
+        </div>
+
+        <div class="bet-source">Hypothesis · Kickoff · Q4 2025</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 06 — TEAM & TIMELINE (merged Team + Arc) ========== -->
+  <section class="slide ref-slide" data-section="tap to add" data-crumb="reference wall" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">Process · Framing</div>
+        <h2 class="setup-headline" style="max-width:1200px;">Every existing way to get a card into a checkout <em>was built for a different job.</em></h2>
+        <p class="surface-text" style="margin-top: 12px; max-width: 720px;">Card entry has been treated as a single problem with multiple solutions. It isn't.</p>
+
+        <div class="ref-table-wrap">
+          <table class="ref-table">
+            <thead>
+              <tr>
+                <th style="width: 18%;">Method</th>
+                <th style="width: 18%;">Designed for</th>
+                <th style="width: 11%;">Card-present at enrollment</th>
+                <th style="width: 12%;">First-txn auth rate</th>
+                <th style="width: 12%;">Fraud liability</th>
+                <th style="width: 9%;">CVC</th>
+                <th style="width: 20%;">User effort</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="ref-method">Manual entry<span class="sub">PAN + exp + CVC + ZIP</span></span></td>
+                <td><span class="ref-designed">Trust by typing</span></td>
+                <td><span class="ref-no">No</span></td>
+                <td><span class="ref-standard">Standard CNP</span></td>
+                <td><span class="ref-merch">Merchant</span></td>
+                <td><span class="ref-req">Required</span></td>
+                <td>16 digits, expiry, CVC, billing ZIP — typed by hand</td>
+              </tr>
+              <tr>
+                <td><span class="ref-method">Card scan (OCR)<span class="sub">Camera-based autofill</span></span></td>
+                <td><span class="ref-designed">Faster manual entry</span></td>
+                <td><span class="ref-no">No</span></td>
+                <td><span class="ref-standard">Standard CNP</span></td>
+                <td><span class="ref-merch">Merchant</span></td>
+                <td><span class="ref-req">Required</span></td>
+                <td>Camera capture + manual CVC + verification fields</td>
+              </tr>
+              <tr>
+                <td><span class="ref-method">Apple / Google Pay<span class="sub">Add-card / provisioning</span></span></td>
+                <td><span class="ref-designed">Wallet provisioning</span></td>
+                <td><span class="ref-no">No</span></td>
+                <td><span class="ref-standard">Standard CNP at this merchant</span></td>
+                <td><span class="ref-merch">Merchant</span></td>
+                <td><span class="ref-none">Not at checkout</span></td>
+                <td>Card must already be entered into the wallet via CNP path</td>
+              </tr>
+              <tr>
+                <td><span class="ref-method">Tap to Pay<span class="sub">Stripe Terminal · for context</span></span></td>
+                <td><span class="ref-designed">Merchant accepting payment</span></td>
+                <td><span class="ref-yes">Yes</span></td>
+                <td><span class="ref-higher">Higher (CP)</span></td>
+                <td><span class="ref-issuer">Issuer</span></td>
+                <td><span class="ref-none">Not required</span></td>
+                <td>Same primitive — but pointed at the wrong moment for enrollment</td>
+              </tr>
+              <tr class="feature">
+                <td><span class="ref-method">Tap to Add<span class="sub">Mobile Payment Element</span></span></td>
+                <td><span class="ref-designed">Enrolling a card for future use</span></td>
+                <td><span class="ref-yes">Yes</span></td>
+                <td><span class="ref-higher">Higher (CP)</span></td>
+                <td><span class="ref-issuer">Issuer</span></td>
+                <td><span class="ref-none">Not required</span></td>
+                <td>One physical gesture — tap card to phone</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="source-line" style="margin-top: 20px;">Tap to Add is the only method that wins on every dimension simultaneously. Card-present enrollment collapses the tradeoff.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 10 — THE REPOSITION ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="the reposition" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="surface-grid">
+          <div class="surface-left">
+            <figure class="figure-slot" data-aspect="16/10">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-fig-01.png" alt="Tap to Pay (merchant POS) → Tap to Add (consumer phone). Same NFC primitive, different intent."></div>
+              <figcaption>
+                <span class="cap-num">Fig. 01</span>
+                <span class="cap-text">Tap to Pay (merchant POS) → Tap to Add (consumer phone). Same NFC primitive, different intent.</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="section-eyebrow">Process · Reposition</div>
+            <h2 class="surface-headline">Same primitive. <em>Different moment.</em></h2>
+            <p class="surface-text">Stripe Terminal's Tap to Pay was built for merchants accepting payment. The hardware, the cryptogram, the card-present authentication path: all pointed at <em style="font-style:italic; color:var(--ink);">the moment of charging</em>.</p>
+            <p class="surface-text">We pointed it at <em style="font-style:italic; color:var(--ink);">the moment of saving</em>. The infrastructure didn't change. What changed was what it was for.</p>
+            <p class="pull-quote" style="margin-top: 12px;">Infrastructure can be repointed, <em>not just built.</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 11 — THE REFERENCES ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="the references" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">Process · References</div>
+        <h2 class="setup-headline" style="max-width:1100px;">Where tap lives today. <em>Apple Wallet. GPay.</em></h2>
+
+        <div class="flow-grid">
+          <div class="flow-cell">
+            <div class="flow-step">Wallet</div>
+            <div class="flow-name">Add to Wallet.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-ref-01.png" alt="Apple Wallet — Add to Wallet entry screen."></div>
+              <figcaption>
+                <span class="cap-num">Ref. 01</span>
+                <span class="cap-text">Wallet — entry.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Buyer adds card from Wallet, Settings, or partner app.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Wallet</div>
+            <div class="flow-name">Verify.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-ref-02.png" alt="Apple Wallet — issuer verification screen."></div>
+              <figcaption>
+                <span class="cap-num">Ref. 02</span>
+                <span class="cap-text">Wallet — verify.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Issuer-side verify: call, SMS, or in-app handoff.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Wallet</div>
+            <div class="flow-name">Added.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-ref-03.png" alt="Apple Wallet — card added confirmation."></div>
+              <figcaption>
+                <span class="cap-num">Ref. 03</span>
+                <span class="cap-text">Wallet — added.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Card lives in Wallet. Tap to Add is the buyer-side primitive that put it there.</p>
+          </div>
+          <div class="flow-cell flow-cell--divider">
+            <div class="divider-rule"></div>
+            <div class="divider-label">Tap to Add vs. Tap to Pay</div>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">GPay</div>
+            <div class="flow-name">Pay.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-ref-04.png" alt="Google Pay — tap to pay screen."></div>
+              <figcaption>
+                <span class="cap-num">Ref. 04</span>
+                <span class="cap-text">GPay — pay.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Google's tap primitive is only for paying. No equivalent Tap to Add path.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 12 — THE DESIGN LANGUAGE ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="design language" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="surface-grid">
+          <div class="surface-left">
+            <figure class="figure-slot" data-aspect="16/10">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-fig-02.png" alt="Before: Terminal's existing merchant-facing tap screen. After: the unified buyer-facing screen, ready for MPE."></div>
+              <figcaption>
+                <span class="cap-num">Fig. 02</span>
+                <span class="cap-text">Before: Terminal's existing merchant-facing tap screen. After: the unified buyer-facing screen, ready for MPE.</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="section-eyebrow">Process · Design language</div>
+            <h2 class="surface-headline">Two design languages. <em>One buyer.</em></h2>
+            <p class="surface-text">Stripe Terminal's tap screen was built for merchants. The Mobile Payment Element was built for buyers. The same physical gesture had to work in both worlds without feeling like two different products bolted together.</p>
+            <p class="surface-text" style="margin-top: 8px;">I led the cross-team alignment between OCS Mobile and Terminal — pushing for a centralized design language as the surfaces converged. We resolved the language for private preview and stood up a working group with Phil Machalski (Terminal Design) for the path to GA.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 13 — ITERATIONS · ENTRY POINT ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="entry iterations" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">Process · Design: Entry points</div>
+        <h2 class="setup-headline" style="max-width:1100px;">Entry point. <em>Iterations.</em></h2>
+
+        <div class="flow-grid">
+          <div class="flow-cell">
+            <div class="flow-step">Entry</div>
+            <div class="flow-name">v.01</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-entry-01.png" alt="Entry point iteration 01."></div>
+              <figcaption>
+                <span class="cap-num">v. 01</span>
+                <span class="cap-text">First take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Tap to add as express checkout.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Entry</div>
+            <div class="flow-name">v.02</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-entry-02.png" alt="Entry point iteration 02."></div>
+              <figcaption>
+                <span class="cap-num">v. 02</span>
+                <span class="cap-text">Second take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Dedicated NFC button on card selector.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Entry</div>
+            <div class="flow-name">v.03</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-entry-03.png" alt="Entry point iteration 03."></div>
+              <figcaption>
+                <span class="cap-num">v. 03</span>
+                <span class="cap-text">Third take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Tap to add as dedicated section.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Entry</div>
+            <div class="flow-name">v.04</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-entry-04.png" alt="Entry point iteration 04."></div>
+              <figcaption>
+                <span class="cap-num">v. 04</span>
+                <span class="cap-text">Fourth take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Replacing scan card.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Entry</div>
+            <div class="flow-name">v.05</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-entry-05.png" alt="Entry point iteration 05."></div>
+              <figcaption>
+                <span class="cap-num">v. 05</span>
+                <span class="cap-text">Landed.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Polish.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 14 — ITERATIONS · TAP SCREEN ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="tap iterations" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">Process · Design: Tap screen</div>
+        <h2 class="setup-headline" style="max-width:1100px;">Tap screen. <em>Iterations.</em></h2>
+
+        <div class="flow-grid">
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">v.01</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-screen-01.png" alt="Tap screen iteration 01."></div>
+              <figcaption>
+                <span class="cap-num">v. 01</span>
+                <span class="cap-text">First take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Re-styling the terminal screen.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">v.02</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-screen-02.png" alt="Tap screen iteration 02."></div>
+              <figcaption>
+                <span class="cap-num">v. 02</span>
+                <span class="cap-text">Second take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">More visual focus on the card.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">v.03</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-screen-03.png" alt="Tap screen iteration 03."></div>
+              <figcaption>
+                <span class="cap-num">v. 03</span>
+                <span class="cap-text">Third take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Restyling icon and giving focus.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">v.04</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-screen-04.png" alt="Tap screen iteration 04."></div>
+              <figcaption>
+                <span class="cap-num">v. 04</span>
+                <span class="cap-text">Fourth take.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Intermediate step, unified experience.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">v.05</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-screen-05.png" alt="Tap screen iteration 05."></div>
+              <figcaption>
+                <span class="cap-num">v. 05</span>
+                <span class="cap-text">Landed.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Dynamic and mobile first.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 15 — THE CHALLENGE ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="the challenge" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="surface-grid">
+          <div class="surface-left">
+            <figure class="figure-slot" data-aspect="4/3">
+              <div class="figure-frame"><video autoplay muted loop playsinline><source src="../public/videos/tap-to-add-fig-03.mp4" type="video/mp4"></video></div>
+              <figcaption>
+                <span class="cap-num">Fig. 03</span>
+                <span class="cap-text">Device-aware tap animation. Anchored to the detected NFC zone at runtime.</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="section-eyebrow">Process · The challenge</div>
+            <h2 class="surface-headline">The tap zone moves. <em>Solved with device-aware animation.</em></h2>
+            <p class="surface-text">Apple has one NFC zone in a known location on every iPhone. Android doesn't. NFC antennas sit at the top, the back, the middle — different OEM, different placement, no shared convention. A single tap animation can't land on the right physical spot across the device matrix.</p>
+            <p class="surface-text">Worked with Terminal's hardware team on a device → NFC zone lookup. The animation's anchor adapts at runtime to the buyer's specific phone, so the prompt always lands on the actual antenna location. Buyer sees the right zone for their phone. The interaction stops being abstract.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 16 — THE CROSS-TEAM ARGUMENT (set piece) ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="cross-team" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="surface-grid">
+          <div class="surface-left">
+            <figure class="figure-slot" data-aspect="4/3">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-fig-04.png" alt="Buyer-side design recommendations from the product review. Two shipped at preview; one held for GA."></div>
+              <figcaption>
+                <span class="cap-num">Fig. 04</span>
+                <span class="cap-text">Buyer-side design recommendations from the product review. Two shipped at preview; one held for GA.</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="section-eyebrow">Process · Cross-team</div>
+            <h2 class="surface-headline">Terminal's screen was for merchants. <em>Ours wasn't.</em></h2>
+            <p class="surface-text">Terminal's existing tap screen had been built and battle-tested for merchant-facing point-of-sale. Buyers in MPE land on a merchant screen if no design intervention happens. The "X" button takes them back to the card form (confusing). The animation isn't device-aware. The visual language belongs to a different product.</p>
+            <p class="surface-text">Three buyer-side recommendations went into the gaveled designs: a device-specific NFC animation, a clear "Enter card info manually" exit, and an "X" that returns to the payment methods screen. Two shipped at preview; one held for GA.</p>
+            <p class="pull-quote" style="font-size: 13px; line-height: 1.5;">Sole designer doesn't mean solo work. <em>Cross-team alignment was the highest-leverage thing I did this project.</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 17 — THE INTERACTION ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="the interaction" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">Process · The interaction</div>
+        <h2 class="setup-headline" style="max-width:1100px;">Five screens. <em>One physical gesture.</em></h2>
+
+        <div class="flow-grid">
+          <div class="flow-cell">
+            <div class="flow-step">Screen 01</div>
+            <div class="flow-name">Payment Element.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-scr-01.png" alt="MPE entry — buyer sees Mobile Payment Element."></div>
+              <figcaption>
+                <span class="cap-num">Scr. 01</span>
+                <span class="cap-text">MPE entry.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Buyer sees Mobile Payment Element. Selects "Card."</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Screen 02</div>
+            <div class="flow-name">Tap screen.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-scr-02.png" alt="NFC zone animation prompting the tap."></div>
+              <figcaption>
+                <span class="cap-num">Scr. 02</span>
+                <span class="cap-text">NFC animation.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Animation positioned over the device's NFC zone. Buyer taps card to phone.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Screen 03</div>
+            <div class="flow-name">Acknowledgement.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-scr-03.png" alt="Tap success — acknowledgement and card art."></div>
+              <figcaption>
+                <span class="cap-num">Scr. 03</span>
+                <span class="cap-text">Tap success.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Successful tap confirmed. Card art surfaces.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Screen 04</div>
+            <div class="flow-name">Confirm + Link.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-scr-04.png" alt="Confirm and save — buyer confirms card, optional Link signup."></div>
+              <figcaption>
+                <span class="cap-num">Scr. 04</span>
+                <span class="cap-text">Confirm & save.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Buyer confirms card. Optional Link signup, optional immediate payment.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Screen 05</div>
+            <div class="flow-name">Payment success.</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-scr-05.png" alt="Payment success — sheet dismisses."></div>
+              <figcaption>
+                <span class="cap-num">Scr. 05</span>
+                <span class="cap-text">Sheet dismiss.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Animated confirmation. Sheet dismisses.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 18 — THE PROTOTYPE (Figma embed · draft) ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="the prototype" data-theme="light">
+    <div class="slide-inner">
+      <div class="surface-grid">
+        <div class="surface-left">
+          <figure class="figure-slot" data-aspect="9/16">
+            <div class="figure-frame" style="background:var(--ink); border-radius:36px; overflow:hidden;">
+              <iframe
+                src="https://embed.figma.com/proto/HsvRnuILKO2bAlkTEeUulS/Tap-to-Add-_-Tap-to-Verify?node-id=2669-18721&viewport=296%2C-300%2C0.18&scaling=scale-down&content-scaling=fixed&starting-point-node-id=2669%3A18721&show-proto-sidebar=1&page-id=2669%3A18266&embed-host=share"
+                title="Tap to Add prototype — Figma"
+                style="width:100%; height:100%; border:none; background:var(--ink);"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <figcaption>
+              <span class="cap-num">Proto.</span>
+              <span class="cap-text">Live walkthrough · Figma prototype.</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="surface-right">
+          <div class="section-eyebrow">Process · The Prototype</div>
+          <h2 class="surface-headline">Five screens. <em>One gesture. Try it.</em></h2>
+          <p class="surface-text">A hands-on walkthrough of the full Tap to Add flow: from the Mobile Payment Element through the tap, the acknowledgement, the Link signup, and the dismissal.</p>
+          <p class="surface-text" style="margin-top: 8px;">Built in Figma to validate the device-aware animation, the NFC zone alignment, and the exit affordances ahead of engineering hand-off.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 19 — TRANSITION → RELEASE AND IMPACT ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="private preview" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="surface-grid">
+          <div class="surface-left">
+            <figure class="figure-slot" data-aspect="9/16">
+              <div class="figure-frame"><video autoplay muted loop playsinline><source src="../public/videos/tap-to-add-fig-05.mp4" type="video/mp4"></video></div>
+              <figcaption>
+                <span class="cap-num">Fig. 05</span>
+                <span class="cap-text">Live tap screen. Stripe Mobile Payment Element · Android.</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="section-eyebrow">Release and Impact · Private preview · Apr 29, 2026</div>
+            <h2 class="surface-headline">Android. <em>Private preview. Live.</em></h2>
+            <p class="surface-text">Tap to Add launched in private preview on April 29, 2026 inside the Mobile Payment Element on Android. Documented publicly at <code class="inline-code">docs.stripe.com/payments/mobile/embedded-tap-to-add</code>.</p>
+            <p class="surface-text" style="margin-top: 8px;">Merchants invited into the preview can integrate today; iOS support depends on Apple approving the use case, with conversations re-opening once Android proves the value.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 22 — TRANSITION → LESSONS ========== -->
+  <section class="slide dark" data-section="tap to add" data-crumb="next" data-theme="dark" data-align="center">
+    <div class="slide-inner">
+      <div class="transition-slide">
+        <div class="transition-eyebrow" style="color: var(--void-soft);">End of Case Study 02</div>
+        <h2 class="transition-text" style="color: var(--void-ink);">Thanks for reading.</h2>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     SCRIPT — pagination, keyboard, breadcrumb sync, theme sync
+============================================================ -->
+<script>
+(function() {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsEl = document.getElementById('dots');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const pageCurrent = document.getElementById('page-current');
+  const pageTotal = document.getElementById('page-total');
+  const crumbSection = document.getElementById('crumb-section');
+  const crumbCurrent = document.getElementById('crumb-current');
+  const body = document.body;
+
+  let current = 0;
+  const total = slides.length;
+
+  pageTotal.textContent = String(total).padStart(2, '0');
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('role', 'tab');
+    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+    dot.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(dot);
+  });
+
+  function goTo(index) {
+    if (index < 0 || index >= total || index === current) return;
+    slides[current].classList.remove('active');
+    slides[current].classList.remove('timeline-active');
+    slides[index].classList.add('active');
+    dotsEl.children[current].classList.remove('active');
+    dotsEl.children[index].classList.add('active');
+    current = index;
+    syncChrome();
+
+    if (slides[index].classList.contains('timeline-slide')) {
+      void slides[index].offsetWidth;
+      requestAnimationFrame(() => slides[index].classList.add('timeline-active'));
+    }
+  }
+
+  function syncChrome() {
+    const slide = slides[current];
+    pageCurrent.textContent = String(current + 1).padStart(2, '0');
+    crumbSection.textContent = (slide.dataset.section || 'Tap to Add').toUpperCase();
+    crumbCurrent.textContent = (slide.dataset.crumb || '').toUpperCase();
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+
+    if (slide.dataset.theme === 'dark') {
+      body.classList.add('dark');
+    } else {
+      body.classList.remove('dark');
+    }
+  }
+
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+
+  document.querySelectorAll('[data-jump]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const target = parseInt(e.currentTarget.dataset.jump, 10);
+      if (!isNaN(target)) goTo(target);
+    });
+  });
+
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxClose = document.getElementById('lightbox-close');
+  function openLightbox(src, alt) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    setTimeout(() => { lightboxImg.src = ''; }, 300);
+  }
+  document.querySelectorAll('.figure-frame img, .ref-figure img').forEach(img => {
+    img.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightbox(img.src, img.alt);
+    });
+  });
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (lightbox.classList.contains('open')) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeLightbox();
+      }
+      return;
+    }
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+      e.preventDefault();
+      goTo(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      goTo(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goTo(total - 1);
+    } else if (e.key === 'Escape') {
+      window.location.href = '/';
+    }
+  });
+
+  // Hash deep-linking
+  function applyHash() {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    const map = {
+      // Short (10 min, craft-focused) — 16 slides total
+      'cover': 0,
+      'problem': 1,
+      'process': 4,
+      'impact': 14,
+      'closing': 15,
+
+      // Granular shortcuts
+      'context': 1,
+      'setup': 2,
+      'hypothesis': 3,
+      'framing': 4,
+      'reposition': 5,
+      'references': 6,
+      'design-language': 7,
+      'entry-iterations': 8,
+      'tap-iterations': 9,
+      'challenge': 10,
+      'cross-team': 11,
+      'interaction': 12,
+      'prototype': 13,
+      'launch': 14,
+    };
+    if (map[hash] !== undefined) goTo(map[hash]);
+  }
+  window.addEventListener('hashchange', applyHash);
+  applyHash();
+
+  // Initial sync — also fire timeline animation if landing on it via hash
+  syncChrome();
+  if (slides[current].classList.contains('timeline-slide')) {
+    requestAnimationFrame(() => slides[current].classList.add('timeline-active'));
+  }
+})();
+</script>
+
+</body>
+</html>
