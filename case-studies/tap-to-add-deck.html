@@ -1987,6 +1987,57 @@
     </div>
   </section>
 
+  <!-- ========== SLIDE 10.5 — THE STACK (cross-team reality) ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="the stack" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="surface-grid">
+          <div class="surface-left">
+            <figure class="figure-slot" data-aspect="4/3">
+              <div class="figure-frame" style="padding: 48px; display: flex; align-items: center; justify-content: center; background: var(--paper);">
+                <svg viewBox="0 0 480 360" style="width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                  <!-- Terminal SDK box -->
+                  <rect x="20" y="40" width="190" height="110" rx="8" fill="none" stroke="#1A1814" stroke-width="1.5"/>
+                  <text x="115" y="75" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="10" letter-spacing="0.1em" fill="#1A1814">TERMINAL</text>
+                  <text x="115" y="100" text-anchor="middle" font-family="Inter, ui-sans-serif, system-ui" font-size="14" font-weight="600" fill="#1A1814">Tap to Pay SDK</text>
+                  <text x="115" y="120" text-anchor="middle" font-family="Inter, ui-sans-serif, system-ui" font-size="11" fill="#6B655B">NFC · cryptogram</text>
+
+                  <!-- Mobile Checkout box -->
+                  <rect x="270" y="40" width="190" height="110" rx="8" fill="none" stroke="#1A1814" stroke-width="1.5"/>
+                  <text x="365" y="75" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="10" letter-spacing="0.1em" fill="#1A1814">MOBILE CHECKOUT</text>
+                  <text x="365" y="100" text-anchor="middle" font-family="Inter, ui-sans-serif, system-ui" font-size="14" font-weight="600" fill="#1A1814">Payment Element</text>
+                  <text x="365" y="120" text-anchor="middle" font-family="Inter, ui-sans-serif, system-ui" font-size="11" fill="#6B655B">Buyer card flow</text>
+
+                  <!-- Converging paths -->
+                  <path d="M 115 150 L 115 210 L 240 210 L 240 240" fill="none" stroke="#1A1814" stroke-width="1.5"/>
+                  <path d="M 365 150 L 365 210 L 240 210" fill="none" stroke="#1A1814" stroke-width="1.5"/>
+                  <polygon points="240,250 234,238 246,238" fill="#1A1814"/>
+
+                  <!-- Single buyer surface (inverted) -->
+                  <rect x="140" y="252" width="200" height="76" rx="8" fill="#1A1814"/>
+                  <text x="240" y="282" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="10" letter-spacing="0.12em" fill="#FFFFFF">ONE UX</text>
+                  <text x="240" y="306" text-anchor="middle" font-family="Inter, ui-sans-serif, system-ui" font-size="13" font-weight="500" fill="#FFFFFF">Works in both surfaces</text>
+                </svg>
+              </div>
+              <figcaption>
+                <span class="cap-num">Stack.</span>
+                <span class="cap-text">Two Stripe teams. One SDK insertion. One buyer-facing screen.</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="section-eyebrow">Process · The stack</div>
+            <h2 class="surface-headline">Two teams. <em>One SDK. One UX.</em></h2>
+            <p class="surface-text">Shipping Tap to Add meant routing through two Stripe organizations. <em style="font-style:italic; color:var(--ink);">Terminal</em> owned the Tap to Pay SDK, the NFC pipeline, the cryptogram. <em style="font-style:italic; color:var(--ink);">Mobile Checkout</em> owned the Mobile Payment Element — the buyer surface where card entry lives.</p>
+            <p class="surface-text">The technical move was clear: insert Terminal's SDK into Mobile Checkout's runtime. The design move was less obvious. Unless we bifurcated the UX — two screens, one per surface — we needed a single design that worked inside Terminal's existing merchant POS <em style="font-style:italic; color:var(--ink);">and</em> inside MPE's buyer flow.</p>
+            <p class="pull-quote" style="margin-top: 12px;">One screen had to live in two products. <em>Bifurcation came later, on purpose.</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ========== SLIDE 11 — THE REFERENCES ========== -->
   <section class="slide" data-section="tap to add" data-crumb="the references" data-theme="light">
     <div class="slide-inner">
@@ -2224,8 +2275,62 @@
     </div>
   </section>
 
+  <!-- ========== SLIDE 14.5 — THE PROBLEM (Android NFC variance) ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="device variance" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="surface-grid">
+          <div class="surface-left">
+            <figure class="figure-slot" data-aspect="4/3">
+              <div class="figure-frame" style="padding: 40px 32px; display: flex; align-items: center; justify-content: center; background: var(--paper);">
+                <svg viewBox="0 0 480 320" style="width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                  <!-- 4 Android phone outlines with NFC zone dots at different positions -->
+                  <g transform="translate(20, 50)">
+                    <rect x="0" y="0" width="84" height="172" rx="14" fill="none" stroke="#1A1814" stroke-width="1.5"/>
+                    <circle cx="42" cy="28" r="7" fill="#1A1814"/>
+                    <text x="42" y="200" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="9" letter-spacing="0.1em" fill="#1A1814">PIXEL</text>
+                    <text x="42" y="216" text-anchor="middle" font-family="Inter, ui-sans-serif, system-ui" font-size="10" fill="#6B655B">top</text>
+                  </g>
+                  <g transform="translate(140, 50)">
+                    <rect x="0" y="0" width="84" height="172" rx="14" fill="none" stroke="#1A1814" stroke-width="1.5"/>
+                    <circle cx="42" cy="60" r="7" fill="#1A1814"/>
+                    <text x="42" y="200" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="9" letter-spacing="0.1em" fill="#1A1814">SAMSUNG</text>
+                    <text x="42" y="216" text-anchor="middle" font-family="Inter, ui-sans-serif, system-ui" font-size="10" fill="#6B655B">upper</text>
+                  </g>
+                  <g transform="translate(260, 50)">
+                    <rect x="0" y="0" width="84" height="172" rx="14" fill="none" stroke="#1A1814" stroke-width="1.5"/>
+                    <circle cx="42" cy="86" r="7" fill="#1A1814"/>
+                    <text x="42" y="200" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="9" letter-spacing="0.1em" fill="#1A1814">ONEPLUS</text>
+                    <text x="42" y="216" text-anchor="middle" font-family="Inter, ui-sans-serif, system-ui" font-size="10" fill="#6B655B">middle</text>
+                  </g>
+                  <g transform="translate(380, 50)">
+                    <rect x="0" y="0" width="84" height="172" rx="14" fill="none" stroke="#1A1814" stroke-width="1.5"/>
+                    <circle cx="42" cy="130" r="7" fill="#1A1814"/>
+                    <text x="42" y="200" text-anchor="middle" font-family="JetBrains Mono, ui-monospace, monospace" font-size="9" letter-spacing="0.1em" fill="#1A1814">MOTOROLA</text>
+                    <text x="42" y="216" text-anchor="middle" font-family="Inter, ui-sans-serif, system-ui" font-size="10" fill="#6B655B">lower</text>
+                  </g>
+                </svg>
+              </div>
+              <figcaption>
+                <span class="cap-num">Variance.</span>
+                <span class="cap-text">Four Android OEMs. Four NFC antenna locations. No shared convention.</span>
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="section-eyebrow">Process · Device variance</div>
+            <h2 class="surface-headline">The tap zone moves. <em>Across every Android phone.</em></h2>
+            <p class="surface-text">Apple ships every iPhone with the NFC antenna in one known place. Android doesn't. Pixel, Samsung, OnePlus, Motorola — every OEM picks a different antenna location. Top, middle, edge. <em style="font-style:italic; color:var(--ink);">No shared convention, no public lookup.</em></p>
+            <p class="surface-text">A single tap animation would land on the wrong spot every time. The buyer holds the phone to nothing. The interaction stops feeling real.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ========== SLIDE 15 — THE CHALLENGE ========== -->
-  <section class="slide" data-section="tap to add" data-crumb="the challenge" data-theme="light">
+  <section class="slide" data-section="tap to add" data-crumb="the solution" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="surface-grid">
@@ -2240,10 +2345,10 @@
           </div>
 
           <div class="surface-right">
-            <div class="section-eyebrow">Process · The challenge</div>
-            <h2 class="surface-headline">The tap zone moves. <em>Solved with device-aware animation.</em></h2>
-            <p class="surface-text">Apple has one NFC zone in a known location on every iPhone. Android doesn't. NFC antennas sit at the top, the back, the middle — different OEM, different placement, no shared convention. A single tap animation can't land on the right physical spot across the device matrix.</p>
-            <p class="surface-text">Worked with Terminal's hardware team on a device → NFC zone lookup. The animation's anchor adapts at runtime to the buyer's specific phone, so the prompt always lands on the actual antenna location. Buyer sees the right zone for their phone. The interaction stops being abstract.</p>
+            <div class="section-eyebrow">Process · The solution</div>
+            <h2 class="surface-headline">Device-aware. <em>Anchored at runtime.</em></h2>
+            <p class="surface-text">Worked with Terminal's hardware team on a device → NFC zone lookup. The animation's anchor adapts at runtime to the buyer's specific phone — top for Pixel, middle for OnePlus, wherever the actual antenna sits.</p>
+            <p class="surface-text">The prompt always lands on the real zone for the device. <em style="font-style:italic; color:var(--ink);">The buyer's tap finds something to land on.</em></p>
           </div>
         </div>
       </div>
@@ -2758,8 +2863,8 @@
       'contents': 1,
       'problem': 2,
       'process': 7,
-      'release-and-impact': 19,
-      'lessons': 22,
+      'release-and-impact': 21,
+      'lessons': 24,
     };
     if (map[hash] !== undefined) goTo(map[hash]);
   }
