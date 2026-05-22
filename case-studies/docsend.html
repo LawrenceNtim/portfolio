@@ -1,0 +1,3704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DocSend — Lawrence Ntim</title>
+<meta name="description" content="Top of funnel redesign of DocSend, Dropbox's fastest-growing independent business unit. +14% CVR, 20% YoY growth.">
+
+<!-- Three-voice type system: Nixie One (display) · DM Sans (body) · DM Mono (technical) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nixie+One&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* Color world — cream + brown editorial, Dropbox blue as spot accent */
+    --paper:        #F4F0E8;
+    --paper-deep:   #E8E2D4;
+    --ink:          #1A1814;
+    --ink-soft:     #6B655B;
+    --ink-faint:    #A8A095;
+    --hairline:     rgba(26, 24, 20, 0.10);
+    --hairline-2:   rgba(26, 24, 20, 0.18);
+    --void:         #14110D;
+    --void-ink:     #F4F0E8;
+    --void-soft:    rgba(244, 240, 232, 0.55);
+    --void-faint:   rgba(244, 240, 232, 0.30);
+    --void-line:    rgba(244, 240, 232, 0.14);
+
+    /* Spot accent — Dropbox blue, only used in this case study */
+    --dbx:          #0061FF;
+    --dbx-soft:     rgba(0, 97, 255, 0.10);
+
+    /* Type */
+    --serif:        'Nixie One', 'Cormorant Garamond', Georgia, serif;
+    --sans:         'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono:         'DM Mono', 'JetBrains Mono', ui-monospace, monospace;
+
+    /* Motion */
+    --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out:  cubic-bezier(0.65, 0, 0.35, 1);
+
+    /* Type scale — editorial, capped intentionally */
+    --text-display:    clamp(48px, 6vw, 88px);   /* HERO COVER ONLY (slide 01) */
+    --text-chapter:    clamp(40px, 4.5vw, 64px); /* Chapter divider words */
+    --text-headline:   clamp(32px, 3.6vw, 52px); /* Slide headlines */
+    --text-subhead:    clamp(22px, 2.2vw, 32px); /* Subheadlines, pull-quote */
+    --text-stat:       clamp(36px, 4vw, 56px);   /* Big stat numbers */
+    --text-body-lg:    18px;                     /* Lede paragraphs */
+    --text-body:       16px;                     /* Default body */
+    --text-mono-sm:    11px;                     /* Eyebrows, breadcrumbs */
+    --text-mono-xs:    10px;                     /* Stat labels, footnotes */
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection { background: var(--dbx); color: var(--paper); }
+
+  /* ===== CHROME (persistent UI elements) ===== */
+
+  .chrome {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .chrome > * { pointer-events: auto; }
+
+  /* Colophon — bottom left, plain serif text */
+  .colophon {
+    position: absolute;
+    bottom: 36px;
+    left: 32px;
+    font-family: var(--serif);
+    font-size: 14px;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    z-index: 101;
+  }
+  .colophon:hover { opacity: 0.6; }
+  body.dark .colophon { color: var(--void-ink); }
+
+  /* Breadcrumb — top left */
+  .breadcrumb {
+    position: absolute;
+    top: 36px;
+    left: 32px;
+    font-family: var(--mono);
+    font-size: var(--text-mono-sm);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    transition: color 0.4s ease;
+  }
+  .breadcrumb .crumb-section {
+    color: var(--ink-faint);
+  }
+  .breadcrumb .crumb-current {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  body.dark .breadcrumb .crumb-section { color: var(--void-faint); }
+  body.dark .breadcrumb .crumb-current { color: var(--void-ink); }
+
+  /* Close X — top right */
+  .close-btn {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--hairline);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    transition: background 0.3s ease, transform 0.4s var(--ease-out);
+    text-decoration: none;
+  }
+  .close-btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+    transform: rotate(90deg);
+  }
+  .close-btn svg { width: 14px; height: 14px; }
+  body.dark .close-btn {
+    border-color: var(--void-line);
+    color: var(--void-ink);
+  }
+  body.dark .close-btn:hover {
+    background: var(--void-ink);
+    color: var(--void);
+  }
+
+  /* Pagination — bottom center */
+  .paginator {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .page-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  body.dark .page-num { color: var(--void-faint); }
+
+  .dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s var(--ease-out);
+    opacity: 0.6;
+  }
+  .dot:hover { opacity: 1; }
+  .dot.active {
+    width: 22px;
+    border-radius: 3px;
+    background: var(--ink);
+    opacity: 1;
+  }
+  body.dark .dot { background: var(--void-faint); }
+  body.dark .dot.active { background: var(--void-ink); }
+
+  /* Nav arrows — bottom right */
+  .nav-arrows {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    display: flex;
+    gap: 8px;
+  }
+  .arrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--hairline);
+    background: var(--paper);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    transition: all 0.3s var(--ease-out);
+  }
+  .arrow:hover:not(:disabled) {
+    background: var(--ink);
+    color: var(--paper);
+    transform: translateY(-1px);
+  }
+  .arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  .arrow svg { width: 14px; height: 14px; }
+  body.dark .arrow {
+    background: var(--void);
+    border-color: var(--void-line);
+    color: var(--void-ink);
+  }
+  body.dark .arrow:hover:not(:disabled) {
+    background: var(--void-ink);
+    color: var(--void);
+  }
+
+  /* ===== LIGHTBOX — click-to-expand figure images ===== */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 17, 13, 0.94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: zoom-out;
+  }
+  .lightbox.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .lightbox-img {
+    max-width: 92vw;
+    max-height: 88vh;
+    object-fit: contain;
+    display: block;
+    cursor: default;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--void-line);
+    background: transparent;
+    color: var(--void-ink);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.4s var(--ease-out);
+  }
+  .lightbox-close svg { width: 14px; height: 14px; }
+  .lightbox-close:hover {
+    background: var(--void-ink);
+    color: var(--void);
+    transform: rotate(90deg);
+  }
+  .figure-frame img,
+  .patent-figure img,
+  .future-media img {
+    cursor: zoom-in;
+  }
+
+  /* ===== SLIDES ===== */
+
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 80px 96px 140px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity 0.5s var(--ease-out), transform 0.6s var(--ease-out);
+  }
+  .slide[data-align="center"] {
+    align-items: center;
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .slide.dark {
+    background: var(--void);
+    color: var(--void-ink);
+  }
+
+  /* Slide content widths */
+  .slide-inner {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  /* Section eyebrow shown above slide titles */
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+  .slide.dark .section-eyebrow { color: var(--void-soft); }
+
+  /* ===== SLIDE 01 — HERO / COVER ===== */
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .hero-text { max-width: 540px; }
+  .hero-meta {
+    font-family: var(--mono);
+    font-size: var(--text-mono-sm);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .hero-meta::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--ink-soft);
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: var(--text-display);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 32px;
+  }
+  .hero-lede {
+    font-family: var(--sans);
+    font-size: var(--text-body-lg);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin-bottom: 48px;
+    max-width: 480px;
+  }
+  .hero-credits {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 40px;
+    padding-top: 28px;
+    border-top: 1px solid var(--hairline);
+  }
+  .hero-credit-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .hero-credit-value {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .hero-visual {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: var(--paper-deep);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+  }
+  .hero-visual video,
+  .hero-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .hero-visual-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    color: var(--ink-soft);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .hero-visual-fallback svg { width: 48px; height: 48px; opacity: 0.4; }
+
+  /* ===== SLIDE 02 — CONTENTS (mirrors slide 04 setup-grid DNA) ===== */
+
+  .contents-rows {
+    display: flex;
+    flex-direction: column;
+  }
+  .contents-row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 32px;
+    align-items: start;
+    padding: 20px 0;
+    border: 0;
+    border-top: 1px solid rgba(26, 24, 20, 0.06);
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    transition: opacity 0.3s ease;
+  }
+  .contents-row:last-child {
+    border-bottom: 1px solid rgba(26, 24, 20, 0.06);
+  }
+  .contents-row:hover { opacity: 0.6; }
+  .contents-row-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    padding-top: 6px;
+  }
+  .contents-row-title {
+    font-family: var(--sans);
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .contents-row-text {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 540px;
+    margin: 0;
+  }
+  .contents-row-range {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    padding-top: 6px;
+    white-space: nowrap;
+  }
+  .slide.dark .contents-row { border-top-color: rgba(244, 240, 232, 0.08); }
+  .slide.dark .contents-row:last-child { border-bottom-color: rgba(244, 240, 232, 0.08); }
+  .slide.dark .contents-row-num,
+  .slide.dark .contents-row-range { color: var(--void-faint); }
+  .slide.dark .contents-row-title { color: var(--void-ink); }
+  .slide.dark .contents-row-text { color: var(--void-soft); }
+
+  /* ===== SLIDE 03 — THE CASE / THE PROMISE ===== */
+
+  .promise {
+    width: 100%;
+  }
+  .promise-headline {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 64px;
+    max-width: 1100px;
+  }
+  .promise-headline em {
+    font-style: normal;
+    color: var(--dbx);
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--hairline);
+    padding-top: 32px;
+  }
+  .stat {
+    border-left: 1px solid var(--hairline);
+    padding: 0 32px;
+  }
+  .stat:first-child { border-left: none; padding-left: 0; }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 12px;
+  }
+  .stat-value {
+    font-family: var(--serif);
+    font-size: var(--text-stat);
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .stat-detail {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+
+  /* ===== SLIDE 04 — THE CASE / THE SETUP ===== */
+
+  .setup-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.4fr;
+    gap: 96px;
+    align-items: start;
+    width: 100%;
+  }
+  .setup-headline {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .setup-headline em {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .setup-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .setup-card {
+    padding: 20px 0;
+    border: 0;
+    border-top: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 24px;
+    align-items: start;
+    background: transparent;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    width: 100%;
+  }
+  .setup-card:hover { opacity: 0.6; }
+  .setup-card:last-child { border-bottom: 1px solid var(--hairline); }
+  .setup-card-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    padding-top: 4px;
+  }
+  .setup-card-body { }
+  .setup-card-title {
+    font-family: var(--sans);
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .setup-card-text {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 540px;
+  }
+
+  /* ===== SLIDE 05 — THE CASE / THE BET ===== */
+
+  .bet {
+    max-width: 980px;
+    width: 100%;
+  }
+  .bet-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .bet-row {
+    padding: 36px 0;
+    border-bottom: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+    align-items: baseline;
+  }
+  .bet-row:first-child { border-top: 1px solid var(--hairline); }
+  .bet-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .bet-text {
+    font-family: var(--serif);
+    font-size: var(--text-subhead);
+    line-height: 1.25;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .bet-text em {
+    font-style: italic;
+    color: var(--dbx);
+  }
+  .bet-source {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 32px;
+    text-align: left;
+  }
+
+  /* ===== SLIDE 06 — TRANSITION TO THE BUILD ===== */
+
+  .transition-slide {
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .transition-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+  }
+  .transition-text {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .transition-text em { font-style: italic; }
+
+  /* ===== REUSABLE — Figure slots (editorial empty media) ===== */
+  .figure-slot { display: block; margin: 0; }
+  .figure-frame {
+    position: relative;
+    width: 100%;
+    background: var(--paper-deep);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .figure-slot[data-aspect="16/10"] .figure-frame { aspect-ratio: 16 / 10; }
+  .figure-slot[data-aspect="4/3"] .figure-frame { aspect-ratio: 4 / 3; }
+  .figure-slot[data-aspect="1/1"] .figure-frame { aspect-ratio: 1 / 1; }
+  .figure-slot[data-aspect="3/2"] .figure-frame { aspect-ratio: 3 / 2; }
+  .figure-mark {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-faint);
+    letter-spacing: 0.2em;
+  }
+  .figure-frame img,
+  .figure-frame video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .figure-frame--inset { padding: 32px; }
+  .figure-frame--inset img,
+  .figure-frame--inset video { object-fit: contain; }
+  .figure-slot figcaption {
+    margin-top: 14px;
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .figure-slot .cap-num { color: var(--ink-faint); flex-shrink: 0; }
+  .figure-slot .cap-text { color: var(--ink-soft); }
+  .slide.dark .figure-frame {
+    background: rgba(244, 240, 232, 0.04);
+    border-color: var(--void-line);
+  }
+  .slide.dark .figure-mark { color: var(--void-faint); }
+  .slide.dark .figure-slot .cap-num { color: var(--void-faint); }
+  .slide.dark .figure-slot .cap-text { color: var(--void-soft); }
+
+  /* ===== REUSABLE — Pull-quote ===== */
+  .pull-quote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: var(--text-subhead);
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    max-width: 720px;
+  }
+  .pull-quote em { color: var(--dbx); }
+  .slide.dark .pull-quote { color: var(--void-ink); }
+
+  /* ===== SLIDE 08 — Iteration triptych ===== */
+  .iteration-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 40px;
+    width: 100%;
+  }
+  .iteration-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .iteration-cell .iter-step {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0;
+  }
+  .iteration-cell .iter-name {
+    font-family: var(--serif);
+    font-size: 24px;
+    color: var(--ink);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .iteration-cell .figure-slot {
+    margin: 0;
+  }
+  .iteration-cell .figure-slot[data-aspect="3/2"] .figure-frame {
+    aspect-ratio: 16 / 11;
+    max-height: 200px;
+  }
+  .iteration-cell .figure-frame img {
+    object-fit: contain;
+    padding: 12px;
+  }
+  .iteration-cell figcaption {
+    font-size: 10px;
+    margin-top: 8px;
+  }
+  .iteration-cell .iter-note {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* ===== SHARED — Surface slides 09, 10, 11 ===== */
+  .surface-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+    width: 100%;
+    margin-top: 40px;
+  }
+  .surface-left {
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+  }
+  .surface-left .figure-slot { margin: 0; }
+  .surface-left .figure-slot[data-aspect="16/10"] .figure-frame {
+    height: 380px;
+  }
+  .surface-left .figure-slot .figure-frame img {
+    object-fit: contain;
+    padding: 24px;
+  }
+  .rebuild-grid .figure-frame img {
+    object-fit: contain;
+    padding: 24px;
+  }
+  .surface-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 0;
+  }
+  .surface-right > .section-eyebrow { margin: 0; }
+  .surface-headline {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0;
+  }
+  .surface-headline em {
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  .surface-text {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 540px;
+  }
+  /* Slide 11 modifier — dark figure on light slide */
+  .surface-grid.figure-dark .figure-frame {
+    background: #1f1c17;
+    border-color: rgba(244, 240, 232, 0.10);
+  }
+  .surface-grid.figure-dark .figure-mark { color: rgba(244, 240, 232, 0.45); }
+
+  /* Slide 09 — three numbered annotations in the right column */
+  .zoom-steps { display: flex; flex-direction: column; gap: 0; }
+  .zoom-step {
+    padding: 22px 0;
+    border-top: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 18px;
+  }
+  .zoom-step:last-child { border-bottom: 1px solid var(--hairline); }
+  .zoom-step-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    padding-top: 4px;
+  }
+  .zoom-step-body h4 {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.005em;
+  }
+  .zoom-step-body p {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  /* ===== SLIDE 12 — Trust crisis (DARK) ===== */
+  .crisis-stage {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .crisis-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: end;
+  }
+  .crisis-headline {
+    font-family: var(--serif);
+    font-size: var(--text-headline);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--void-ink);
+  }
+  .crisis-headline em { color: var(--dbx); font-style: normal; }
+  .crisis-context {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--void-soft);
+    max-width: 440px;
+  }
+  .tweet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-items: start;
+    width: 100%;
+  }
+  .tweet-card {
+    display: flex;
+    flex-direction: column;
+    background: rgba(244, 240, 232, 0.04);
+    border: 1px solid var(--void-line);
+    border-radius: 16px;
+    padding: 20px 22px;
+    font-family: var(--sans);
+    filter: saturate(0.85);
+    position: relative;
+  }
+  .tweet-head {
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .tweet-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--paper-deep);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 16px;
+    letter-spacing: 0.02em;
+    overflow: hidden;
+  }
+  .tweet-avatar.dropbox-mark {
+    background: #0061FF;
+    color: #fff;
+    font-family: var(--sans);
+    font-weight: 600;
+  }
+  .tweet-name-row {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .tweet-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--void-ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tweet-verified {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: #1D9BF0;
+  }
+  .tweet-dropbox-mark {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: #0061FF;
+  }
+  .tweet-handle {
+    font-size: 12px;
+    color: var(--void-faint);
+  }
+  .tweet-x {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--void-faint);
+    line-height: 1;
+  }
+  .tweet-body {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--void-ink);
+    margin-bottom: 14px;
+  }
+  .tweet-body p { margin: 0 0 10px 0; }
+  .tweet-body p:last-child { margin-bottom: 0; }
+  .tweet-body .hashtag,
+  .tweet-body .link,
+  .tweet-body .mention { color: #1D9BF0; }
+  .tweet-time {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--void-faint);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .tweet-divider {
+    border-top: 1px solid var(--void-line);
+    margin: 0 0 12px 0;
+  }
+  .tweet-actions {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--void-faint);
+  }
+  .tweet-actions svg {
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    vertical-align: -2px;
+  }
+  .tweet-reply-link {
+    color: #1D9BF0;
+    font-family: var(--sans);
+    font-size: 13px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--void-line);
+  }
+
+  /* Werner — embedded toggle UI screenshot */
+  .tweet-embed-toggle {
+    margin-top: 12px;
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid var(--hairline);
+    filter: saturate(1);
+  }
+  .tweet-embed-toggle-title {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .tweet-embed-toggle-body {
+    font-family: var(--sans);
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .tweet-embed-toggle-body .link { color: #1D9BF0; }
+  .tweet-embed-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 4px;
+  }
+  .tweet-embed-toggle-state {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .toggle-switch {
+    width: 36px;
+    height: 20px;
+    border-radius: 999px;
+    background: #0061FF;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+  }
+  .crisis-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--void-faint);
+    margin-top: 28px;
+    text-align: center;
+  }
+
+  /* ===== SLIDE 13 — Rebuild ===== */
+  .rebuild-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    width: 100%;
+    margin-top: 40px;
+  }
+  .rebuild-copy h3 {
+    font-family: var(--serif);
+    font-size: var(--text-subhead);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 24px;
+    letter-spacing: -0.005em;
+  }
+  .rebuild-copy p {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+    max-width: 460px;
+  }
+  .rebuild-copy .closer {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink);
+    margin-top: 24px;
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+  }
+
+  /* ===== SLIDE 15 — Team grid ===== */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    width: 100%;
+    margin-top: 56px;
+  }
+  .team-member { display: flex; flex-direction: column; }
+  .team-member .figure-slot { margin-bottom: 14px; }
+  .team-member .figure-slot .figure-frame { border-radius: 999px; }
+  .team-name {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .team-role {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ===== SLIDE 16 — Timeline curve (SET-PIECE) ===== */
+  .timeline-curve {
+    width: 100%;
+    margin-top: 48px;
+  }
+  .timeline-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    overflow: visible;
+  }
+  .timeline-slide .timeline-svg .curve { stroke-width: 2.8; }
+  .timeline-slide .timeline-svg .axis { stroke-width: 1.4; }
+  .timeline-slide .timeline-marker .label,
+  .timeline-slide .timeline-marker .week { font-size: 14px; }
+  .timeline-svg .axis {
+    stroke: var(--hairline);
+    stroke-width: 1;
+  }
+  .timeline-svg .curve {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 1800;
+    stroke-dashoffset: 1800;
+  }
+  .slide.timeline-active .timeline-svg .curve {
+    animation: trace 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  @keyframes trace { to { stroke-dashoffset: 0; } }
+
+  /* Each milestone is a group: dot + label + week-index, fades in as a unit */
+  .timeline-marker { opacity: 0; }
+  .timeline-marker .dot { fill: var(--ink); }
+  .timeline-marker.peak .dot { fill: var(--dbx); }
+  .timeline-marker .label,
+  .timeline-marker .week {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .timeline-marker .label { fill: var(--ink-soft); }
+  .timeline-marker .week { fill: var(--ink-faint); }
+  .timeline-marker.peak .label { fill: var(--dbx); }
+
+  .slide.timeline-active .timeline-marker {
+    animation: fadeMarker 0.4s ease-out forwards;
+  }
+  .slide.timeline-active .timeline-marker[data-week="01"] { animation-delay: 0s; }
+  .slide.timeline-active .timeline-marker[data-week="03"] { animation-delay: 0.54s; }
+  .slide.timeline-active .timeline-marker[data-week="05"] { animation-delay: 0.90s; }
+  .slide.timeline-active .timeline-marker[data-week="07"] { animation-delay: 1.26s; }
+  .slide.timeline-active .timeline-marker[data-week="10"] { animation-delay: 1.86s; }
+  .slide.timeline-active .timeline-marker[data-week="13"] { animation-delay: 2.40s; }
+  .slide.timeline-active .timeline-marker[data-week="16"] { animation-delay: 3.00s; }
+
+  @keyframes fadeMarker {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== SLIDE 17 — Research artifacts (pair of mini cards) ===== */
+  .research-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+  .research-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--paper-deep);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 24px;
+    aspect-ratio: 8.5 / 11;
+    min-height: 0;
+  }
+  .research-card-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    margin-bottom: auto;
+    padding-bottom: 20px;
+  }
+  .research-card-title {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    font-weight: 400;
+    margin: 0 0 auto 0;
+  }
+  .research-card-pages {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--hairline);
+  }
+  /* Reusable surface caption (used by .surface-left when content isn't a figure-slot) */
+  .surface-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    margin-top: 14px;
+  }
+  .surface-caption .fig-num { color: var(--ink-soft); }
+  .surface-caption .fig-desc { color: var(--ink-faint); }
+
+  /* ===== SLIDE 18 — Patent (uses .surface-grid skeleton) ===== */
+  .patent-figure {
+    width: 100%;
+    aspect-ratio: 8.5 / 11;
+    max-height: 480px;
+    background: var(--paper-deep);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    align-self: start;
+    overflow: hidden;
+  }
+  .patent-figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  /* Right-column rhythm — overrides shared .surface-right gap */
+  .surface-right.patent-copy { gap: 0; }
+  .patent-copy .section-eyebrow { margin: 0 0 16px 0; }
+  .patent-copy .patent-id {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--dbx);
+    margin: 0 0 16px 0;
+  }
+  .patent-copy h3 {
+    font-family: var(--serif);
+    font-size: var(--text-subhead);
+    line-height: 1.2;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    margin: 0 0 24px 0;
+  }
+  .patent-copy .pull-quote {
+    color: var(--ink-soft);
+    margin: 0 0 32px 0;
+  }
+  .patent-copy .surface-text {
+    margin: 0 0 32px 0;
+  }
+  .patent-copy .meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--hairline);
+    padding-top: 20px;
+    margin: 0;
+  }
+
+  /* ===== SLIDE 14 — AI Guidelines ===== */
+  .guidelines-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    width: 100%;
+  }
+  .guideline-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--hairline);
+  }
+  .guideline-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+  }
+  .guideline-title {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 0;
+    font-weight: 400;
+  }
+  .guideline-text {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* ===== SLIDE 15 — The Future ===== */
+  .future-header {
+    margin-bottom: 32px;
+    max-width: 1280px;
+  }
+  .future-header .surface-text {
+    margin-top: 12px;
+    max-width: 720px;
+  }
+  .future-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    width: 100%;
+    align-items: start;
+  }
+  .future-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .future-media {
+    width: 100%;
+    height: 320px;
+    background: var(--paper-deep);
+    border: 1px solid var(--hairline);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .future-video,
+  .future-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .future-media--mobile {
+    background: #000000;
+    border-color: var(--void-line);
+  }
+  .future-media--mobile .future-video {
+    object-fit: contain;
+  }
+  .future-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .future-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .future-title {
+    font-family: var(--serif);
+    font-size: 24px;
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 0;
+    font-weight: 400;
+  }
+  .future-text {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* ===== SLIDE 19 — Keynote ===== */
+  .keynote-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 72px;
+    align-items: center;
+    width: 100%;
+    margin-top: 24px;
+  }
+  .keynote-copy h3 {
+    font-family: var(--serif);
+    font-size: var(--text-subhead);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 24px;
+    letter-spacing: -0.005em;
+  }
+  .keynote-thesis {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: var(--text-subhead);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    border-left: 2px solid var(--dbx);
+    padding-left: 20px;
+    margin-bottom: 24px;
+  }
+  .keynote-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ===== SLIDE 21 — Numbers spread ===== */
+  .numbers-spread {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .big-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px 48px;
+  }
+  .big-stat {
+    border-top: 1px solid var(--hairline);
+    padding-top: 16px;
+  }
+  .big-stat-num {
+    font-family: var(--serif);
+    font-size: var(--text-stat);
+    line-height: 0.95;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .big-stat-num.accent { color: var(--dbx); }
+  .big-stat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .numbers-side h3 {
+    font-family: var(--serif);
+    font-size: var(--text-subhead);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 18px;
+    letter-spacing: -0.005em;
+  }
+  .numbers-side p {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+  }
+
+  /* ===== SLIDE 22 — Lessons grid ===== */
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 40px;
+    border-top: 1px solid var(--hairline);
+    border-left: 1px solid var(--hairline);
+  }
+  .lesson-card {
+    padding: 28px 32px;
+    border-right: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 20px;
+  }
+  .lesson-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    padding-top: 6px;
+  }
+  .lesson-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 10px;
+    letter-spacing: -0.005em;
+  }
+  .lesson-body {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* ===== SLIDE 23 — Throughline ===== */
+  .throughline {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 96px;
+    align-items: start;
+  }
+  .throughline .pull-quote {
+    /* inherits from base .pull-quote token */
+  }
+  .link-forwards {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .link-forward {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: 1fr 2fr auto;
+    gap: 24px;
+    align-items: baseline;
+  }
+  .link-forward:first-child { border-top: 1px solid var(--hairline); }
+  .link-forward-name {
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .link-forward-frame {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .link-forward-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ===== Responsive additions ===== */
+  @media (max-width: 900px) {
+    .iteration-grid { grid-template-columns: 1fr; gap: 32px; }
+    .surface-grid { grid-template-columns: 1fr; gap: 32px; }
+    .rebuild-grid, .keynote-grid, .numbers-spread, .throughline { grid-template-columns: 1fr; gap: 40px; }
+    .crisis-head { grid-template-columns: 1fr; gap: 24px; }
+    .tweet-grid { grid-template-columns: 1fr; gap: 16px; }
+    .tweet-card:nth-child(2), .tweet-card:nth-child(3) { transform: none; }
+    .team-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .research-pair { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .lessons-grid { grid-template-columns: 1fr; }
+    .big-stats { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .link-forward { grid-template-columns: 1fr; gap: 6px; }
+  }
+
+  /* ===== Dark theme — content elements ===== */
+  .slide.dark .transition-text,
+  .slide.dark .promise-headline,
+  .slide.dark .setup-headline,
+  .slide.dark .bet-text,
+  .slide.dark .stat-value,
+  .slide.dark .hero-title { color: var(--void-ink); }
+
+  .slide.dark .transition-eyebrow,
+  .slide.dark .section-eyebrow,
+  .slide.dark .hero-meta { color: var(--void-soft); }
+
+  .slide.dark .hero-lede,
+  .slide.dark .setup-card-text,
+  .slide.dark .stat-detail { color: var(--void-soft); }
+
+  .slide.dark .bet-label,
+  .slide.dark .bet-source,
+  .slide.dark .stat-label,
+  .slide.dark .setup-card-num,
+  .slide.dark .hero-credit-label { color: var(--void-faint); }
+
+  .slide.dark .setup-card-title,
+  .slide.dark .hero-credit-value { color: var(--void-ink); }
+
+  .slide.dark .setup-card,
+  .slide.dark .bet-row,
+  .slide.dark .stats-row,
+  .slide.dark .stat,
+  .slide.dark .hero-credits { border-color: var(--void-line); }
+
+  .slide.dark em { color: var(--dbx); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 900px) {
+    .slide { padding: 88px 24px 124px; }
+    .colophon { bottom: 28px; left: 24px; font-size: 13px; }
+    .breadcrumb { top: 28px; left: 24px; }
+    .close-btn { top: 24px; right: 24px; }
+    .paginator { bottom: 64px; }
+    .nav-arrows { bottom: 24px; right: 24px; }
+    .hero { grid-template-columns: 1fr; gap: 48px; }
+    .contents-row { grid-template-columns: 56px 1fr; }
+    .contents-row-range { grid-column: 2; padding-top: 4px; }
+    .stats-row { grid-template-columns: 1fr 1fr; gap: 32px 0; }
+    .setup-grid { grid-template-columns: 1fr; gap: 48px; }
+    .bet-row { grid-template-columns: 1fr; gap: 12px; }
+    .hero-credits { grid-template-columns: 1fr; gap: 16px; }
+    .chapter-title-display { white-space: normal; }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .slide { transition: opacity 0.2s; }
+    .slide.active { transform: none; }
+    .slide.timeline-active .timeline-svg .curve { animation: none; stroke-dashoffset: 0; }
+    .slide.timeline-active .timeline-marker { animation: none; opacity: 1; }
+  }
+
+  /* ============================================================
+     PRESENTATION DECK — new slide patterns
+     Mirrors the Dropbox AI presentation PDF flow:
+     Context, Problem Overview, Hypothesis, Team & Timeline,
+     Problem Framing, Research, Challenge 1–4, Impact, Future
+  ============================================================ */
+
+  .deck-page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100%;
+  }
+
+  /* Bold eyebrow at top-left of deck slides */
+  .deck-eyebrow {
+    font-family: var(--sans);
+    font-size: clamp(20px, 2vw, 28px);
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 56px;
+    letter-spacing: -0.005em;
+  }
+  .slide.dark .deck-eyebrow { color: var(--void-ink); }
+
+  /* Large neutral-color question text (Context, Problem Overview, Transition slides) */
+  .deck-question {
+    font-family: var(--sans);
+    font-size: clamp(36px, 4.5vw, 60px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 1300px;
+  }
+  .deck-question + .deck-question { margin-top: 32px; }
+  .slide.dark .deck-question { color: var(--void-soft); }
+
+  /* 4-column numbered preview labels at bottom (Context, Problem Overview) */
+  .preview-labels {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
+    margin-top: auto;
+    padding-top: clamp(80px, 14vh, 200px);
+  }
+  .preview-label {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .preview-num {
+    font-family: var(--sans);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--ink-faint);
+    line-height: 1;
+  }
+  .preview-text {
+    font-family: var(--sans);
+    font-size: clamp(18px, 1.6vw, 22px);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .slide.dark .preview-num { color: var(--void-faint); }
+  .slide.dark .preview-text { color: var(--void-ink); }
+
+  /* Hypothesis slide — If we / We will see / Because rows */
+  .hypothesis-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    margin: 80px 0;
+    max-width: 1400px;
+  }
+  .hypothesis-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .hypothesis-label {
+    font-family: var(--sans);
+    font-size: clamp(28px, 3.4vw, 44px);
+    font-weight: 400;
+    color: var(--ink-soft);
+    flex-shrink: 0;
+  }
+  .hypothesis-text {
+    font-family: var(--sans);
+    font-size: clamp(28px, 3.4vw, 44px);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .slide.dark .hypothesis-label { color: var(--void-soft); }
+  .slide.dark .hypothesis-text { color: var(--void-ink); }
+
+  /* Team + Timeline combo (Team & Timeline slide) */
+  .team-timeline-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 96px;
+    margin-top: 72px;
+    align-items: start;
+    width: 100%;
+  }
+  .team-portraits {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    align-items: center;
+  }
+  .team-portraits .lead-portrait {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .team-portrait-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    width: 100%;
+  }
+  .team-portrait-row .team-portrait,
+  .team-portraits .team-portrait {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .team-portrait img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 14px;
+  }
+  .team-portrait-name {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .team-portrait-role {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  /* Problem Framing — left rail + dark artifact card */
+  .deck-split {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    width: 100%;
+    margin-top: 24px;
+    min-height: 60vh;
+  }
+  .deck-split-rail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px 0;
+  }
+  .deck-split-rail .rail-eyebrow {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .deck-split-rail .rail-title {
+    font-family: var(--sans);
+    font-size: clamp(24px, 2.4vw, 32px);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .deck-split-artifact {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 4px;
+    padding: 20px 26px;
+    font-family: var(--sans);
+    font-size: 11px;
+    line-height: 1.4;
+    color: rgba(244, 240, 232, 0.85);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 54vh;
+    overflow-y: auto;
+  }
+  .deck-split-artifact .artifact-meta {
+    font-family: var(--sans);
+    font-size: 10px;
+    color: rgba(244, 240, 232, 0.5);
+    margin-bottom: 2px;
+  }
+  .deck-split-artifact .artifact-title {
+    font-family: var(--sans);
+    font-size: clamp(13px, 1.2vw, 16px);
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--paper);
+    margin-bottom: 4px;
+  }
+  .deck-split-artifact h4 {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 400;
+    color: rgba(244, 240, 232, 0.55);
+    margin: 6px 0 1px;
+  }
+  .deck-split-artifact p { margin: 0; }
+  .deck-split-artifact .artifact-divider {
+    border-top: 1px solid rgba(244, 240, 232, 0.15);
+    margin: 16px 0 0;
+  }
+
+  /* Research slide — two doc previews side by side */
+  .research-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr 1fr;
+    gap: 64px;
+    margin-top: 16px;
+    align-items: start;
+    width: 100%;
+  }
+  .research-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .research-doc {
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 20px 22px;
+    font-family: var(--sans);
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-height: 70vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .research-doc .doc-title {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .research-doc .doc-meta {
+    font-family: var(--sans);
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+  .research-doc h5 {
+    font-family: var(--sans);
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 6px 0 0;
+  }
+  .research-doc p { margin: 0; }
+
+  /* Per-section collaboration footer (corner of slides) */
+  .deck-credit {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: auto;
+    padding-top: 64px;
+  }
+  .deck-credit .credit-logo {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    color: var(--dbx);
+  }
+  .deck-credit .credit-logo svg { width: 100%; height: 100%; }
+  .deck-credit .credit-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+  .deck-credit .credit-logo--logo img { object-fit: contain; border-radius: 0; }
+  .deck-credit .credit-logo--stack { display: flex; width: auto; height: 54px; }
+  .deck-credit .credit-logo--stack img { width: 54px; height: 54px; border: 2px solid var(--paper); }
+  .deck-credit .credit-logo--stack img + img { margin-left: -14px; }
+  .deck-credit .credit-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .deck-credit .credit-meta-label {
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+  .deck-credit .credit-meta-name {
+    font-family: var(--sans);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .slide.dark .deck-credit .credit-meta-label { color: var(--void-soft); }
+  .slide.dark .deck-credit .credit-meta-name { color: var(--void-ink); }
+
+  /* Transitional rhetorical question slides */
+  .deck-transition {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+  }
+  .deck-transition .deck-question {
+    font-size: clamp(36px, 4.5vw, 60px);
+  }
+
+  /* Impact slide — photo + metrics side by side */
+  .impact-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 80px;
+    margin-top: 48px;
+    align-items: center;
+  }
+  .impact-photo {
+    aspect-ratio: 16 / 10;
+    background: var(--paper-deep);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .impact-photo img,
+  .impact-photo video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .impact-photo-caption {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 16px;
+  }
+  .impact-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .impact-metric {
+    font-family: var(--sans);
+    font-size: clamp(22px, 2.2vw, 32px);
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--ink-soft);
+    letter-spacing: -0.005em;
+  }
+  .impact-metric strong {
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* Challenge slide layout — left rail + right composition */
+  .challenge-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) 1fr;
+    gap: 80px;
+    width: 100%;
+    height: 100%;
+    min-height: 70vh;
+    align-items: stretch;
+  }
+  .challenge-left {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
+  .challenge-section-eyebrow {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 56px;
+  }
+  .challenge-product-eyebrow {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .challenge-title {
+    font-family: var(--sans);
+    font-size: clamp(32px, 3.4vw, 48px);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+  }
+  .challenge-body {
+    font-family: var(--sans);
+    font-size: clamp(17px, 1.5vw, 20px);
+    line-height: 1.35;
+    color: var(--ink-soft);
+    max-width: 400px;
+  }
+  .challenge-right {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    padding: 8px 0;
+  }
+  .challenge-canvas {
+    width: 100%;
+    height: 100%;
+    background: var(--paper-deep);
+    border-radius: 8px;
+    border: 1px solid var(--hairline);
+    padding: 32px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .challenge-canvas.dark { background: var(--ink); border-color: rgba(244,240,232,0.1); }
+
+  /* Competitive landscape composition (Challenge 1) */
+  .comp-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+  }
+  .comp-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .comp-label {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-soft);
+    padding-top: 12px;
+  }
+  .comp-shots {
+    display: flex;
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+  .comp-shot {
+    height: 64px;
+    flex: 1;
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+  }
+  .comp-shot.tall { height: 96px; }
+  .comp-shot.wide { flex: 1.6; }
+  .comp-shot.selected { border-color: var(--dbx); border-width: 2px; }
+
+  /* Overlay artifact (for progressive reveals on Challenge 1) */
+  .overlay-card {
+    position: absolute;
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 16px;
+    box-shadow: 0 8px 24px rgba(26, 24, 20, 0.06);
+  }
+  .overlay-card .overlay-title {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .overlay-card .overlay-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+  }
+  .overlay-card .overlay-grid-row {
+    border-top: 1px solid var(--ink);
+    padding-top: 4px;
+  }
+  .overlay-card .overlay-thumb {
+    height: 28px;
+    background: var(--paper-deep);
+    border-radius: 2px;
+  }
+
+  /* Figma canvas overlay (Challenge 1 build-up slide 10) */
+  .figma-canvas {
+    position: absolute;
+    background: var(--ink);
+    border-radius: 4px;
+    padding: 24px;
+    width: 65%;
+    height: 60%;
+  }
+  .figma-canvas .figma-thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .figma-canvas .figma-thumb {
+    width: 36px;
+    height: 24px;
+    background: rgba(244, 240, 232, 0.7);
+    border-radius: 2px;
+  }
+  .figma-canvas .figma-label {
+    position: absolute;
+    bottom: 16px;
+    left: 24px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 2px;
+  }
+
+  /* Design canvas overlay (Challenge 1 build-up slide 11) */
+  .design-canvas {
+    position: absolute;
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 16px;
+    width: 50%;
+    height: 60%;
+    right: 0;
+    bottom: 0;
+    box-shadow: 0 8px 24px rgba(26, 24, 20, 0.08);
+  }
+  .design-canvas .design-row-label {
+    font-family: var(--sans);
+    font-size: 9px;
+    color: var(--ink-soft);
+    margin-bottom: 2px;
+  }
+  .design-canvas .design-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .design-canvas .design-thumb {
+    flex: 1;
+    height: 36px;
+    background: var(--paper-deep);
+    border-radius: 2px;
+  }
+
+  /* Vertical alignment helper — push credit to bottom of left rail */
+  .challenge-left .deck-credit { padding-top: 32px; }
+
+  /* Slide-scoped override — swap bet-text serif → sans while keeping size */
+  .bet-sans .bet-text {
+    font-family: var(--sans);
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     CHROME — persistent UI
+============================================================ -->
+<div class="chrome">
+  <a href="/" class="colophon" aria-label="Back to portfolio">LN</a>
+
+  <div class="breadcrumb">
+    <span class="crumb-section" id="crumb-section">DOCSEND</span>
+    <span class="crumb-divider"> / </span>
+    <span class="crumb-current" id="crumb-current">COVER</span>
+  </div>
+
+  <a href="/" class="close-btn" aria-label="Close case study">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="1" y1="1" x2="13" y2="13"/>
+      <line x1="13" y1="1" x2="1" y2="13"/>
+    </svg>
+  </a>
+
+  <div class="paginator">
+    <div class="page-num"><span id="page-current">01</span> / <span id="page-total">26</span></div>
+    <div class="dots" id="dots" role="tablist" aria-label="Slide navigation"></div>
+  </div>
+
+  <div class="nav-arrows">
+    <button class="arrow" id="prev-btn" aria-label="Previous slide">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 2 L4 7 L9 12"/>
+      </svg>
+    </button>
+    <button class="arrow" id="next-btn" aria-label="Next slide">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M5 2 L10 7 L5 12"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     LIGHTBOX — click-to-expand for figure images
+============================================================ -->
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Expanded figure">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close expanded figure">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="1" y1="1" x2="13" y2="13"/>
+      <line x1="13" y1="1" x2="1" y2="13"/>
+    </svg>
+  </button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="">
+</div>
+
+<!-- ============================================================
+     DECK — slides
+============================================================ -->
+<main class="deck" id="deck">
+
+  <!-- ========== SLIDE 01 — HERO / COVER ========== -->
+  <section class="slide active" data-section="docsend" data-crumb="cover" data-theme="light" data-align="center">
+    <div class="slide-inner">
+      <div class="hero">
+        <div class="hero-text">
+          <div class="hero-meta">2024 · Case Study 04</div>
+          <h1 class="hero-title">DocSend</h1>
+          <p class="hero-lede">Top of funnel redesign of Dropbox's fastest-growing independent business unit. Sole designer. Shipped a 14% conversion lift and contributed to 20% YoY unit growth.</p>
+          <div class="hero-credits">
+            <div>
+              <div class="hero-credit-label">Role</div>
+              <div class="hero-credit-value">Lead Designer (sole)</div>
+            </div>
+            <div>
+              <div class="hero-credit-label">Team</div>
+              <div class="hero-credit-value">5 people · 2024</div>
+            </div>
+            <div>
+              <div class="hero-credit-label">Outcome</div>
+              <div class="hero-credit-value">+14% CVR · 20% YoY</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <video autoplay muted loop playsinline>
+            <source src="../public/videos/docsend.mp4" type="video/mp4">
+          </video>
+          <div class="hero-visual-fallback" aria-hidden="true" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 2 L12 6 L6 10 L0 6 Z M18 2 L24 6 L18 10 L12 6 Z M6 14 L12 18 L6 22 L0 18 Z M18 14 L24 18 L18 22 L12 18 Z"/>
+            </svg>
+            <span>Product video</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 02 — CONTENTS ========== -->
+  <section class="slide dark" data-section="docsend" data-crumb="contents" data-theme="dark">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">DocSend · Contents</div>
+          <h2 class="setup-headline"><em>Contents.</em></h2>
+        </div>
+
+        <div class="contents-rows">
+          <button class="contents-row" data-jump="2">
+            <div class="contents-row-num">01</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Problem</h3>
+              <p class="contents-row-text">Post-acquisition context, what DocSend is, and the bet on top-of-funnel.</p>
+            </div>
+          </button>
+
+          <button class="contents-row" data-jump="7">
+            <div class="contents-row-num">02</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Process</h3>
+              <p class="contents-row-text">Team, timeline, design framing, hypothesis, and research.</p>
+            </div>
+          </button>
+
+          <button class="contents-row" data-jump="13">
+            <div class="contents-row-num">03</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Solutions</h3>
+              <p class="contents-row-text">The activation funnel, end-to-end redesigns, marketing site refresh.</p>
+            </div>
+          </button>
+
+          <button class="contents-row" data-jump="32">
+            <div class="contents-row-num">04</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Release and Impact</h3>
+              <p class="contents-row-text">14% conversion lift. 20% YoY unit growth. ~$2.7M revenue estimate.</p>
+            </div>
+          </button>
+
+          <button class="contents-row" data-jump="34">
+            <div class="contents-row-num">05</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Lessons</h3>
+              <p class="contents-row-text">Teams, expectations, data agility, scenario planning.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 03 — CONTEXT ========== -->
+  <section class="slide" data-section="docsend" data-crumb="context" data-theme="light">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">Problem · Context</div>
+          <h2 class="setup-headline">Dropbox in 2024. <em>A company shifting B2C to B2B.</em></h2>
+        </div>
+
+        <div class="setup-cards">
+          <button class="setup-card" data-jump="1">
+            <div class="setup-card-num">01</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Acquired in 2021, untouched by design.</h3>
+              <p class="setup-card-text">DocSend joined Dropbox in 2021. The product kept growing, but the experience hadn't been touched.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="1">
+            <div class="setup-card-num">02</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">A new business priority.</h3>
+              <p class="setup-card-text">As Dropbox's traditional business cooled, leaders wanted to supercharge units with real upside. DocSend was at the top of that list.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="1">
+            <div class="setup-card-num">03</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">A growth lever, not an overlap.</h3>
+              <p class="setup-card-text">DocSend hits a market Dropbox core doesn't fully cover: dealmaking, transactions, analytics. Room to expand without cannibalizing.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 04 — WHAT IS DOCSEND ========== -->
+  <section class="slide" data-section="docsend" data-crumb="what is docsend" data-theme="light">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">Problem · What is DocSend</div>
+          <h2 class="setup-headline">What is DocSend? <em>A breakdown of quick points.</em></h2>
+        </div>
+
+        <div class="setup-cards">
+          <button class="setup-card" data-jump="2">
+            <div class="setup-card-num">01</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Deal management.</h3>
+              <p class="setup-card-text">Originally a tool for founders to send and track pitch decks. Post-acquisition it has evolved into an end-to-end deal management platform.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="2">
+            <div class="setup-card-num">02</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Middle of 2024.</h3>
+              <p class="setup-card-text">DocSend became a business priority in 2024 as Dropbox's traditional business cooled and leaders looked for places to invest.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="2">
+            <div class="setup-card-num">03</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Growth lever.</h3>
+              <p class="setup-card-text">As Dropbox grows, the other bets are expected to grow faster. DocSend reaches a market Dropbox core doesn't, giving room to expand.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="2">
+            <div class="setup-card-num">04</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Lead designer.</h3>
+              <p class="setup-card-text">DocSend had the highest upside given its resourcing. I was brought on as lead designer to kickstart new growth, new initiatives, and core experience.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 05 — HOW DO WE BUILD ========== -->
+  <section class="slide" data-section="docsend" data-crumb="how do we build" data-theme="light">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">Problem · The Question</div>
+          <h2 class="setup-headline">How do we build DocSend <em>into a high growth, self-sustaining business?</em></h2>
+        </div>
+
+        <div class="setup-cards">
+          <button class="setup-card" data-jump="3">
+            <div class="setup-card-num">01</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Understand the use case.</h3>
+              <p class="setup-card-text">Both products share content, but DocSend users are focused on dealmaking, transactions, and analytics, not storage.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="3">
+            <div class="setup-card-num">02</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Startup vs. legacy.</h3>
+              <p class="setup-card-text">Post-acquisition, aligning systems and processes mattered. Bridging a startup team's pace with Dropbox's scale was the real work.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="3">
+            <div class="setup-card-num">03</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Growth and design, together.</h3>
+              <p class="setup-card-text">Speed and growth were paramount. So was getting the team to trust design as a function. That meant bringing them along.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="3">
+            <div class="setup-card-num">04</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Big issues first.</h3>
+              <p class="setup-card-text">A product largely untouched by design has surface area everywhere. The job was to find what sustainably moves the needle with no major lift.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 06 — PRE-PROJECT CHALLENGE ========== -->
+  <section class="slide" data-section="docsend" data-crumb="pre-project challenge" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Problem · Pre-Project</div>
+          <h2 class="setup-headline">Gaining trust. <em>Building design relevancy.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Before any redesign, the work was building credibility. A team that hadn't been resourced with design for years had to be convinced design was a worthwhile investment, not a tax on velocity.</p>
+          <p class="surface-text" style="margin-top:12px;">Most of the first month was relationship work: meeting every PM and engineer, mapping the unwritten history of decisions, and earning the right to propose changes at all.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <img src="../public/images/docsend-pptx/slide-05-02.png" alt="Pre-project challenge artifact (PPTX slide 5)" data-pptx="slide-5">
+            </div>
+            <figcaption>
+              <span class="cap-num">Fig. 01</span>
+              <span class="cap-text">Stakeholder map. Pre-project trust building.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 07 — TRANSITION TO PROCESS ========== -->
+  <section class="slide" data-section="docsend" data-crumb="next: process" data-theme="light" data-align="center">
+    <div class="slide-inner">
+      <div class="transition-slide">
+        <div class="transition-eyebrow">End of Chapter 01</div>
+        <h2 class="transition-text">Next: <em>Process.</em></h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 08 — PROCESS CHAPTER INTRO ========== -->
+  <section class="slide" data-section="docsend" data-crumb="process" data-theme="light">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">Process · Chapter 02</div>
+          <h2 class="setup-headline"><em>Process.</em></h2>
+        </div>
+
+        <div class="contents-rows">
+          <button class="contents-row" data-jump="8">
+            <div class="contents-row-num">01</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Team &amp; Timeline.</h3>
+              <p class="contents-row-text">Five people, six months of work, and the arc from onboarding to ship.</p>
+            </div>
+          </button>
+
+          <button class="contents-row" data-jump="9">
+            <div class="contents-row-num">02</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Design framing doc.</h3>
+              <p class="contents-row-text">My version of a PRD: problem statement, JTBD, opportunities, and data.</p>
+            </div>
+          </button>
+
+          <button class="contents-row" data-jump="10">
+            <div class="contents-row-num">03</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Hypothesis.</h3>
+              <p class="contents-row-text">If we build better onboarding and activation, free-to-paid conversion will move.</p>
+            </div>
+          </button>
+
+          <button class="contents-row" data-jump="11">
+            <div class="contents-row-num">04</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Research.</h3>
+              <p class="contents-row-text">Dedicated research to find what was actually broken before designing the fix.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 09 — TEAM &amp; TIMELINE ========== -->
+  <section class="slide timeline-slide" data-section="docsend" data-crumb="team &amp; timeline" data-theme="light">
+    <div class="slide-inner">
+      <div class="deck-page">
+        <div class="section-eyebrow">Process · Team &amp; Timeline</div>
+
+        <div class="team-timeline-grid">
+          <div class="team-portraits">
+            <div class="team-portrait-row">
+              <div class="team-portrait">
+                <img src="../public/images/team/lawrence.jpg" alt="Lawrence Ntim" style="border-radius:50%;">
+                <div class="team-portrait-name">Lawrence Ntim</div>
+                <div class="team-portrait-role">Lead Designer</div>
+              </div>
+              <div class="team-portrait">
+                <img src="../public/images/team/lillie.png" alt="Lillie Chilen" style="border-radius:50%;">
+                <div class="team-portrait-name">Lillie Chilen</div>
+                <div class="team-portrait-role">Eng Team Lead</div>
+              </div>
+            </div>
+            <div class="team-portrait-row">
+              <div class="team-portrait">
+                <img src="../public/images/team/stella.jpeg" alt="Stella Conyer" style="border-radius:50%;">
+                <div class="team-portrait-name">Stella Conyer</div>
+                <div class="team-portrait-role">Engineering Manager</div>
+              </div>
+              <div class="team-portrait">
+                <img src="../public/images/team/samantha.jpeg" alt="Samantha Burnett" style="border-radius:50%;">
+                <div class="team-portrait-name">Samantha Burnett</div>
+                <div class="team-portrait-role">Product Manager</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-curve" style="margin-top: 0;">
+            <svg class="timeline-svg" viewBox="0 0 1200 380" role="img" aria-label="DocSend project timeline">
+              <line class="axis" x1="60" y1="310" x2="1140" y2="310"/>
+
+              <path class="curve" d="M 80 240 C 180 240 180 140 280 140 C 380 140 380 220 480 220 C 580 220 580 160 680 160 C 780 160 780 240 880 240 C 980 240 980 130 1080 130 C 1120 130 1130 110 1120 80"/>
+
+              <g class="timeline-marker" data-week="01">
+                <circle class="dot" cx="80" cy="240" r="5"/>
+                <text class="label" x="80" y="278" text-anchor="middle">Onboarded</text>
+                <text class="week" x="80" y="332" text-anchor="middle">Wk 01</text>
+              </g>
+              <g class="timeline-marker" data-week="03">
+                <circle class="dot" cx="280" cy="140" r="5"/>
+                <text class="label" x="280" y="120" text-anchor="middle">Research</text>
+                <text class="week" x="280" y="332" text-anchor="middle">Wk 04</text>
+              </g>
+              <g class="timeline-marker" data-week="05">
+                <circle class="dot" cx="480" cy="220" r="5"/>
+                <text class="label" x="480" y="252" text-anchor="middle">Resourcing</text>
+                <text class="week" x="480" y="332" text-anchor="middle">Wk 08</text>
+              </g>
+              <g class="timeline-marker" data-week="07">
+                <circle class="dot" cx="680" cy="160" r="5"/>
+                <text class="label" x="680" y="140" text-anchor="middle">Multi-project</text>
+                <text class="week" x="680" y="332" text-anchor="middle">Wk 12</text>
+              </g>
+              <g class="timeline-marker" data-week="10">
+                <circle class="dot" cx="880" cy="240" r="5"/>
+                <text class="label" x="880" y="272" text-anchor="middle">Feasibility</text>
+                <text class="week" x="880" y="332" text-anchor="middle">Wk 18</text>
+              </g>
+              <g class="timeline-marker" data-week="13">
+                <circle class="dot" cx="1080" cy="130" r="5"/>
+                <text class="label" x="1080" y="110" text-anchor="middle">Metrics</text>
+                <text class="week" x="1080" y="332" text-anchor="middle">Wk 22</text>
+              </g>
+              <g class="timeline-marker peak" data-week="16">
+                <circle class="dot" cx="1120" cy="80" r="7"/>
+                <text class="label" x="1120" y="60" text-anchor="middle">Pulled it together</text>
+                <text class="week" x="1120" y="332" text-anchor="middle">Wk 26</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 10 — DESIGN FRAMING DOC ========== -->
+  <section class="slide" data-section="docsend" data-crumb="design framing doc" data-theme="light">
+    <div class="slide-inner">
+      <div class="deck-page">
+        <div class="section-eyebrow">Process · Problem Framing</div>
+        <h2 class="setup-headline">Design framing doc.</h2>
+        <div class="deck-split" style="margin-top: 24px;">
+          <div class="deck-split-rail">
+            <p class="surface-text" style="margin:0;">My version of a PRD, focused on problem statement, jobs to be done, opportunities, and data. The first written artifact that scoped the work and gave the team a single source of truth.</p>
+          </div>
+
+          <div class="deck-split-artifact">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="color:var(--dbx);">
+                <path d="M6 2 L12 6 L6 10 L0 6 Z M18 2 L24 6 L18 10 L12 6 Z M6 14 L12 18 L6 22 L0 18 Z M18 14 L24 18 L18 22 L12 18 Z"/>
+              </svg>
+              <span class="artifact-meta">Design Framing Doc</span>
+            </div>
+            <div class="artifact-meta">DocSend Top-of-Funnel Problem Statement</div>
+            <p class="artifact-title">DocSend's funnel converts a fraction of the visitors it brings in. Activation drops sharply at every step. What's the path to a self-sustaining business?</p>
+
+            <h4>User Problem</h4>
+            <p>Users land on DocSend ready to send a deck or build a data room. The path from <em>landing page</em> to <em>activated user</em> is 12 steps long and drops 90% of users along the way.</p>
+
+            <h4>JTBD</h4>
+            <p>When I have a deck to share, I want to send it to investors and track engagement, so I can run a tighter raise.</p>
+
+            <h4>Hypothesis</h4>
+            <p><strong style="color:var(--paper);">We believe that</strong> building a better onboarding and activation experience for DocSend users <strong style="color:var(--paper);">will result in</strong> an increase in free-to-paid conversion. <strong style="color:var(--paper);">We will know we are successful when</strong> <code style="font-family:var(--mono); font-size:13px;">activation rate moves from &lt;10% to a defensible benchmark.</code></p>
+
+            <h4>Project Timeline</h4>
+            <p>Onboarded · Research · Resourcing · Multi-project · DLT Eval · Feasibility · Metrics · Ship</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 11 — HYPOTHESIS ========== -->
+  <section class="slide bet-sans" data-section="docsend" data-crumb="hypothesis" data-theme="light">
+    <div class="slide-inner">
+      <div class="bet">
+        <div class="section-eyebrow">Process · Hypothesis</div>
+
+        <div class="bet-rows">
+          <div class="bet-row">
+            <div class="bet-label">If we</div>
+            <div class="bet-text">build a better onboarding and activation experience,</div>
+          </div>
+          <div class="bet-row">
+            <div class="bet-label">We will see</div>
+            <div class="bet-text">an increase in <em>free to paid</em> conversion,</div>
+          </div>
+          <div class="bet-row">
+            <div class="bet-label">Because</div>
+            <div class="bet-text">users will better understand the product and be more likely to activate.</div>
+          </div>
+        </div>
+
+        <div class="bet-source">Hypothesis · Kickoff · Q2 2024</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 12 — RESEARCH ========== -->
+  <section class="slide" data-section="docsend" data-crumb="research" data-theme="light">
+    <div class="slide-inner">
+      <div class="deck-page">
+        <div class="section-eyebrow">Process · Research</div>
+        <div class="research-grid">
+          <div class="research-rail">
+            <h2 class="setup-headline">Research.</h2>
+            <p style="font-family:var(--sans); font-size:15px; line-height:1.5; color:var(--ink-soft); margin:0;">Setting the team up for success with dedicated research. Understanding what the key activation problems actually were before building anything.</p>
+            <div class="deck-credit" style="padding-top:32px; margin-top:auto;">
+              <span class="credit-logo credit-logo--logo">
+                <img src="../public/logos/dropbox-logo.png" alt="Dropbox">
+              </span>
+              <div class="credit-meta">
+                <span class="credit-meta-label">Collaborated with</span>
+                <span class="credit-meta-name">DBX Research</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="research-doc">
+            <div class="doc-title">DocSend: Top of Funnel Research Brief</div>
+            <div class="doc-meta">Q2 2024 · DocSend &amp; DBX Research</div>
+
+            <h5>TLDR</h5>
+            <p>Activation drops sharply at every step of the funnel. Of the visitors who reach the site, <strong style="color:var(--ink);">fewer than 10% reach activation.</strong> The biggest drops are concentrated on day 0.</p>
+            <p><strong style="color:var(--ink);">Non-founder personas activate ~18% lower than founders.</strong> The product was implicitly designed for one persona; the funnel was bringing in others.</p>
+
+            <h5>Key Findings</h5>
+            <p><strong style="color:var(--ink);">88% of activations happen on day 0.</strong> If a user doesn't activate the day they sign up, they very likely never will.</p>
+            <p><strong style="color:var(--ink);">Sign-up is the highest drop step</strong>: confusion about the auto-trial, lack of context, and the modal entry pattern all compound.</p>
+            <p><strong style="color:var(--ink);">Checkout requires 3 page navigations</strong> to change plan details. Users abandon when they realize they can't see the whole picture.</p>
+          </div>
+
+          <div class="research-doc">
+            <div class="doc-title">Activation Funnel: Quantitative Snapshot</div>
+            <div class="doc-meta">Pre-redesign baseline · Q2 2024</div>
+
+            <p><strong style="color:var(--ink);">Website → Sign Up: 65%</strong></p>
+            <p>Users land on the marketing site and proceed to create an account.</p>
+
+            <p style="margin-top:8px;"><strong style="color:var(--ink);">Sign Up → Upload: 35%</strong></p>
+            <p>Of those who sign up, a third upload a document.</p>
+
+            <p style="margin-top:8px;"><strong style="color:var(--ink);">Upload → Share: 15%</strong></p>
+            <p>Of those who upload, less than half share it.</p>
+
+            <p style="margin-top:8px;"><strong style="color:var(--ink);">Share → Activated: &lt;10%</strong></p>
+            <p>Activation defined as a shared link with a recorded view.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 13 — TRANSITION TO SOLUTIONS ========== -->
+  <section class="slide" data-section="docsend" data-crumb="next: solutions" data-theme="light" data-align="center">
+    <div class="slide-inner">
+      <div class="transition-slide">
+        <div class="transition-eyebrow">End of Chapter 02</div>
+        <h2 class="transition-text">Next: <em>Solutions.</em></h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 14 — SOLUTIONS CHAPTER INTRO ========== -->
+  <section class="slide" data-section="docsend" data-crumb="solutions" data-theme="light">
+    <div class="slide-inner">
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">Solutions · Chapter 03</div>
+          <h2 class="setup-headline"><em>Solutions.</em></h2>
+        </div>
+
+        <div class="contents-rows">
+          <button class="contents-row" data-jump="14">
+            <div class="contents-row-num">01</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Activation funnel.</h3>
+              <p class="contents-row-text">The whole flow. 12 steps, mapped end to end.</p>
+            </div>
+          </button>
+
+          <button class="contents-row" data-jump="16">
+            <div class="contents-row-num">02</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Sign-up, Survey, Checkout.</h3>
+              <p class="contents-row-text">Before / after on the three highest-drop steps.</p>
+            </div>
+          </button>
+
+          <button class="contents-row" data-jump="22">
+            <div class="contents-row-num">03</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">New activation.</h3>
+              <p class="contents-row-text">Personalized next-step. The first thing users see after onboarding.</p>
+            </div>
+          </button>
+
+          <button class="contents-row" data-jump="23">
+            <div class="contents-row-num">04</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Iterations.</h3>
+              <p class="contents-row-text">Right rail upgrade vs. wizard. What we shipped and why.</p>
+            </div>
+          </button>
+
+          <button class="contents-row" data-jump="27">
+            <div class="contents-row-num">05</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Marketing site refresh.</h3>
+              <p class="contents-row-text">Design sprint with Brand. Before / after.</p>
+            </div>
+          </button>
+
+          <button class="contents-row" data-jump="30">
+            <div class="contents-row-num">06</div>
+            <div class="contents-row-body">
+              <h3 class="contents-row-title">Bonus credit: Emails.</h3>
+              <p class="contents-row-text">The communication channel that compounds, refreshed.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 15 — ACTIVATION FUNNEL (stats) ========== -->
+  <section class="slide" data-section="docsend" data-crumb="activation funnel" data-theme="light">
+    <div class="slide-inner">
+      <div class="promise">
+        <div class="section-eyebrow">Solutions · Activation Funnel</div>
+        <h2 class="promise-headline">Activation drops <em>drastically at every step.</em></h2>
+
+        <div class="stats-row" style="grid-template-columns: repeat(5, 1fr);">
+          <div class="stat">
+            <div class="stat-label">Website</div>
+            <div class="stat-value">100<span style="font-size:0.55em;">%</span></div>
+            <div class="stat-detail">Visitors landing on the marketing site.</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Sign Up</div>
+            <div class="stat-value">65<span style="font-size:0.55em;">%</span></div>
+            <div class="stat-detail">Create an account.</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Upload</div>
+            <div class="stat-value">35<span style="font-size:0.55em;">%</span></div>
+            <div class="stat-detail">Upload a document.</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Share</div>
+            <div class="stat-value">15<span style="font-size:0.55em;">%</span></div>
+            <div class="stat-detail">Share the document externally.</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Activated</div>
+            <div class="stat-value">&lt;10<span style="font-size:0.55em;">%</span></div>
+            <div class="stat-detail">A shared link with at least one view.</div>
+          </div>
+        </div>
+
+        <p class="surface-text" style="margin-top:32px; max-width:680px;">88% of activations happen on day 0. Users outside the founder persona activate 18% lower. The funnel had been designed for one user; it was attracting many.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 16 — WHOLE FLOW (12-step illustration) ========== -->
+  <section class="slide" data-section="docsend" data-crumb="the whole flow" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · The Whole Flow</div>
+          <h2 class="setup-headline">Illustrating the <em>whole flow.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">12 steps from landing page to first time in the product, with significant drop-off through the whole process.</p>
+          <p class="surface-text" style="margin-top:12px;">Mapping every step end to end made the redesign tractable. Instead of fixing pages, we were fixing transitions.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <img src="../public/images/docsend-flow-01.png" alt="DocSend activation funnel: 12-step flow from landing to activation">
+            </div>
+            <figcaption>
+              <span class="cap-num">Flow 01</span>
+              <span class="cap-text">Landing → Sign up → Upload → Share → Activated.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 17 — SIGN UP: BEFORE ========== -->
+  <section class="slide" data-section="docsend" data-crumb="sign up · before" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Sign Up</div>
+          <h2 class="setup-headline">Sign up: <em>Before.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Sign up was surfaced by a modal with information split across steps. Users were dropped into a trial with no context for what it was or when it would end.</p>
+          <p class="surface-text" style="margin-top:12px;">The biggest single drop in the funnel sat here.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-sign-up-before.png" alt="Sign up, before: modal entry, fragmented context">
+            </div>
+            <figcaption>
+              <span class="cap-num">Before</span>
+              <span class="cap-text">Modal sign-up, split context, no trial framing.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 18 — SIGN UP: AFTER ========== -->
+  <section class="slide" data-section="docsend" data-crumb="sign up · after" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Sign Up</div>
+          <h2 class="setup-headline">Sign up: <em>After.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Surfaced the most important information first. Gave the auto-trial an explicit start, midpoint reminder, and end date. Removed the modal, gave the page room to breathe.</p>
+          <p class="surface-text" style="margin-top:12px;">"Experience the best of DocSend free for 14 days," said up front, instead of inferred from a banner three pages in.</p>
+          <p class="surface-text" style="margin-top:12px; font-family:var(--mono); font-size:12px; color:var(--ink-faint); letter-spacing:0.05em;">Designed with Treyce, special guest.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-sign-up-after.png" alt="Sign up, after: full page, trial explained up front">
+            </div>
+            <figcaption>
+              <span class="cap-num">After</span>
+              <span class="cap-text">Full page sign-up. Trial explained up front.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 19 — SURVEY: BEFORE ========== -->
+  <section class="slide" data-section="docsend" data-crumb="survey · before" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Survey</div>
+          <h2 class="setup-headline">Survey: <em>Before.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Multiple steps, and a visual language that didn't match Dropbox. Users coming in from Dropbox surfaces hit it and bounced. The change in design felt like leaving the product.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-survey-before.png" alt="Survey, before: DocSend-styled, separate from Dropbox system">
+            </div>
+            <figcaption>
+              <span class="cap-num">Before</span>
+              <span class="cap-text">DocSend-styled survey, separate from Dropbox system.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 20 — SURVEY: AFTER ========== -->
+  <section class="slide" data-section="docsend" data-crumb="survey · after" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Survey</div>
+          <h2 class="setup-headline">Survey: <em>After.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Bridged DocSend and Dropbox's design systems by hand. DocSend wasn't resourced with DSE support, so this was a one-person port. Consolidated steps, used Dropbox-native components.</p>
+          <p class="surface-text" style="margin-top:12px;">A user coming from Dropbox sees a continuous experience instead of a context switch.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-survey-after.png" alt="Survey, after: ported to Dropbox design language">
+            </div>
+            <figcaption>
+              <span class="cap-num">After</span>
+              <span class="cap-text">Survey ported to Dropbox design language.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 21 — CHECKOUT: BEFORE ========== -->
+  <section class="slide" data-section="docsend" data-crumb="checkout · before" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Checkout</div>
+          <h2 class="setup-headline">Checkout: <em>Before.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Multiple steps, no modular controls. Changing plan details meant going back three pages, and starting over if you got it wrong.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-checkout-before.png" alt="Checkout, before: multi-page, no inline plan editing">
+            </div>
+            <figcaption>
+              <span class="cap-num">Before</span>
+              <span class="cap-text">Multi-page checkout. No way to edit plan inline.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 22 — CHECKOUT: AFTER ========== -->
+  <section class="slide" data-section="docsend" data-crumb="checkout · after" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Checkout</div>
+          <h2 class="setup-headline">Checkout: <em>After.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Condensed to one screen, modular, with inline editability. Plan details, team size, and payment all visible at once.</p>
+          <p class="surface-text" style="margin-top:12px;">A new pattern for the team: billing surfaces that don't lock the user into a path.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-checkout-after.png" alt="Checkout, after: single-screen, modular, editable">
+            </div>
+            <figcaption>
+              <span class="cap-num">After</span>
+              <span class="cap-text">Single-screen checkout. Modular, editable, clear tax notes.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 23 — NEW ACTIVATION ========== -->
+  <section class="slide" data-section="docsend" data-crumb="new activation" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Activation</div>
+          <h2 class="setup-headline">New activation. <em>Personalized next step.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">"Where would you like to start, Lawrence?" The last step in onboarding gives the user a choice of paths, relevant to their persona, not the founder-only default.</p>
+          <p class="surface-text" style="margin-top:12px;">Both founder and non-founder paths feel built for them.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-new-activation.png" alt="New activation: personalized next-step picker">
+            </div>
+            <figcaption>
+              <span class="cap-num">Activation</span>
+              <span class="cap-text">Personalized next-step picker. Step 5 of 5.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 24 — ITERATIONS OVERVIEW ========== -->
+  <section class="slide" data-section="docsend" data-crumb="iterations" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Iterations</div>
+          <h2 class="setup-headline">Iterations.</h2>
+          <p class="surface-text" style="margin-top:16px;">A spread of the directions we tested before settling on the shipped pattern. Right rail upgrade, full wizard, and several in between.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <img src="../public/images/docsend-pptx/slide-19-01.png" alt="Iterations overview (PPTX slide 19)" data-pptx="slide-19">
+            </div>
+            <figcaption>
+              <span class="cap-num">Iter. 00</span>
+              <span class="cap-text">Sweep of activation directions.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 25 — ITERATION: RIGHT RAIL UPGRADE ========== -->
+  <section class="slide" data-section="docsend" data-crumb="iteration · right rail" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Iterations</div>
+          <h2 class="setup-headline">Iteration: <em>Right rail upgrade.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Persistent panel on the right, surfacing upgrade prompts contextual to the user's current state.</p>
+          <p class="surface-text" style="margin-top:16px; font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-faint);">Evaluated on:</p>
+          <ul style="margin-top:8px; padding-left:18px; font-family:var(--sans); font-size:14px; line-height:1.7; color:var(--ink-soft); columns:2; column-gap:32px;">
+            <li>Accurate</li>
+            <li>Visually interesting</li>
+            <li>Comprehensive</li>
+            <li>Long term</li>
+            <li>Conceptual</li>
+            <li>Functional</li>
+            <li>Simple</li>
+            <li>Short term</li>
+          </ul>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <img src="../public/images/docsend-pptx/slide-20-10.png" alt="Right rail upgrade iteration (PPTX slide 20)" data-pptx="slide-20">
+            </div>
+            <figcaption>
+              <span class="cap-num">Iter. 01</span>
+              <span class="cap-text">Right rail upgrade. Persistent contextual prompt.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 26 — ITERATION: WIZARD ========== -->
+  <section class="slide" data-section="docsend" data-crumb="iteration · wizard" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Iterations</div>
+          <h2 class="setup-headline">Iteration: <em>Wizard.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Step-by-step flow that walks the user from sign-up to activation in a single guided path. More structured, less skippable.</p>
+          <p class="surface-text" style="margin-top:16px; font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-faint);">Evaluated on:</p>
+          <ul style="margin-top:8px; padding-left:18px; font-family:var(--sans); font-size:14px; line-height:1.7; color:var(--ink-soft); columns:2; column-gap:32px;">
+            <li>Accurate</li>
+            <li>Visually interesting</li>
+            <li>Comprehensive</li>
+            <li>Long term</li>
+            <li>Conceptual</li>
+            <li>Functional</li>
+            <li>Simple</li>
+            <li>Short term</li>
+          </ul>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <img src="../public/images/docsend-pptx/slide-21-10.png" alt="Wizard iteration (PPTX slide 21)" data-pptx="slide-21">
+            </div>
+            <figcaption>
+              <span class="cap-num">Iter. 02</span>
+              <span class="cap-text">Wizard. Guided activation in a single path.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 27 — DECIDED PROTOTYPE ========== -->
+  <section class="slide" data-section="docsend" data-crumb="decided prototype" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Prototype</div>
+          <h2 class="setup-headline">Decided <em>prototype.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">After aligning on the appropriate treatment, I set up a prototype representing the expected end-to-end experience. The single source of truth for the eng spec.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <iframe
+                src="https://embed.figma.com/proto/qjAsrd505J8AH8tyaDBDMQ/Docsend-Activation-prototype?node-id=0-18964&amp;viewport=533%2C426%2C0.13&amp;scaling=scale-down&amp;content-scaling=fixed&amp;page-id=0%3A1&amp;embed-host=share"
+                title="DocSend Activation prototype"
+                style="width:100%; height:100%; border:none;"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <figcaption>
+              <span class="cap-num">Prototype</span>
+              <span class="cap-text">DocSend Activation. Figma prototype.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 28 — EXISTING SITE ========== -->
+  <section class="slide" data-section="docsend" data-crumb="existing site" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Marketing Site</div>
+          <h2 class="setup-headline">Existing <em>site.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">DocSend.com as it stood: pre-acquisition design, gradually patched but never reframed. Visitors couldn't quickly tell what DocSend was for, or where to go.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <video autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover; display:block;">
+                <source src="../public/videos/docsend-pptx/slide-23-01.mp4" type="video/mp4">
+              </video>
+            </div>
+            <figcaption>
+              <span class="cap-num">Before</span>
+              <span class="cap-text">DocSend.com pre-redesign.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 29 — DESIGN SPRINT ========== -->
+  <section class="slide" data-section="docsend" data-crumb="design sprint" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Marketing Site</div>
+          <h2 class="setup-headline">Running a <em>design sprint.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Partnered with Dropbox Brand to run a one-week sprint on the new site. The goal: give DocSend visual focus and convert the cold visitor faster.</p>
+          <p class="surface-text" style="margin-top:12px; font-family:var(--mono); font-size:12px; color:var(--ink-faint); letter-spacing:0.05em;">Designed with Dropbox Brand &amp; Principal Designers.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <img src="../public/images/docsend-design-sprint.png" alt="Design sprint: Brand and DocSend collaboration outputs">
+            </div>
+            <figcaption>
+              <span class="cap-num">Sprint</span>
+              <span class="cap-text">Brand + Design sprint outputs.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 30 — REFRESHED SITE ========== -->
+  <section class="slide" data-section="docsend" data-crumb="refreshed site" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Marketing Site</div>
+          <h2 class="setup-headline">Refreshed <em>site.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Fully refreshed DocSend.com. New hero, sharper positioning, and a path to sign-up that doesn't bury the value proposition.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <video autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover; display:block;">
+                <source src="../public/videos/docsend-pptx/slide-25-01.mp4" type="video/mp4">
+              </video>
+            </div>
+            <figcaption>
+              <span class="cap-num">After</span>
+              <span class="cap-text">DocSend.com. Refreshed.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 31 — BONUS: EMAILS ========== -->
+  <section class="slide" data-section="docsend" data-crumb="bonus · emails" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Solutions · Bonus</div>
+          <h2 class="setup-headline">Bonus credit: <em>Emails.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Took initiative to refresh DocSend's most important communication channel. Emails are how users learn that their deck has been opened, the moment that drives most return visits.</p>
+          <p class="surface-text" style="margin-top:12px;">Cleaner hierarchy, clearer subject, a single CTA. Designed for skim.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-emails.png" alt="Email refresh: before and after view notification">
+            </div>
+            <figcaption>
+              <span class="cap-num">Comm</span>
+              <span class="cap-text">Previous → Refreshed view notification.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 32 — TRANSITION TO IMPACT ========== -->
+  <section class="slide" data-section="docsend" data-crumb="next: release and impact" data-theme="light" data-align="center">
+    <div class="slide-inner">
+      <div class="transition-slide">
+        <div class="transition-eyebrow">End of Chapter 03</div>
+        <h2 class="transition-text">Next: <em>Release and Impact.</em></h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 33 — IMPACT (numbers-spread format from Dropbox AI deck) ========== -->
+  <section class="slide" data-section="docsend" data-crumb="impact" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">Release and Impact · The Numbers</div>
+
+        <div class="numbers-spread">
+          <div class="big-stats">
+            <div class="big-stat">
+              <div class="big-stat-num accent">+14%</div>
+              <div class="big-stat-label">Sign-up conversion lift</div>
+            </div>
+            <div class="big-stat">
+              <div class="big-stat-num">$2.7M</div>
+              <div class="big-stat-label">Annualized revenue · estimate</div>
+            </div>
+            <div class="big-stat">
+              <div class="big-stat-num">20%</div>
+              <div class="big-stat-label">YoY unit growth · 2024</div>
+            </div>
+            <div class="big-stat">
+              <div class="big-stat-num">01</div>
+              <div class="big-stat-label">Designer · sole lead</div>
+            </div>
+          </div>
+
+          <div class="numbers-side">
+            <h3>The funnel held.</h3>
+            <p>Sign-ups lifted 14% across the redesigned top of funnel and held through the quarter. The revenue projection compounds against existing traffic.</p>
+            <p>DocSend grew 20% YoY, a meaningful contribution to Dropbox's 2024 growth narrative from a single business unit.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 34 — TRANSITION TO LESSONS ========== -->
+  <section class="slide" data-section="docsend" data-crumb="next: lessons" data-theme="light" data-align="center">
+    <div class="slide-inner">
+      <div class="transition-slide">
+        <div class="transition-eyebrow">End of Chapter 04</div>
+        <h2 class="transition-text">Next: <em>Lessons.</em></h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 35 — REFLECTIONS ========== -->
+  <section class="slide bet-sans" data-section="docsend" data-crumb="reflections" data-theme="light">
+    <div class="slide-inner">
+      <div class="bet">
+        <div class="section-eyebrow">Lessons · Reflections</div>
+
+        <div class="bet-rows">
+          <div class="bet-row">
+            <div class="bet-label">01 · Teams</div>
+            <div class="bet-text">Trust and empathy aren't soft skills. <em>They're the prerequisite for new teams to ship.</em></div>
+          </div>
+          <div class="bet-row">
+            <div class="bet-label">02 · Expectations</div>
+            <div class="bet-text">When conditions change, <em>so does the win condition.</em> Focus on what you can control.</div>
+          </div>
+          <div class="bet-row">
+            <div class="bet-label">03 · Data agility</div>
+            <div class="bet-text">Tracking has to be set up <em>pre-launch.</em> Otherwise every post-launch decision is guesswork.</div>
+          </div>
+          <div class="bet-row">
+            <div class="bet-label">04 · Scenarios</div>
+            <div class="bet-text"><em>Plan for the inverse.</em> Writing the failure case is what sharpens the success case.</div>
+          </div>
+        </div>
+
+        <div class="bet-source">Reflections · Post-Launch · 2024</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 36 — THROUGHLINE ========== -->
+  <section class="slide" data-section="docsend" data-crumb="throughline" data-theme="light" data-align="center">
+    <div class="slide-inner">
+      <div class="transition-slide" style="max-width:920px;">
+        <div class="transition-eyebrow">Lessons · Throughline</div>
+        <p class="pull-quote" style="margin:0 auto; text-align:center; font-size:var(--text-headline); line-height:1.2;">Before the funnel, the trust. <em>Before the trust, the team.</em></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 37 — CLOSING ========== -->
+  <section class="slide dark" data-section="docsend" data-crumb="thanks" data-theme="dark" data-align="center">
+    <div class="slide-inner">
+      <div class="transition-slide">
+        <div class="transition-eyebrow" style="color: var(--void-soft);">DocSend · End</div>
+        <h2 class="transition-text">Thanks so much! <em>Any questions?</em></h2>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+
+<!-- ============================================================
+     SCRIPT — pagination, keyboard, breadcrumb sync, theme sync
+============================================================ -->
+<script>
+(function() {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsEl = document.getElementById('dots');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const pageCurrent = document.getElementById('page-current');
+  const pageTotal = document.getElementById('page-total');
+  const crumbSection = document.getElementById('crumb-section');
+  const crumbCurrent = document.getElementById('crumb-current');
+  const body = document.body;
+
+  let current = 0;
+  const total = slides.length;
+
+  // Build dots
+  pageTotal.textContent = String(total).padStart(2, '0');
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('role', 'tab');
+    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+    dot.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(dot);
+  });
+
+  function goTo(index) {
+    if (index < 0 || index >= total || index === current) return;
+    slides[current].classList.remove('active');
+    slides[current].classList.remove('timeline-active');
+    slides[index].classList.add('active');
+    dotsEl.children[current].classList.remove('active');
+    dotsEl.children[index].classList.add('active');
+    current = index;
+    syncChrome();
+
+    // Re-trigger timeline animation each entry on slide 16 (timeline-slide)
+    if (slides[index].classList.contains('timeline-slide')) {
+      void slides[index].offsetWidth; // force reflow to reset CSS animation
+      requestAnimationFrame(() => slides[index].classList.add('timeline-active'));
+    }
+  }
+
+  function syncChrome() {
+    const slide = slides[current];
+    pageCurrent.textContent = String(current + 1).padStart(2, '0');
+    crumbSection.textContent = (slide.dataset.section || 'DocSend').toUpperCase();
+    crumbCurrent.textContent = (slide.dataset.crumb || '').toUpperCase();
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+
+    // Theme sync
+    if (slide.dataset.theme === 'dark') {
+      body.classList.add('dark');
+    } else {
+      body.classList.remove('dark');
+    }
+  }
+
+  // Buttons
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+
+  // Chapter card jump targets (slide 02) and transition CTAs
+  document.querySelectorAll('[data-jump]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const target = parseInt(e.currentTarget.dataset.jump, 10);
+      if (!isNaN(target)) goTo(target);
+    });
+  });
+
+  // Lightbox — click any figure image to expand
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxClose = document.getElementById('lightbox-close');
+  function openLightbox(src, alt) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    setTimeout(() => { lightboxImg.src = ''; }, 300);
+  }
+  document.querySelectorAll('.figure-frame img, .patent-figure img, .future-media img').forEach(img => {
+    img.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightbox(img.src, img.alt);
+    });
+  });
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Keyboard nav (lightbox-aware)
+  document.addEventListener('keydown', (e) => {
+    if (lightbox.classList.contains('open')) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeLightbox();
+      }
+      return;
+    }
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+      e.preventDefault();
+      goTo(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      goTo(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goTo(total - 1);
+    } else if (e.key === 'Escape') {
+      window.location.href = '/';
+    }
+  });
+
+  // Video graceful fallback if asset not present
+  const heroVideo = document.querySelector('.hero-visual video');
+  if (heroVideo) {
+    heroVideo.addEventListener('error', () => {
+      heroVideo.style.display = 'none';
+      const fallback = document.querySelector('.hero-visual-fallback');
+      if (fallback) fallback.style.display = 'flex';
+    });
+  }
+
+  // Hash deep-linking (e.g., #problem jumps to the Problem chapter)
+  function applyHash() {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    const map = {
+      // 5-chapter shortcuts
+      'cover': 0,
+      'contents': 1,
+      'problem': 2,
+      'process': 7,
+      'solutions': 13,
+      'impact': 32,
+      'lessons': 34,
+      'closing': 36,
+
+      // Granular shortcuts
+      'context': 2,
+      'what-is-docsend': 3,
+      'how-do-we-build': 4,
+      'pre-project': 5,
+      'team-timeline': 8,
+      'framing': 9,
+      'hypothesis': 10,
+      'research': 11,
+      'activation-funnel': 14,
+      'whole-flow': 15,
+      'sign-up-before': 16,
+      'sign-up-after': 17,
+      'survey-before': 18,
+      'survey-after': 19,
+      'checkout-before': 20,
+      'checkout-after': 21,
+      'new-activation': 22,
+      'iterations': 23,
+      'iteration-right-rail': 24,
+      'iteration-wizard': 25,
+      'prototype': 26,
+      'existing-site': 27,
+      'design-sprint': 28,
+      'refreshed-site': 29,
+      'emails': 30,
+      'reflections': 34,
+      'throughline': 35,
+    };
+    if (map[hash] !== undefined) goTo(map[hash]);
+  }
+  window.addEventListener('hashchange', applyHash);
+  applyHash();
+
+  // Initial sync
+  syncChrome();
+})();
+</script>
+
+</body>
+</html>
