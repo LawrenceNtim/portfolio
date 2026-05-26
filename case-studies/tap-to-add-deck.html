@@ -1516,8 +1516,191 @@
 ============================================================ -->
 <main class="deck" id="deck">
 
-  <!-- ========== SLIDE 01 — HERO / COVER ========== -->
-  <section class="slide active dark" data-section="tap to add" data-crumb="cover" data-theme="dark" data-align="center">
+  <!-- ========== SLIDE 00 — ABOUT ME (intro · remove when paired with Dropbox AI / DocSend) ========== -->
+  <section class="slide active" data-section="tap to add" data-crumb="about" data-theme="light" data-align="center">
+    <div class="slide-inner">
+      <div class="hero">
+        <div class="hero-text">
+          <div class="hero-meta">Hello · About me</div>
+          <h1 class="hero-title">Hi, I'm <em>Lawrence.</em></h1>
+          <p class="hero-lede">A constantly curious designer, founder, and inventor — building things that don't exist yet, always with passion behind the work.</p>
+          <ul style="list-style:none; padding:0; margin:32px 0 0 0; display:flex; flex-direction:column; gap:12px;">
+            <li style="display:flex; align-items:baseline; gap:14px;">
+              <span style="width:6px; height:6px; border-radius:50%; background:var(--ink); flex-shrink:0; transform:translateY(-3px);"></span>
+              <span style="font-family:var(--sans); font-size:15px; color:var(--ink); line-height:1.5;"><strong>8+ years</strong> in product design across consumer, fintech, and AI</span>
+            </li>
+            <li style="display:flex; align-items:baseline; gap:14px;">
+              <span style="width:6px; height:6px; border-radius:50%; background:var(--ink); flex-shrink:0; transform:translateY(-3px);"></span>
+              <span style="font-family:var(--sans); font-size:15px; color:var(--ink); line-height:1.5;"><strong>3 patents</strong> shipped</span>
+            </li>
+            <li style="display:flex; align-items:baseline; gap:14px;">
+              <span style="width:6px; height:6px; border-radius:50%; background:var(--ink); flex-shrink:0; transform:translateY(-3px);"></span>
+              <span style="font-family:var(--sans); font-size:15px; color:var(--ink); line-height:1.5;"><strong>1.5M+ users</strong> reached by work shipped to date</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="hero-visual">
+          <img src="../public/images/team/lawrence.jpg" alt="Lawrence Ntim">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 01 — WING CODA (what I'm up to · intro) ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="what i'm up to · wing" data-theme="light">
+    <div class="slide-inner">
+
+      <div style="width:100%; display:grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: start;">
+
+        <!-- LEFT — language column -->
+        <div style="display:flex; flex-direction:column; gap: 32px;">
+
+          <div class="section-eyebrow" style="margin:0; text-transform:none; letter-spacing: 0.04em; color: var(--ink-soft);">What I'm up to · Eighty Labs</div>
+
+          <div>
+            <div aria-label="Wing." style="font-family: var(--sans); font-weight: 500; font-size: clamp(72px, 8.5vw, 120px); line-height: 0.92; letter-spacing: -0.03em; color: var(--ink);">Wing<span style="color: #B8412C;">.</span></div>
+            <div style="font-family: var(--serif); font-size: clamp(22px, 2vw, 28px); line-height: 1.2; color: var(--ink-soft); margin-top: 18px; letter-spacing: -0.005em;">Agentic experience design <em style="font-style: italic;">in practice.</em></div>
+          </div>
+
+          <p class="surface-text" style="max-width: 540px; margin:0;">Wing is the new primitive at the orchestration layer — a personalization-first AI travel agent that learns how you fly once and applies it forever. Built end-to-end with Claude Code, Cursor, and an MCP stack of my own design.</p>
+        </div>
+
+        <!-- RIGHT — Wing demo video (interim) · SVG mockup preserved below in comment for future use -->
+        <div style="width:100%;">
+          <video autoplay muted loop playsinline style="width:100%; max-width:720px; height:auto; display:block; border-radius: 6px; background:#16140F;">
+            <source src="../public/videos/wing-demo-short.mp4" type="video/mp4">
+          </video>
+
+          <!--
+          WING.GUIDE MOCKUP — saved for future use. Swap back by deleting the <video> above
+          and uncommenting this SVG block.
+          <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:720px; height:auto; display:block; border-radius: 6px;">
+            <defs>
+              <style>
+                .br-frame { fill:#16140F; stroke:#1A1614; stroke-width:1.5; }
+                .br-chrome { fill:#22201B; stroke:#1A1614; stroke-width:1; }
+                .br-url { fill:#2B2924; stroke:none; }
+                .br-text-cream { font-family:'DM Sans', sans-serif; fill:#F1ECDF; }
+                .br-text-faint { font-family:'DM Mono', monospace; fill:#9A9085; font-size:11px; letter-spacing:0.06em; }
+                .br-text-mid { font-family:'DM Sans', sans-serif; fill:#A8A095; font-size:14px; }
+                .br-input-stroke { stroke:#5C544D; stroke-width:1; fill:none; }
+                .br-accent { fill:#B8412C; }
+              </style>
+            </defs>
+
+            <rect class="br-frame" x="6" y="6" width="708" height="448" rx="6"/>
+
+            <rect class="br-chrome" x="6" y="6" width="708" height="40" rx="6"/>
+            <rect class="br-chrome" x="6" y="32" width="708" height="14"/>
+            <circle cx="24" cy="26" r="5" fill="#3A3833"/>
+            <circle cx="42" cy="26" r="5" fill="#3A3833"/>
+            <circle cx="60" cy="26" r="5" fill="#3A3833"/>
+
+            <rect class="br-url" x="120" y="14" width="280" height="24" rx="4"/>
+            <text x="135" y="30" class="br-text-faint" fill="#9A9085">🔒 &nbsp; wing.guide</text>
+
+            <text x="360" y="160" text-anchor="middle" class="br-text-cream" font-weight="500" font-size="32" letter-spacing="-0.02em">Wing<tspan class="br-accent">.</tspan></text>
+
+            <text x="360" y="220" text-anchor="middle" class="br-text-mid" font-size="13" letter-spacing="0.02em">
+              Flying business international, windows, no red-eyes.
+              <tspan dx="6" fill="#C7BEAF" style="text-decoration:underline; text-decoration-style:dotted; text-decoration-color:#5C544D;">Change?</tspan>
+            </text>
+
+            <rect class="br-input-stroke" x="160" y="250" width="400" height="56" rx="4"/>
+            <text x="180" y="285" class="br-text-mid" font-size="16">Where are you flying?</text>
+            <rect x="540" y="262" width="14" height="32" fill="#B8412C" opacity="0.85"/>
+
+            <text x="360" y="340" text-anchor="middle" class="br-text-faint" fill="#5C544D" font-size="10" letter-spacing="0.18em">TRY  ·  "I NEED TO BE IN TOKYO LATE JUNE, WORK"</text>
+
+            <text x="360" y="420" text-anchor="middle" class="br-text-faint" fill="#3A3833" font-size="9" letter-spacing="0.22em">EIGHTY LABS  ·  2026</text>
+          </svg>
+          -->
+        </div>
+      </div>
+
+      <!-- BOTTOM STRIP — Technical foundations -->
+      <div style="margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--hairline); display:flex; flex-wrap:wrap; gap: 14px 56px; align-items: baseline; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;">
+        <span><span style="color: var(--ink-faint);">Design</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Figma</span></span>
+        <span><span style="color: var(--ink-faint);">Build</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Claude Code &nbsp;·&nbsp; Cursor &nbsp;·&nbsp; Codex</span></span>
+        <span><span style="color: var(--ink-faint);">Orchestrate</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Linear &nbsp;·&nbsp; MCP</span></span>
+        <span><span style="color: var(--ink-faint);">Deploy</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Vercel &nbsp;·&nbsp; Supabase &nbsp;·&nbsp; Render</span></span>
+      </div>
+
+      <!-- STATUS FOOTER -->
+      <div style="margin-top: 18px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-faint);">Alpha</div>
+
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 02 — CAREER THROUGHLINE (intro · remove when paired with Dropbox AI / DocSend) ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="throughline" data-theme="light" data-align="center">
+    <div class="slide-inner">
+      <div style="width:100%; max-width:1280px;">
+        <div class="section-eyebrow" style="text-align:left;">Hello · Throughline</div>
+        <h2 class="setup-headline" style="margin-bottom:20px; text-align:left;">Different surfaces. <em>Same instinct.</em></h2>
+        <p class="surface-text" style="max-width:760px; margin-bottom:64px; text-align:left;">Across seven companies, one throughline: build the new primitive that didn't exist yet. Innovation, learning, the next move before the category knew it needed one.</p>
+
+        <div style="position:relative; padding:0 12px;">
+          <div style="position:absolute; top:32px; left:8%; right:8%; height:1px; background:var(--ink-soft); opacity:0.35; z-index:0;"></div>
+          <div style="position:relative; z-index:1; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/eighty.png" alt="Wing · Eighty Labs" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">Wing · Eighty Labs</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Founder · Personalized AI travel · MCP infrastructure.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/stripe.png" alt="Stripe" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">Stripe</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Tap to Add · Agentic commerce.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/dropbox.png" alt="Dropbox" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">Dropbox</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Initial designer · Dropbox AI · 3 patents.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/ethos.png" alt="Ethos" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">Ethos</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Life insurance · UX in a regulated space.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/dmi.png" alt="DMI" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">DMI</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Mortgage servicing · Lead designer.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/futureis.png" alt="Futureis" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">Futureis</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Independent studio · End-to-end work.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/google.jpg" alt="Google" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">Google</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Apps growth · First UX exposure.</div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 02 — HERO / COVER ========== -->
+  <section class="slide dark" data-section="tap to add" data-crumb="cover" data-theme="dark" data-align="center">
     <div class="slide-inner">
       <div class="hero">
         <div class="hero-text">
@@ -2917,92 +3100,6 @@
     </div>
   </section>
 
-  <!-- ========== SLIDE — WING CODA (post-credits) ========== -->
-  <section class="slide" data-section="tap to add" data-crumb="what's next · wing" data-theme="light">
-    <div class="slide-inner">
-
-      <div style="width:100%; display:grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: start;">
-
-        <!-- LEFT — language column -->
-        <div style="display:flex; flex-direction:column; gap: 32px;">
-
-          <div class="section-eyebrow" style="margin:0; text-transform:none; letter-spacing: 0.04em; color: var(--ink-soft);">What's next · Eighty Labs</div>
-
-          <div>
-            <div aria-label="Wing." style="font-family: var(--sans); font-weight: 500; font-size: clamp(72px, 8.5vw, 120px); line-height: 0.92; letter-spacing: -0.03em; color: var(--ink);">Wing<span style="color: #B8412C;">.</span></div>
-            <div style="font-family: var(--serif); font-size: clamp(22px, 2vw, 28px); line-height: 1.2; color: var(--ink-soft); margin-top: 18px; letter-spacing: -0.005em;">Agentic experience design <em style="font-style: italic;">in practice.</em></div>
-          </div>
-
-          <p class="surface-text" style="max-width: 540px; margin:0;">Tap to Add was a new primitive at the payment surface. Wing is the new primitive at the orchestration layer — a personalization-first AI travel agent that learns how you fly once and applies it forever. Built end-to-end with Claude Code, Cursor, and an MCP stack of my own design.</p>
-        </div>
-
-        <!-- RIGHT — wing.guide hero mockup (lifted verbatim from Wing framing deck, slide 7) -->
-        <div style="width:100%;">
-          <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:720px; height:auto; display:block; border-radius: 6px;">
-            <defs>
-              <style>
-                .br-frame { fill:#16140F; stroke:#1A1614; stroke-width:1.5; }
-                .br-chrome { fill:#22201B; stroke:#1A1614; stroke-width:1; }
-                .br-url { fill:#2B2924; stroke:none; }
-                .br-text-cream { font-family:'DM Sans', sans-serif; fill:#F1ECDF; }
-                .br-text-faint { font-family:'DM Mono', monospace; fill:#9A9085; font-size:11px; letter-spacing:0.06em; }
-                .br-text-mid { font-family:'DM Sans', sans-serif; fill:#A8A095; font-size:14px; }
-                .br-input-stroke { stroke:#5C544D; stroke-width:1; fill:none; }
-                .br-accent { fill:#B8412C; }
-              </style>
-            </defs>
-
-            <!-- frame -->
-            <rect class="br-frame" x="6" y="6" width="708" height="448" rx="6"/>
-
-            <!-- chrome -->
-            <rect class="br-chrome" x="6" y="6" width="708" height="40" rx="6"/>
-            <rect class="br-chrome" x="6" y="32" width="708" height="14"/>
-            <circle cx="24" cy="26" r="5" fill="#3A3833"/>
-            <circle cx="42" cy="26" r="5" fill="#3A3833"/>
-            <circle cx="60" cy="26" r="5" fill="#3A3833"/>
-
-            <!-- url -->
-            <rect class="br-url" x="120" y="14" width="280" height="24" rx="4"/>
-            <text x="135" y="30" class="br-text-faint" fill="#9A9085">🔒 &nbsp; wing.guide</text>
-
-            <!-- content -->
-            <text x="360" y="160" text-anchor="middle" class="br-text-cream" font-weight="500" font-size="32" letter-spacing="-0.02em">Wing<tspan class="br-accent">.</tspan></text>
-
-            <!-- preference summary line -->
-            <text x="360" y="220" text-anchor="middle" class="br-text-mid" font-size="13" letter-spacing="0.02em">
-              Flying business international, windows, no red-eyes.
-              <tspan dx="6" fill="#C7BEAF" style="text-decoration:underline; text-decoration-style:dotted; text-decoration-color:#5C544D;">Change?</tspan>
-            </text>
-
-            <!-- input box -->
-            <rect class="br-input-stroke" x="160" y="250" width="400" height="56" rx="4"/>
-            <text x="180" y="285" class="br-text-mid" font-size="16">Where are you flying?</text>
-            <rect x="540" y="262" width="14" height="32" fill="#B8412C" opacity="0.85"/>
-
-            <!-- placeholder examples below -->
-            <text x="360" y="340" text-anchor="middle" class="br-text-faint" fill="#5C544D" font-size="10" letter-spacing="0.18em">TRY  ·  "I NEED TO BE IN TOKYO LATE JUNE, WORK"</text>
-
-            <!-- bottom signature -->
-            <text x="360" y="420" text-anchor="middle" class="br-text-faint" fill="#3A3833" font-size="9" letter-spacing="0.22em">EIGHTY LABS  ·  2026</text>
-          </svg>
-        </div>
-      </div>
-
-      <!-- BOTTOM STRIP — Technical foundations -->
-      <div style="margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--hairline); display:flex; flex-wrap:wrap; gap: 14px 56px; align-items: baseline; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;">
-        <span><span style="color: var(--ink-faint);">Design</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Figma</span></span>
-        <span><span style="color: var(--ink-faint);">Build</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Claude Code &nbsp;·&nbsp; Cursor &nbsp;·&nbsp; Codex</span></span>
-        <span><span style="color: var(--ink-faint);">Orchestrate</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Linear &nbsp;·&nbsp; MCP</span></span>
-        <span><span style="color: var(--ink-faint);">Deploy</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Vercel &nbsp;·&nbsp; Supabase &nbsp;·&nbsp; Render</span></span>
-      </div>
-
-      <!-- STATUS FOOTER -->
-      <div style="margin-top: 18px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-faint);">Alpha</div>
-
-    </div>
-  </section>
-
 </main>
 
 <!-- ============================================================
@@ -3130,12 +3227,15 @@
     const hash = window.location.hash.slice(1);
     if (!hash) return;
     const map = {
-      'cover': 0,
-      'contents': 1,
-      'problem': 2,
-      'process': 7,
-      'release-and-impact': 20,
-      'lessons': 27,
+      'about': 0,
+      'wing': 1,
+      'throughline': 2,
+      'cover': 3,
+      'contents': 4,
+      'problem': 5,
+      'process': 10,
+      'release-and-impact': 23,
+      'lessons': 30,
     };
     if (map[hash] !== undefined) goTo(map[hash]);
   }
