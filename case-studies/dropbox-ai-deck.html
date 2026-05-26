@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dropbox AI — Lawrence Ntim</title>
-<meta name="description" content="Founding designer of Dropbox's first AI product. Launched to 1.5M users in 4 months.">
+<title>Dropbox AI: Q&amp;A — Lawrence Ntim</title>
+<meta name="description" content="Initial designer of Dropbox's first AI product. Launched to 1.5M users in 4 months.">
 
 <!-- Three-voice type system: Nixie One (display) · DM Sans (body) · DM Mono (technical) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -388,8 +388,8 @@
   }
   .hero-credits {
     display: grid;
-    grid-template-columns: repeat(3, auto);
-    gap: 40px;
+    grid-template-columns: repeat(2, auto);
+    gap: 20px 48px;
     padding-top: 28px;
     border-top: 1px solid var(--hairline);
   }
@@ -1222,6 +1222,15 @@
   .slide.timeline-active .timeline-svg .curve {
     animation: trace 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
+
+  /* Compact layout when XFN row is present on the Team & Timeline slide */
+  .timeline-slide .team-timeline-grid { margin-top: 40px; }
+  .timeline-slide .team-portraits { gap: 22px; }
+  .timeline-slide .team-portrait img { width: 108px; height: 108px; margin-bottom: 10px; }
+  .timeline-slide .team-portrait-name { font-size: 15px; }
+  .timeline-slide .team-portrait-role { font-size: 12px; }
+
+
   @keyframes trace { to { stroke-dashoffset: 0; } }
 
   /* Each milestone is a group: dot + label + week-index, fades in as a unit */
@@ -2369,13 +2378,110 @@
 <main class="deck" id="deck">
 
   <!-- ========== SLIDE 01 — HERO / COVER ========== -->
-  <section class="slide active" data-section="dropbox-ai" data-crumb="cover" data-theme="light" data-align="center">
+  <!-- ========== SLIDE 00 — HI, I'M LAWRENCE (about me) ========== -->
+  <section class="slide active" data-section="Dropbox AI: Q&amp;A" data-crumb="about" data-theme="light" data-align="center">
+    <div class="slide-inner">
+      <div class="hero">
+        <div class="hero-text">
+          <div class="hero-meta">Hello · About me</div>
+          <h1 class="hero-title">Hi, I'm <em>Lawrence.</em></h1>
+          <p class="hero-lede">A constantly curious designer, founder, and inventor — building things that don't exist yet, always with passion behind the work.</p>
+          <ul style="list-style:none; padding:0; margin:32px 0 0 0; display:flex; flex-direction:column; gap:12px;">
+            <li style="display:flex; align-items:baseline; gap:14px;">
+              <span style="width:6px; height:6px; border-radius:50%; background:var(--ink); flex-shrink:0; transform:translateY(-3px);"></span>
+              <span style="font-family:var(--sans); font-size:15px; color:var(--ink); line-height:1.5;"><strong>8+ years</strong> in product design across consumer, fintech, and AI</span>
+            </li>
+            <li style="display:flex; align-items:baseline; gap:14px;">
+              <span style="width:6px; height:6px; border-radius:50%; background:var(--ink); flex-shrink:0; transform:translateY(-3px);"></span>
+              <span style="font-family:var(--sans); font-size:15px; color:var(--ink); line-height:1.5;"><strong>3 patents</strong> shipped</span>
+            </li>
+            <li style="display:flex; align-items:baseline; gap:14px;">
+              <span style="width:6px; height:6px; border-radius:50%; background:var(--ink); flex-shrink:0; transform:translateY(-3px);"></span>
+              <span style="font-family:var(--sans); font-size:15px; color:var(--ink); line-height:1.5;"><strong>1.5M+ users</strong> reached by work shipped to date</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="hero-visual">
+          <img src="../public/images/team/lawrence.jpg" alt="Lawrence Ntim">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 01 — CAREER THROUGHLINE ========== -->
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="throughline" data-theme="light" data-align="center">
+    <div class="slide-inner">
+      <div style="width:100%; max-width:1280px;">
+        <div class="section-eyebrow" style="text-align:left;">Hello · Throughline</div>
+        <h2 class="setup-headline" style="margin-bottom:20px; text-align:left;">Different surfaces. <em>Same instinct.</em></h2>
+        <p class="surface-text" style="max-width:760px; margin-bottom:64px; text-align:left;">Across seven companies, one throughline: build the new primitive that didn't exist yet. Innovation, learning, the next move before the category knew it needed one.</p>
+
+        <div style="position:relative; padding:0 12px;">
+          <div style="position:absolute; top:32px; left:8%; right:8%; height:1px; background:var(--ink-soft); opacity:0.35; z-index:0;"></div>
+          <div style="position:relative; z-index:1; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/eighty.png" alt="Wing · Eighty Labs" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">Wing · Eighty Labs</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Founder · Personalized AI travel · MCP infrastructure.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/stripe.png" alt="Stripe" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">Stripe</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Tap to Add · Agentic commerce.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/dropbox.png" alt="Dropbox" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">Dropbox</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Initial designer · Dropbox AI · 3 patents.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/ethos.png" alt="Ethos" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">Ethos</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Life insurance · UX in a regulated space.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/dmi.png" alt="DMI" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">DMI</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Mortgage servicing · Lead designer.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/futureis.png" alt="Futureis" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">Futureis</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Independent studio · End-to-end work.</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex:1; max-width:130px;">
+            <div style="width:64px; height:64px; border-radius:50%; background:var(--paper); border:1px solid var(--ink-soft); display:flex; align-items:center; justify-content:center; overflow:hidden;">
+              <img src="../public/logos/google.jpg" alt="Google" style="width:36px; height:36px; object-fit:contain;">
+            </div>
+            <div style="font-family:'Inter',ui-sans-serif,system-ui; font-size:12px; font-weight:600; color:var(--ink); text-align:center; line-height:1.3;">Google</div>
+            <div style="font-family:var(--sans); font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.45; max-width:130px;">Apps growth · First UX exposure.</div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="cover" data-theme="light" data-align="center">
     <div class="slide-inner">
       <div class="hero">
         <div class="hero-text">
           <div class="hero-meta">2023 — 2024 · Case Study 01</div>
-          <h1 class="hero-title">Dropbox AI</h1>
-          <p class="hero-lede">Founding designer of Dropbox's first artificial intelligence product. A four-month sprint from blank canvas to 1.5 million users — and a four-month lesson in how trust is the only metric that compounds.</p>
+          <h1 class="hero-title">Dropbox AI: Q&amp;A</h1>
+          <p class="hero-lede">Initial designer of Dropbox's first artificial intelligence product. LLM-powered search in Dropbox using OpenAI API. A four-month sprint from blank canvas to 1.5 million users — and a four-month lesson in how trust is the only metric that compounds.</p>
           <div class="hero-credits">
             <div>
               <div class="hero-credit-label">Role</div>
@@ -2388,6 +2494,10 @@
             <div>
               <div class="hero-credit-label">Outcome</div>
               <div class="hero-credit-value">1.5M users · Public Beta</div>
+            </div>
+            <div>
+              <div class="hero-credit-label">Tools</div>
+              <div class="hero-credit-value">Figma · UserTesting · OpenAI API</div>
             </div>
           </div>
         </div>
@@ -2408,11 +2518,11 @@
   </section>
 
   <!-- ========== SLIDE 02 — CHAPTER DIVIDER / CONTENTS (6 chapters · Hypothesis folded into Problem, Throughline folded into Lessons) ========== -->
-  <section class="slide dark" data-section="dropbox-ai" data-crumb="contents" data-theme="dark">
+  <section class="slide dark" data-section="Dropbox AI: Q&amp;A" data-crumb="contents" data-theme="dark">
     <div class="slide-inner">
       <div class="setup-grid">
         <div>
-          <div class="section-eyebrow">Dropbox AI · Contents</div>
+          <div class="section-eyebrow">Dropbox AI: Q&amp;A · Contents</div>
           <h2 class="setup-headline"><em>Contents.</em></h2>
         </div>
 
@@ -2470,7 +2580,7 @@
   </section>
 
   <!-- ========== SLIDE 03 — CONTEXT (restyled to match slide 3 structure) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="context" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="context" data-theme="light">
     <div class="slide-inner">
       <div class="setup-grid">
         <div>
@@ -2506,12 +2616,12 @@
   </section>
 
   <!-- ========== SLIDE 03 — THE SETUP (copied from preserved slide of same content) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="the setup" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="the setup" data-theme="light">
     <div class="slide-inner">
       <div class="setup-grid">
         <div>
           <div class="section-eyebrow">Problem · The Setup</div>
-          <h2 class="setup-headline">Empower users. <em>Without breaking what they trusted us for.</em></h2>
+          <h2 class="setup-headline">Challenges <em>being worked through.</em></h2>
         </div>
 
         <div class="setup-cards">
@@ -2549,7 +2659,7 @@
   </section>
 
   <!-- ========== SLIDE 04 — THE BET (replaced from Hypothesis · slide 38 sizing, sans body font for deck consistency) ========== -->
-  <section class="slide bet-sans" data-section="dropbox-ai" data-crumb="the bet" data-theme="light">
+  <section class="slide bet-sans" data-section="Dropbox AI: Q&amp;A" data-crumb="the bet" data-theme="light">
     <div class="slide-inner">
       <div class="bet">
         <div class="section-eyebrow">Problem · Hypothesis</div>
@@ -2575,7 +2685,7 @@
   </section>
 
   <!-- ========== SLIDE 05 — TEAM & TIMELINE (NEW · presentation flow) ========== -->
-  <section class="slide timeline-slide" data-section="dropbox-ai" data-crumb="team & timeline" data-theme="light">
+  <section class="slide timeline-slide" data-section="Dropbox AI: Q&amp;A" data-crumb="team & timeline" data-theme="light">
     <div class="slide-inner">
       <div class="deck-page">
         <div class="section-eyebrow">Problem · Team &amp; Timeline</div>
@@ -2606,9 +2716,17 @@
                 <div class="team-portrait-role">Content Designer</div>
               </div>
             </div>
+            <div class="team-portrait-row" style="grid-template-columns: 1fr; justify-items: center;">
+              <div class="team-portrait">
+                <img src="../public/images/team/maggie.jpeg" alt="Maggie" style="border-radius:50%;">
+                <div class="team-portrait-name">Maggie</div>
+                <div class="team-portrait-role">Senior Researcher</div>
+              </div>
+            </div>
           </div>
 
-          <div class="timeline-curve" style="margin-top: 0;">
+          <div>
+            <div class="timeline-curve" style="margin-top: 0;">
             <svg class="timeline-svg" viewBox="0 0 1200 380" role="img" aria-label="16-week emotional timeline of Dropbox AI build">
               <line class="axis" x1="60" y1="310" x2="1140" y2="310"/>
 
@@ -2651,13 +2769,56 @@
               </g>
             </svg>
           </div>
+
+          <div style="margin-top: 32px; display: flex; gap: 56px; align-items: flex-start; justify-content: center; flex-wrap: wrap;">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+              <div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 14px;">XFN Collaborators &amp; Stakeholders</div>
+              <div style="display: flex; gap: 24px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                  <img src="../public/images/team/aska.png" alt="Aska" style="width: 54px; height: 54px; border-radius: 50%; object-fit: cover; margin-bottom: 2px;">
+                  <span style="font-size: 11px; color: var(--ink); font-weight: 500;">Aska</span>
+                  <span style="font-size: 10px; color: var(--ink-soft); letter-spacing: 0.04em;">Mobile</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                  <img src="../public/images/team/brett.png" alt="Brett" style="width: 54px; height: 54px; border-radius: 50%; object-fit: cover; margin-bottom: 2px;">
+                  <span style="font-size: 11px; color: var(--ink); font-weight: 500;">Brett</span>
+                  <span style="font-size: 10px; color: var(--ink-soft); letter-spacing: 0.04em;">Files &amp; Video</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; align-items: center;">
+              <div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 14px;">Executive Sponsor</div>
+              <div style="display: flex; gap: 24px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                  <img src="../public/images/team/drew.jpg" alt="Drew Houston" style="width: 54px; height: 54px; border-radius: 50%; object-fit: cover;">
+                  <span style="font-size: 11px; color: var(--ink); font-weight: 500;">Drew Houston</span>
+                  <span style="font-size: 10px; color: var(--ink-soft); letter-spacing: 0.04em;">CEO</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; align-items: center;">
+              <div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 14px;">Legal &amp; Finance</div>
+              <div style="display: flex; gap: 24px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                  <div style="width: 54px; height: 54px; border-radius: 50%; background: var(--paper); border: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center;">
+                    <img src="../public/logos/dropbox-logo.png" alt="Dropbox" style="width: 30px; height: 30px; object-fit: contain;">
+                  </div>
+                  <span style="font-size: 11px; color: var(--ink); font-weight: 500;">Legal &amp; Finance</span>
+                  <span style="font-size: 10px; color: var(--ink-soft); letter-spacing: 0.04em;">Dropbox</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ========== SLIDE 06 — TRANSITION INTO PROCESS ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="next: process" data-theme="light" data-align="center">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="next: process" data-theme="light" data-align="center">
     <div class="slide-inner">
       <div class="transition-slide">
         <div class="transition-eyebrow">End of Chapter 01</div>
@@ -2667,7 +2828,7 @@
   </section>
 
   <!-- ========== SLIDE 07 — PROCESS / CHAPTER INTRO (copied from preserved slide 45, retitled) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="process" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="process" data-theme="light">
     <div class="slide-inner">
       <div class="setup-grid">
         <div>
@@ -2729,7 +2890,7 @@
   </section>
 
   <!-- ========== SLIDE 08 — PROBLEM FRAMING (NEW · presentation flow) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="problem framing" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="problem framing" data-theme="light">
     <div class="slide-inner">
       <div class="deck-page">
         <div class="section-eyebrow">Process · Problem Framing</div>
@@ -2773,7 +2934,7 @@
   </section>
 
   <!-- ========== SLIDE 10 — THE KEYNOTE (moved from preserved slide 62) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="the keynote" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="the keynote" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">Process · The Keynote</div>
@@ -2793,7 +2954,7 @@
             </div>
             <figcaption>
               <span class="cap-num">Fig. 12</span>
-              <span class="cap-text">Core Offsite — AI Design Vision keynote. Mid-build.</span>
+              <span class="cap-text">Core Offsite — Senior ML Engineers, Design Leads.</span>
             </figcaption>
           </figure>
         </div>
@@ -2802,21 +2963,35 @@
   </section>
 
   <!-- ========== SLIDE 11 — RESEARCH (NEW · presentation flow) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="research" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="research" data-theme="light">
     <div class="slide-inner">
       <div class="deck-page">
         <div class="section-eyebrow">Process · Research</div>
         <div class="research-grid">
           <div class="research-rail">
             <h2 class="setup-headline">Research.</h2>
-            <p style="font-family:var(--sans); font-size:15px; line-height:1.5; color:var(--ink-soft); margin:0;">Dedicated research, some I ran, some run independently by DBX research</p>
-            <div class="deck-credit" style="padding-top:32px; margin-top:auto;">
-              <span class="credit-logo credit-logo--logo">
-                <img src="../public/logos/dropbox-logo.png" alt="Dropbox">
+
+            <div style="margin-top:24px; display:flex; flex-direction:column; gap:16px;">
+              <div>
+                <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:6px;">Inevitability</div>
+                <p style="font-family:var(--sans); font-size:13.5px; line-height:1.5; color:var(--ink); margin:0;">"A life-changing inflection point." Customers expected Dropbox to meet it.</p>
+              </div>
+
+              <div>
+                <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:6px;">Fear</div>
+                <p style="font-family:var(--serif); font-style:italic; font-size:15px; line-height:1.35; color:var(--ink); margin:0; letter-spacing:-0.005em;">"Are you scanning my data? Are you training on my files? Dropbox has been with me for twenty-two years — what does this mean?"</p>
+              </div>
+            </div>
+
+            <p style="font-family:var(--sans); font-size:12.5px; line-height:1.5; color:var(--ink-soft); margin:18px 0 0; padding-top:14px; border-top:1px solid var(--hairline);">This tension — inevitability and fear — is what shaped the opt-in we shipped into the flow.</p>
+
+            <div class="deck-credit" style="padding-top:24px; margin-top:auto;">
+              <span class="credit-logo">
+                <img src="../public/images/team/maggie.jpeg" alt="Maggie">
               </span>
               <div class="credit-meta">
                 <span class="credit-meta-label">Collaborated with</span>
-                <span class="credit-meta-name">DBX Research</span>
+                <span class="credit-meta-name">Maggie · DBX Research</span>
               </div>
             </div>
           </div>
@@ -2855,7 +3030,7 @@
   </section>
 
   <!-- ========== SLIDE 12 — CHALLENGE 1: COMPETITIVE LANDSCAPE (NEW) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="challenge 1" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="challenge 1" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -2890,7 +3065,7 @@
   </section>
 
   <!-- ========== SLIDE 11 — CHALLENGE 1 / ITERATION: AI RIGHT RAIL (challenge-grid layout · image right) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="iteration · ai right rail" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="iteration · ai right rail" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -2914,7 +3089,7 @@
   </section>
 
   <!-- ========== SLIDE 12 — CHALLENGE 1 / ITERATION: SEARCH TOGGLE (challenge-grid layout · image right) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="iteration · search toggle" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="iteration · search toggle" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -2938,7 +3113,7 @@
   </section>
 
   <!-- ========== SLIDE 13 — CHALLENGE 1 / RESULT: KEEPING THINGS SIMPLE (challenge-grid layout · image right) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="result · keeping things simple" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="result · keeping things simple" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -2961,12 +3136,12 @@
   </section>
 
   <!-- ========== SLIDE 14 — CHALLENGE 1 / FUTURE: INTEGRATED EXPERIENCE (challenge-grid layout · image right) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="future · integrated experience" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="future · integrated experience" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
           <div class="section-eyebrow">Process · Design: Entry points</div>
-          <h2 class="setup-headline">Future: <em>Integrated experience.</em></h2>
+          <h2 class="setup-headline">Near-term future: <em>Integrated experience.</em></h2>
           <p class="surface-text" style="margin-top:16px;">Beyond search and summary: AI as an active morning assistant. A daily brief, highest-priority items, the ability to ask anything about your content from a single prompt.</p>
           <p class="surface-text" style="margin-top:12px;">The shipped pattern earned the right to extend. The future of AI in Dropbox is integrated, not modular.</p>
         </div>
@@ -2984,7 +3159,7 @@
   </section>
 
   <!-- ========== SLIDE 16 — CHALLENGE 2 / TOOLING + HEURISTICS (NEW) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="challenge 2 · solution" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="challenge 2 · solution" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -3015,7 +3190,7 @@
   </section>
 
   <!-- ========== SLIDE 17 — CHALLENGE 3: AI ISN'T PERFECT (NEW) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="challenge 3" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="challenge 3" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -3044,7 +3219,7 @@
   </section>
 
   <!-- ========== CHALLENGE 3 / FEEDBACK PROTOTYPE (duplicate of Feedback slide · Figma prototype) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="challenge 3" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="challenge 3" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -3080,7 +3255,7 @@
   </section>
 
   <!-- ========== SLIDE 20 — CHALLENGE 3 / EARLY PROTOTYPE (NEW) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="early prototype" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="early prototype" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -3110,7 +3285,7 @@
   </section>
 
   <!-- ========== TRANSITION (copied from slide 7) — after Early Prototype ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="next: release and impact" data-theme="light" data-align="center">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="next: release and impact" data-theme="light" data-align="center">
     <div class="slide-inner">
       <div class="transition-slide">
         <div class="transition-eyebrow">End of Chapter 02</div>
@@ -3120,7 +3295,7 @@
   </section>
 
   <!-- ========== SLIDE 22 — IMPACT (challenge-grid layout · image right) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="impact" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="impact" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -3146,7 +3321,7 @@
   </section>
 
   <!-- ========== SLIDE 23 — THE PATENT (challenge-grid layout · image right) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="the patent" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="the patent" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -3170,7 +3345,7 @@
   </section>
 
   <!-- ========== TRANSITION (copied from slide 32) — after Patent ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="was this the end" data-theme="light" data-align="center">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="was this the end" data-theme="light" data-align="center">
     <div class="slide-inner">
       <div class="transition-slide">
         <div class="transition-eyebrow">Chapter 2.5</div>
@@ -3180,7 +3355,7 @@
   </section>
 
   <!-- ========== SLIDE 29 — AN UNEXPECTED CHALLENGE (copied from preserved slide 53 · Trust Crisis tweet grid, retitled) ========== -->
-  <section class="slide dark" data-section="dropbox-ai" data-crumb="an unexpected challenge" data-theme="dark">
+  <section class="slide dark" data-section="Dropbox AI: Q&amp;A" data-crumb="an unexpected challenge" data-theme="dark">
     <div class="slide-inner">
       <div class="crisis-stage">
         <div class="crisis-head">
@@ -3264,12 +3439,12 @@
 
 
   <!-- ========== SLIDE 25 — CHALLENGE 4 / SETTINGS UI + DEDICATED COLOR/ICONS (NEW) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="challenge 4 · resolution" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="challenge 4 · resolution" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
           <div class="section-eyebrow">Release and Impact · Challenge 4</div>
-          <h2 class="setup-headline">Updated disclosure and settings.</h2>
+          <h2 class="setup-headline">Tactical: <em>Disclosure and Settings.</em></h2>
           <p class="surface-text" style="margin-top:16px;">Co-designed with Legal, Brand, and the C-suite under live scrutiny. Same underlying behavior — completely different posture. AI moved from a buried preference to an in-context disclosure.</p>
           <div class="deck-credit">
             <span class="credit-logo credit-logo--logo">
@@ -3292,12 +3467,12 @@
   </section>
 
   <!-- ========== AI GUIDELINES (polished, moved here after Challenge 4 Settings) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="ai guidelines" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="ai guidelines" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid" style="grid-template-columns: minmax(280px, 360px) 1fr;">
         <div class="challenge-left">
           <div class="section-eyebrow">Solutions · AI Guidelines</div>
-          <h2 class="setup-headline">Six AI Principles.</h2>
+          <h2 class="setup-headline">Trust and Safety: <em>Six AI Principles.</em></h2>
           <p class="surface-text" style="margin-top: 24px; max-width: 380px;">When the trust crisis ended, we extracted what we'd learned into a set of guidelines we now design every AI feature against.</p>
           <div class="deck-credit">
             <span class="credit-logo credit-logo--logo">
@@ -3347,7 +3522,7 @@
   </section>
 
   <!-- ========== TRANSITION (copied from slide 7) — after Challenge 4 Settings ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="next: solution gallery" data-theme="light" data-align="center">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="next: solution gallery" data-theme="light" data-align="center">
     <div class="slide-inner">
       <div class="transition-slide">
         <div class="transition-eyebrow">End of Chapter 03</div>
@@ -3357,7 +3532,7 @@
   </section>
 
   <!-- ========== SLIDE 26 — AI BASED QUERIES AND SEARCH (NEW) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="ai queries & search" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="ai queries & search" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -3380,7 +3555,7 @@
   </section>
 
   <!-- ========== SLIDE 27 — AI SUMMARIZATION & NEW SEARCH PATTERNS (challenge-grid layout · image right) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="ai summarization" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="ai summarization" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -3402,7 +3577,7 @@
   </section>
 
   <!-- ========== SLIDE 28 — FILE BASED SUMMARIZATION (challenge-grid layout · image right) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="file summarization" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="file summarization" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -3433,7 +3608,7 @@
   </section>
 
   <!-- ========== TRANSITION (copied from slide 7) — after AI Guidelines ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="next: future" data-theme="light" data-align="center">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="next: future" data-theme="light" data-align="center">
     <div class="slide-inner">
       <div class="transition-slide">
         <div class="transition-eyebrow">End of Chapter 04</div>
@@ -3443,7 +3618,7 @@
   </section>
 
   <!-- ========== SLIDE 30 — MOBILE (NEW) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="mobile" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="mobile" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
@@ -3476,12 +3651,12 @@
   </section>
 
   <!-- ========== SLIDE 31 — BEYOND AI FOR SEARCH (NEW) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="beyond ai for search" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="beyond ai for search" data-theme="light">
     <div class="slide-inner">
       <div class="challenge-grid">
         <div class="challenge-left">
           <div class="section-eyebrow">Future · Beyond AI for Search</div>
-          <h2 class="setup-headline">Designing AI powered workflows.</h2>
+          <h2 class="setup-headline">Vision: <em>AI-Powered Workflows.</em></h2>
           <p class="surface-text" style="margin-top:16px;">How do we move AI at Dropbox from being relegated to specific instances, to instead be an integral part of users workflows.</p>
         </div>
 
@@ -3506,7 +3681,7 @@
   </section>
 
   <!-- ========== SLIDE 34 — REFLECTION / CHAPTER INTRO (copied from preserved slide 57) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="what shipped" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="what shipped" data-theme="light">
     <div class="slide-inner">
       <div class="setup-grid">
         <div>
@@ -3547,7 +3722,7 @@
   </section>
 
   <!-- ========== SLIDE 37 — THE NUMBERS (copied from preserved slide 58) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="the numbers" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="the numbers" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">The Reflection · The Numbers</div>
@@ -3583,7 +3758,7 @@
   </section>
 
   <!-- ========== SLIDE 38 — THE LESSONS (copied from preserved slide 59) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="the lessons" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="the lessons" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">The Reflection · The Lessons</div>
@@ -3624,7 +3799,7 @@
   </section>
 
   <!-- ========== SLIDE 39 — THE THROUGHLINE (copied from preserved slide 60) ========== -->
-  <section class="slide" data-section="dropbox-ai" data-crumb="the throughline" data-theme="light">
+  <section class="slide" data-section="Dropbox AI: Q&amp;A" data-crumb="the throughline" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">The Reflection · The Throughline</div>
@@ -3658,7 +3833,7 @@
   </section>
 
   <!-- ========== SLIDE 40 — CLOSING (copied from preserved slide 61) ========== -->
-  <section class="slide dark" data-section="dropbox-ai" data-crumb="next case study" data-theme="dark" data-align="center">
+  <section class="slide dark" data-section="Dropbox AI: Q&amp;A" data-crumb="next case study" data-theme="dark" data-align="center">
     <div class="slide-inner">
       <div class="transition-slide">
         <div class="transition-eyebrow" style="color: var(--void-soft);">End of Case Study 01</div>
@@ -3719,7 +3894,7 @@
   function syncChrome() {
     const slide = slides[current];
     pageCurrent.textContent = String(current + 1).padStart(2, '0');
-    crumbSection.textContent = (slide.dataset.section || 'Dropbox AI').toUpperCase();
+    crumbSection.textContent = (slide.dataset.section || 'Dropbox AI: Q&A').toUpperCase();
     crumbCurrent.textContent = (slide.dataset.crumb || '').toUpperCase();
     prevBtn.disabled = current === 0;
     nextBtn.disabled = current === total - 1;
@@ -3811,33 +3986,35 @@
     const hash = window.location.hash.slice(1);
     if (!hash) return;
     const map = {
-      // 6-chapter shortcuts (Hypothesis folded into Problem, Throughline folded into Lessons)
-      'cover': 0,
-      'contents': 1,
-      'problem': 2,
-      'process': 5,
-      'solutions': 11,
-      'impact': 25,
-      'future': 34,
-      'lessons': 36,
-      'closing': 41,
+      // About at 0, throughline at 1; existing indices shifted +1 again
+      'about': 0,
+      'throughline': 1,
+      'cover': 2,
+      'contents': 3,
+      'problem': 4,
+      'process': 7,
+      'solutions': 13,
+      'impact': 27,
+      'future': 36,
+      'lessons': 38,
+      'closing': 43,
 
-      // Granular shortcuts (presentation flow — slides 1–36)
-      'context': 1,
-      'team-timeline': 4,
-      'framing': 5,
-      'research': 6,
-      'vision': 7,
-      'challenge-1': 8,
-      'challenge-2': 15,
-      'challenge-3': 17,
-      'how-did-it-do': 21,
-      'patent': 23,
-      'was-that-the-end': 24,
-      'challenge-4': 25,
-      'guidelines': 30,
-      'mobile': 31,
-      'moving-forward': 33,
+      // Granular shortcuts
+      'context': 3,
+      'team-timeline': 6,
+      'framing': 7,
+      'research': 8,
+      'vision': 9,
+      'challenge-1': 10,
+      'challenge-2': 17,
+      'challenge-3': 19,
+      'how-did-it-do': 23,
+      'patent': 25,
+      'was-that-the-end': 26,
+      'challenge-4': 27,
+      'guidelines': 32,
+      'mobile': 33,
+      'moving-forward': 35,
     };
     if (map[hash] !== undefined) goTo(map[hash]);
   }

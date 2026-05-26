@@ -351,8 +351,8 @@
   }
   .hero-credits {
     display: grid;
-    grid-template-columns: repeat(3, auto);
-    gap: 40px;
+    grid-template-columns: repeat(2, auto);
+    gap: 20px 48px;
     padding-top: 28px;
     border-top: 1px solid var(--hairline);
   }
@@ -1537,6 +1537,10 @@
               <div class="hero-credit-label">Launch</div>
               <div class="hero-credit-value">Apr 29, 2026 · Android</div>
             </div>
+            <div>
+              <div class="hero-credit-label">Tools</div>
+              <div class="hero-credit-value">Figma (Design, Make) · Claude Code · Cursor · After Effects</div>
+            </div>
           </div>
         </div>
 
@@ -1782,6 +1786,49 @@
                 <text class="week" x="1120" y="332" text-anchor="middle">Wk 12 · Apr 01</text>
               </g>
             </svg>
+          </div>
+        </div>
+
+        <div style="margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--hairline); display: flex; gap: 56px; align-items: flex-start; justify-content: center; flex-wrap: wrap;">
+          <div>
+            <div style="font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 14px;">XFN Collaborators &amp; Stakeholders</div>
+            <div style="display: flex; gap: 24px;">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                <img src="../public/images/team/phil.jpg" alt="Phil" style="width: 54px; height: 54px; border-radius: 50%; object-fit: cover;">
+                <span style="font-size: 11px; color: var(--ink); font-weight: 500;">Phil</span>
+              </div>
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                <img src="../public/images/team/katie.jpg" alt="Katie" style="width: 54px; height: 54px; border-radius: 50%; object-fit: cover;">
+                <span style="font-size: 11px; color: var(--ink); font-weight: 500;">Katie</span>
+              </div>
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                <img src="../public/images/team/maggie.jpeg" alt="Maggie" style="width: 54px; height: 54px; border-radius: 50%; object-fit: cover;">
+                <span style="font-size: 11px; color: var(--ink); font-weight: 500;">Maggie</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 14px;">Executive Sponsor</div>
+            <div style="display: flex; gap: 24px;">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                <img src="../public/images/team/kevin.jpg" alt="Kevin" style="width: 54px; height: 54px; border-radius: 50%; object-fit: cover;">
+                <span style="font-size: 11px; color: var(--ink); font-weight: 500;">Kevin</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div style="font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 14px;">Partnerships &amp; Legal</div>
+            <div style="display: flex; gap: 24px;">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                <div style="width: 54px; height: 54px; border-radius: 50%; background: var(--paper); border: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center;">
+                  <img src="../public/logos/stripe.png" alt="Stripe" style="width: 30px; height: 30px; object-fit: contain;">
+                </div>
+                <span style="font-size: 11px; color: var(--ink); font-weight: 500;">Partnerships &amp; Legal</span>
+                <span style="font-size: 10px; color: var(--ink-soft); letter-spacing: 0.04em;">Stripe</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2329,6 +2376,79 @@
     </div>
   </section>
 
+  <!-- ========== SLIDE 14.6 — THE DEVICE MATRIX (5-screen variance) ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="device matrix" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">Process · Device matrix</div>
+        <h2 class="setup-headline" style="max-width:1100px;">The tap zone <em>moves.</em></h2>
+
+        <div class="flow-grid">
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">Pixel 8</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-variance-01.png" alt="Pixel 8 — NFC antenna near the top."></div>
+              <figcaption>
+                <span class="cap-num">01</span>
+                <span class="cap-text">Top.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Antenna near the camera bar.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">Galaxy S24</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-variance-02.png" alt="Samsung Galaxy S24 — NFC antenna upper-back."></div>
+              <figcaption>
+                <span class="cap-num">02</span>
+                <span class="cap-text">Upper-back.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Slightly below the camera array.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">OnePlus 12</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-variance-03.png" alt="OnePlus 12 — NFC antenna mid-back."></div>
+              <figcaption>
+                <span class="cap-num">03</span>
+                <span class="cap-text">Middle.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Centered on the device back.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">Motorola Edge</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-variance-04.png" alt="Motorola Edge — NFC antenna lower-back."></div>
+              <figcaption>
+                <span class="cap-num">04</span>
+                <span class="cap-text">Lower.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Below the midpoint, near the logo.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Tap</div>
+            <div class="flow-name">Nothing Phone</div>
+            <figure class="figure-slot">
+              <div class="figure-frame"><img src="../public/images/tap-to-add-variance-05.png" alt="Nothing Phone — NFC antenna edge."></div>
+              <figcaption>
+                <span class="cap-num">05</span>
+                <span class="cap-text">Edge.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">Off-center, toward the side rail.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ========== SLIDE 15 — THE CHALLENGE ========== -->
   <section class="slide" data-section="tap to add" data-crumb="the solution" data-theme="light">
     <div class="slide-inner">
@@ -2349,6 +2469,88 @@
             <h2 class="surface-headline">Device-aware. <em>Anchored at runtime.</em></h2>
             <p class="surface-text">Worked with Terminal's hardware team on a device → NFC zone lookup. The animation's anchor adapts at runtime to the buyer's specific phone — top for Pixel, middle for OnePlus, wherever the actual antenna sits.</p>
             <p class="surface-text">The prompt always lands on the real zone for the device. <em style="font-style:italic; color:var(--ink);">The buyer's tap finds something to land on.</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 16a — RELEASE CUTLINES & XFN DECISION-MAKING ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="cutlines" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+        <div class="section-eyebrow">Process · Cross-team · Cutlines</div>
+        <h2 class="setup-headline" style="max-width:1100px;">Three doors. <em>One cutline at each.</em></h2>
+        <p class="surface-text" style="max-width: 760px; margin-top: 16px;">Tap to Add doesn't ship once — it ships three times. Private Preview, Public Preview, and GA each have their own scope, their own room, and their own definition of "ready." As sole designer, my highest-leverage work was making each cutline defensible — and keeping the relationships alive between releases.</p>
+
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; width:100%;">
+
+          <!-- Private Preview -->
+          <div style="border-top: 2px solid var(--stripe); padding-top: 18px;">
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stripe); margin-bottom: 8px;">Milestone 01 · Live</div>
+            <div style="font-family: var(--serif); font-size: 24px; line-height: 1.15; color: var(--ink); margin-bottom: 18px; letter-spacing: -0.005em;">Private Preview</div>
+
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px;">Window</div>
+            <div style="font-family: var(--sans); font-size: 13px; color: var(--ink); margin-bottom: 16px;">Apr 2026 · select merchants</div>
+
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px;">What made the cut</div>
+            <ul style="margin: 0 0 16px 18px; padding: 0; font-family: var(--sans); font-size: 13px; line-height: 1.55; color: var(--ink-soft);">
+              <li>Device-aware NFC animation</li>
+              <li>"X" returns to payment methods</li>
+              <li>Core buyer tap flow, end-to-end</li>
+            </ul>
+
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px;">XFN at the table</div>
+            <div style="font-family: var(--sans); font-size: 13px; color: var(--ink-soft); line-height: 1.5;">Terminal HW · MPE PM · Android Eng · Risk</div>
+          </div>
+
+          <!-- Public Preview -->
+          <div style="border-top: 1px solid var(--hairline-2); padding-top: 18px;">
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px;">Milestone 02 · Target</div>
+            <div style="font-family: var(--serif); font-size: 24px; line-height: 1.15; color: var(--ink); margin-bottom: 18px; letter-spacing: -0.005em;">Public Preview</div>
+
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px;">Window</div>
+            <div style="font-family: var(--sans); font-size: 13px; color: var(--ink); margin-bottom: 16px;">Q3 2026 · broader rollout</div>
+
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px;">What gets added</div>
+            <ul style="margin: 0 0 16px 18px; padding: 0; font-family: var(--sans); font-size: 13px; line-height: 1.55; color: var(--ink-soft);">
+              <li>Behavioral telemetry tuning</li>
+              <li>Expanded device matrix coverage</li>
+              <li>Failure-state polish</li>
+            </ul>
+
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px;">XFN at the table</div>
+            <div style="font-family: var(--sans); font-size: 13px; color: var(--ink-soft); line-height: 1.5;">Issuer Ops · Trust · Support · Data Sci</div>
+          </div>
+
+          <!-- GA -->
+          <div style="border-top: 1px solid var(--hairline-2); padding-top: 18px;">
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px;">Milestone 03 · TBD</div>
+            <div style="font-family: var(--serif); font-size: 24px; line-height: 1.15; color: var(--ink); margin-bottom: 18px; letter-spacing: -0.005em;">GA</div>
+
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px;">Window</div>
+            <div style="font-family: var(--sans); font-size: 13px; color: var(--ink); margin-bottom: 16px;">2027 · full surface ownership</div>
+
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px;">What lands at GA</div>
+            <ul style="margin: 0 0 16px 18px; padding: 0; font-family: var(--sans); font-size: 13px; line-height: 1.55; color: var(--ink-soft);">
+              <li>Tap-screen visual language we own</li>
+              <li>Third buyer-side recommendation, held from PP</li>
+              <li>Brand · Comms · GTM handoff</li>
+            </ul>
+
+            <div style="font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 6px;">XFN at the table</div>
+            <div style="font-family: var(--sans); font-size: 13px; color: var(--ink-soft); line-height: 1.5;">Brand · Comms · GTM · Partnerships</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; padding-top: 28px; border-top: 1px solid var(--hairline);">
+          <div>
+            <div class="section-eyebrow" style="margin-bottom: 12px;">How the cutline gets made</div>
+            <p class="surface-text">Each milestone has different stakeholders, different risks, and different definitions of "ready." I wrote the cut / keep / defer matrix going into product review, walked it through with Terminal's hardware lead and the MPE PM beforehand, and held the room on the calls about why the device-aware animation had to ship at Private Preview — not GA.</p>
+          </div>
+          <div>
+            <div class="section-eyebrow" style="margin-bottom: 12px;">How the relationships stay</div>
+            <p class="surface-text">Sole designer doesn't mean solo work. I run XFN as a continuous loop — weekly checkpoint with Terminal, async with Risk, monthly with Issuer Ops. The relationships built at Private Preview are the relationships that carry Public Preview and GA. I treat the team as a long-running thing, not a per-milestone thing.</p>
           </div>
         </div>
       </div>
@@ -2732,6 +2934,92 @@
     </div>
   </section>
 
+  <!-- ========== SLIDE — WING CODA (post-credits) ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="what's next · wing" data-theme="light">
+    <div class="slide-inner">
+
+      <div style="width:100%; display:grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: start;">
+
+        <!-- LEFT — language column -->
+        <div style="display:flex; flex-direction:column; gap: 32px;">
+
+          <div class="section-eyebrow" style="margin:0; text-transform:none; letter-spacing: 0.04em; color: var(--ink-soft);">What's next · Eighty Labs</div>
+
+          <div>
+            <div aria-label="Wing." style="font-family: var(--sans); font-weight: 500; font-size: clamp(72px, 8.5vw, 120px); line-height: 0.92; letter-spacing: -0.03em; color: var(--ink);">Wing<span style="color: #B8412C;">.</span></div>
+            <div style="font-family: var(--serif); font-size: clamp(22px, 2vw, 28px); line-height: 1.2; color: var(--ink-soft); margin-top: 18px; letter-spacing: -0.005em;">Agentic experience design <em style="font-style: italic;">in practice.</em></div>
+          </div>
+
+          <p class="surface-text" style="max-width: 540px; margin:0;">Tap to Add was a new primitive at the payment surface. Wing is the new primitive at the orchestration layer — a personalization-first AI travel agent that learns how you fly once and applies it forever. Built end-to-end with Claude Code, Cursor, and an MCP stack of my own design.</p>
+        </div>
+
+        <!-- RIGHT — wing.guide hero mockup (lifted verbatim from Wing framing deck, slide 7) -->
+        <div style="width:100%;">
+          <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:720px; height:auto; display:block; border-radius: 6px;">
+            <defs>
+              <style>
+                .br-frame { fill:#16140F; stroke:#1A1614; stroke-width:1.5; }
+                .br-chrome { fill:#22201B; stroke:#1A1614; stroke-width:1; }
+                .br-url { fill:#2B2924; stroke:none; }
+                .br-text-cream { font-family:'DM Sans', sans-serif; fill:#F1ECDF; }
+                .br-text-faint { font-family:'DM Mono', monospace; fill:#9A9085; font-size:11px; letter-spacing:0.06em; }
+                .br-text-mid { font-family:'DM Sans', sans-serif; fill:#A8A095; font-size:14px; }
+                .br-input-stroke { stroke:#5C544D; stroke-width:1; fill:none; }
+                .br-accent { fill:#B8412C; }
+              </style>
+            </defs>
+
+            <!-- frame -->
+            <rect class="br-frame" x="6" y="6" width="708" height="448" rx="6"/>
+
+            <!-- chrome -->
+            <rect class="br-chrome" x="6" y="6" width="708" height="40" rx="6"/>
+            <rect class="br-chrome" x="6" y="32" width="708" height="14"/>
+            <circle cx="24" cy="26" r="5" fill="#3A3833"/>
+            <circle cx="42" cy="26" r="5" fill="#3A3833"/>
+            <circle cx="60" cy="26" r="5" fill="#3A3833"/>
+
+            <!-- url -->
+            <rect class="br-url" x="120" y="14" width="280" height="24" rx="4"/>
+            <text x="135" y="30" class="br-text-faint" fill="#9A9085">🔒 &nbsp; wing.guide</text>
+
+            <!-- content -->
+            <text x="360" y="160" text-anchor="middle" class="br-text-cream" font-weight="500" font-size="32" letter-spacing="-0.02em">Wing<tspan class="br-accent">.</tspan></text>
+
+            <!-- preference summary line -->
+            <text x="360" y="220" text-anchor="middle" class="br-text-mid" font-size="13" letter-spacing="0.02em">
+              Flying business international, windows, no red-eyes.
+              <tspan dx="6" fill="#C7BEAF" style="text-decoration:underline; text-decoration-style:dotted; text-decoration-color:#5C544D;">Change?</tspan>
+            </text>
+
+            <!-- input box -->
+            <rect class="br-input-stroke" x="160" y="250" width="400" height="56" rx="4"/>
+            <text x="180" y="285" class="br-text-mid" font-size="16">Where are you flying?</text>
+            <rect x="540" y="262" width="14" height="32" fill="#B8412C" opacity="0.85"/>
+
+            <!-- placeholder examples below -->
+            <text x="360" y="340" text-anchor="middle" class="br-text-faint" fill="#5C544D" font-size="10" letter-spacing="0.18em">TRY  ·  "I NEED TO BE IN TOKYO LATE JUNE, WORK"</text>
+
+            <!-- bottom signature -->
+            <text x="360" y="420" text-anchor="middle" class="br-text-faint" fill="#3A3833" font-size="9" letter-spacing="0.22em">EIGHTY LABS  ·  2026</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- BOTTOM STRIP — Technical foundations -->
+      <div style="margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--hairline); display:flex; flex-wrap:wrap; gap: 14px 56px; align-items: baseline; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;">
+        <span><span style="color: var(--ink-faint);">Design</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Figma</span></span>
+        <span><span style="color: var(--ink-faint);">Build</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Claude Code &nbsp;·&nbsp; Cursor &nbsp;·&nbsp; Codex</span></span>
+        <span><span style="color: var(--ink-faint);">Orchestrate</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Linear &nbsp;·&nbsp; MCP</span></span>
+        <span><span style="color: var(--ink-faint);">Deploy</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Vercel &nbsp;·&nbsp; Supabase &nbsp;·&nbsp; Render</span></span>
+      </div>
+
+      <!-- STATUS FOOTER -->
+      <div style="margin-top: 18px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-faint);">Alpha</div>
+
+    </div>
+  </section>
+
 </main>
 
 <!-- ============================================================
@@ -2863,8 +3151,8 @@
       'contents': 1,
       'problem': 2,
       'process': 7,
-      'release-and-impact': 21,
-      'lessons': 24,
+      'release-and-impact': 23,
+      'lessons': 26,
     };
     if (map[hash] !== undefined) goTo(map[hash]);
   }

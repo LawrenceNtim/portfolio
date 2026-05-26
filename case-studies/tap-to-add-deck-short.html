@@ -351,8 +351,8 @@
   }
   .hero-credits {
     display: grid;
-    grid-template-columns: repeat(3, auto);
-    gap: 40px;
+    grid-template-columns: repeat(2, auto);
+    gap: 20px 48px;
     padding-top: 28px;
     border-top: 1px solid var(--hairline);
   }
@@ -1537,6 +1537,10 @@
               <div class="hero-credit-label">Launch</div>
               <div class="hero-credit-value">Apr 29, 2026 · Android</div>
             </div>
+            <div>
+              <div class="hero-credit-label">Tools</div>
+              <div class="hero-credit-value">Figma (Design, Make) · Claude Code · Cursor · After Effects</div>
+            </div>
           </div>
         </div>
 
@@ -2183,13 +2187,138 @@
     </div>
   </section>
 
-  <!-- ========== SLIDE 22 — TRANSITION → LESSONS ========== -->
-  <section class="slide dark" data-section="tap to add" data-crumb="next" data-theme="dark" data-align="center">
+  <!-- ========== SLIDE 21.5 — OUTCOME & THROUGHLINE (synthesis close) ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="outcome &amp; throughline" data-theme="light">
+    <div class="slide-inner">
+      <div style="width:100%;">
+
+        <div class="section-eyebrow">Outcome · Externally validated</div>
+        <h2 class="surface-headline" style="max-width: 900px;">What the gesture is <em>worth.</em></h2>
+
+        <div class="big-stats" style="margin-top: 40px;">
+          <div class="big-stat">
+            <div class="big-stat-num accent">85%</div>
+            <div class="big-stat-label">Reduction in provisioning fraud · global</div>
+          </div>
+          <div class="big-stat">
+            <div class="big-stat-num accent">90%</div>
+            <div class="big-stat-label">Reduction in provisioning fraud · US</div>
+          </div>
+          <div class="big-stat">
+            <div class="big-stat-num accent">+11%</div>
+            <div class="big-stat-label">Lift in authorization rates</div>
+          </div>
+        </div>
+
+        <p style="margin-top: 20px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink-faint); line-height: 1.5;">Numbers from a payment network, not from us. · Source: Visa pilot data, cross-functional Stripe product review, Feb 25, 2026.</p>
+
+        <div style="margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--hairline);">
+          <div class="section-eyebrow">Throughline</div>
+          <p class="pull-quote" style="max-width: 1000px;">Two case studies. One belief: <em>gestures can carry trust that digital flows have been faking.</em></p>
+        </div>
+
+        <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--hairline);">
+          <div class="section-eyebrow">How I work</div>
+          <p class="pull-quote" style="max-width: 1000px;">I look for primitives <em>nobody noticed they could repoint.</em></p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE — FIN (dark closing) ========== -->
+  <section class="slide dark" data-section="tap to add" data-crumb="fin" data-theme="dark" data-align="center">
     <div class="slide-inner">
       <div class="transition-slide">
         <div class="transition-eyebrow" style="color: var(--void-soft);">End of Case Study 02</div>
-        <h2 class="transition-text" style="color: var(--void-ink);">Thanks for reading.</h2>
+        <h2 class="transition-text" style="color: var(--void-ink); font-family: var(--serif); font-style: italic;">Fin.</h2>
       </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE — WING CODA (post-credits) ========== -->
+  <section class="slide" data-section="tap to add" data-crumb="what's next · wing" data-theme="light">
+    <div class="slide-inner">
+
+      <div style="width:100%; display:grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: start;">
+
+        <!-- LEFT — language column -->
+        <div style="display:flex; flex-direction:column; gap: 32px;">
+
+          <div class="section-eyebrow" style="margin:0; text-transform:none; letter-spacing: 0.04em; color: var(--ink-soft);">What's next · Eighty Labs</div>
+
+          <div>
+            <div aria-label="Wing." style="font-family: var(--sans); font-weight: 500; font-size: clamp(72px, 8.5vw, 120px); line-height: 0.92; letter-spacing: -0.03em; color: var(--ink);">Wing<span style="color: #B8412C;">.</span></div>
+            <div style="font-family: var(--serif); font-size: clamp(22px, 2vw, 28px); line-height: 1.2; color: var(--ink-soft); margin-top: 18px; letter-spacing: -0.005em;">Agentic experience design <em style="font-style: italic;">in practice.</em></div>
+          </div>
+
+          <p class="surface-text" style="max-width: 540px; margin:0;">Tap to Add was a new primitive at the payment surface. Wing is the new primitive at the orchestration layer — a personalization-first AI travel agent that learns how you fly once and applies it forever. Built end-to-end with Claude Code, Cursor, and an MCP stack of my own design.</p>
+        </div>
+
+        <!-- RIGHT — wing.guide hero mockup (lifted verbatim from Wing framing deck, slide 7) -->
+        <div style="width:100%;">
+          <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:720px; height:auto; display:block; border-radius: 6px;">
+            <defs>
+              <style>
+                .br-frame { fill:#16140F; stroke:#1A1614; stroke-width:1.5; }
+                .br-chrome { fill:#22201B; stroke:#1A1614; stroke-width:1; }
+                .br-url { fill:#2B2924; stroke:none; }
+                .br-text-cream { font-family:'DM Sans', sans-serif; fill:#F1ECDF; }
+                .br-text-faint { font-family:'DM Mono', monospace; fill:#9A9085; font-size:11px; letter-spacing:0.06em; }
+                .br-text-mid { font-family:'DM Sans', sans-serif; fill:#A8A095; font-size:14px; }
+                .br-input-stroke { stroke:#5C544D; stroke-width:1; fill:none; }
+                .br-accent { fill:#B8412C; }
+              </style>
+            </defs>
+
+            <!-- frame -->
+            <rect class="br-frame" x="6" y="6" width="708" height="448" rx="6"/>
+
+            <!-- chrome -->
+            <rect class="br-chrome" x="6" y="6" width="708" height="40" rx="6"/>
+            <rect class="br-chrome" x="6" y="32" width="708" height="14"/>
+            <circle cx="24" cy="26" r="5" fill="#3A3833"/>
+            <circle cx="42" cy="26" r="5" fill="#3A3833"/>
+            <circle cx="60" cy="26" r="5" fill="#3A3833"/>
+
+            <!-- url -->
+            <rect class="br-url" x="120" y="14" width="280" height="24" rx="4"/>
+            <text x="135" y="30" class="br-text-faint" fill="#9A9085">🔒 &nbsp; wing.guide</text>
+
+            <!-- content -->
+            <text x="360" y="160" text-anchor="middle" class="br-text-cream" font-weight="500" font-size="32" letter-spacing="-0.02em">Wing<tspan class="br-accent">.</tspan></text>
+
+            <!-- preference summary line -->
+            <text x="360" y="220" text-anchor="middle" class="br-text-mid" font-size="13" letter-spacing="0.02em">
+              Flying business international, windows, no red-eyes.
+              <tspan dx="6" fill="#C7BEAF" style="text-decoration:underline; text-decoration-style:dotted; text-decoration-color:#5C544D;">Change?</tspan>
+            </text>
+
+            <!-- input box -->
+            <rect class="br-input-stroke" x="160" y="250" width="400" height="56" rx="4"/>
+            <text x="180" y="285" class="br-text-mid" font-size="16">Where are you flying?</text>
+            <rect x="540" y="262" width="14" height="32" fill="#B8412C" opacity="0.85"/>
+
+            <!-- placeholder examples below -->
+            <text x="360" y="340" text-anchor="middle" class="br-text-faint" fill="#5C544D" font-size="10" letter-spacing="0.18em">TRY  ·  "I NEED TO BE IN TOKYO LATE JUNE, WORK"</text>
+
+            <!-- bottom signature -->
+            <text x="360" y="420" text-anchor="middle" class="br-text-faint" fill="#3A3833" font-size="9" letter-spacing="0.22em">EIGHTY LABS  ·  2026</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- BOTTOM STRIP — Technical foundations -->
+      <div style="margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--hairline); display:flex; flex-wrap:wrap; gap: 14px 56px; align-items: baseline; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;">
+        <span><span style="color: var(--ink-faint);">Design</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Figma</span></span>
+        <span><span style="color: var(--ink-faint);">Build</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Claude Code &nbsp;·&nbsp; Cursor &nbsp;·&nbsp; Codex</span></span>
+        <span><span style="color: var(--ink-faint);">Orchestrate</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Linear &nbsp;·&nbsp; MCP</span></span>
+        <span><span style="color: var(--ink-faint);">Deploy</span> &nbsp;·&nbsp; <span style="color: var(--ink);">Vercel &nbsp;·&nbsp; Supabase &nbsp;·&nbsp; Render</span></span>
+      </div>
+
+      <!-- STATUS FOOTER -->
+      <div style="margin-top: 18px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-faint);">Alpha</div>
+
     </div>
   </section>
 
@@ -2320,12 +2449,13 @@
     const hash = window.location.hash.slice(1);
     if (!hash) return;
     const map = {
-      // Short (10 min, craft-focused) — 16 slides total
+      // Short (10 min, craft-focused) — 17 slides total
       'cover': 0,
       'problem': 1,
       'process': 4,
       'impact': 14,
-      'closing': 15,
+      'outcome': 15,
+      'closing': 16,
 
       // Granular shortcuts
       'context': 1,
