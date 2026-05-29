@@ -2518,6 +2518,33 @@ body.panel-open .grid-dim { opacity: 0.3; pointer-events: none; }
       </button>
       -->
 
+      <!-- Card 05 — Wing (desktop/web) — HIDDEN from home page; case study live at /case-studies/wing.html, linked from the Tap to Add deck coda
+      <button class="card" role="listitem" data-project="05" data-cursor-hover aria-label="Open project details — Wing">
+        <div class="card-well">
+          <div class="device-macbook">
+            <div class="lid">
+              <div class="notch"></div>
+              <div class="screen">
+                <video autoplay muted loop playsinline preload="metadata">
+                  <source src="public/videos/wing-demo.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+            <div class="base"></div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <span class="card-glyph" aria-hidden="true">
+            <img src="public/logos/eighty.png" alt="Eighty Labs" width="24" height="24">
+          </span>
+          <div class="card-text">
+            <h3 class="card-name">Wing<span class="card-arrow" aria-hidden="true">→</span></h3>
+            <p class="card-impact">An AI travel assistant built end to end on an MCP stack of my own.</p>
+          </div>
+        </div>
+      </button>
+      -->
+
       <!-- Card 02 — iOS 26 Redesign (mobile) -->
       <button class="card" role="listitem" data-project="02" data-cursor-hover aria-label="Open project details — iOS 26 Redesign">
         <div class="card-well">
@@ -2914,6 +2941,19 @@ body.panel-open .grid-dim { opacity: 0.3; pointer-events: none; }
    Project data (Design section)
 ══════════════════════════════════════════════════════ */
 const PROJECTS = {
+  "05": {
+    num: "05",
+    name: "Wing",
+    year: "2026",
+    status: "v0 · In build",
+    role: "Founder · Product & Design",
+    company: "Eighty Labs",
+    about: "An AI travel assistant that learns how you fly once and applies it to every search forever — built end to end on an MCP infrastructure of my own. My agentic experience design practice, in the open.",
+    problem: "Booking a trip well means optimizing fifteen variables at once — cabin, seat, connection risk, cash vs. award, status, transfer ratios — across ten-plus tools that don't talk to each other. You are the orchestrator, the cognitive load is the product, and $100B+ in loyalty points sit unredeemed because redemption is too confusing to bother with. Search tools find awards, planners book cash fares, trackers know your balance — but nobody manages the whole portfolio, and nobody positions as an assistant rather than an autonomous agent that only 2% of people trust to book for them.",
+    solution: "Designed and built Wing as agentic experience design at the orchestration layer, not the pixel layer. Preference memory across ~17 axes captured progressively; a parallel cash-vs-points results matrix that rejects the single-answer-with-reasoning-expander pattern; intervention points that keep the user in control. Powered by an 8-server MCP stack — live flight and points data, seat maps, airport intelligence — surfaced both inside an LLM and on its own web app. Built solo with Claude Code, Cursor, and Codex. v0 in build, 2026.",
+    collaborators: ["Product & Design", "Engineering", "Built solo · Claude Code, Cursor, Codex", "Lawrence Ntim"],
+    caseStudyUrl: "/case-studies/wing.html"
+  },
   "01": {
     num: "01",
     name: "Tap to Add",
