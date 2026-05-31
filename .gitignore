@@ -28,3 +28,4 @@ dist/
 
 # Local source material (kickoff files, deck PDFs — not for deploy)
 public/references/
+.vercel
