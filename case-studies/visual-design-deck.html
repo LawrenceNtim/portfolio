@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visual Design — Lawrence Ntim</title>
+<meta name="description" content="Lawrence Ntim — selected visual design. Dropbox and Stripe.">
+
+<!-- Three-voice type system: Nixie One (display) · DM Sans (body) · DM Mono (technical) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nixie+One&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* Color world — cream + brown editorial */
+    --paper:        #F4F0E8;
+    --paper-deep:   #E8E2D4;
+    --ink:          #1A1814;
+    --ink-soft:     #6B655B;
+    --ink-faint:    #A8A095;
+    --hairline:     rgba(26, 24, 20, 0.10);
+    --hairline-2:   rgba(26, 24, 20, 0.18);
+    --void:         #14110D;
+    --void-ink:     #F4F0E8;
+    --void-soft:    rgba(244, 240, 232, 0.55);
+    --void-faint:   rgba(244, 240, 232, 0.30);
+    --void-line:    rgba(244, 240, 232, 0.14);
+
+    /* Spot accents — Dropbox blue (section 01), Stripe purple (section 02) */
+    --dbx:          #0061FF;
+    --dbx-soft:     rgba(0, 97, 255, 0.10);
+    --stripe:       #635BFF;
+    --stripe-soft:  rgba(99, 91, 255, 0.10);
+
+    /* Type */
+    --serif:        'Nixie One', 'Cormorant Garamond', Georgia, serif;
+    --sans:         'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono:         'DM Mono', 'JetBrains Mono', ui-monospace, monospace;
+
+    /* Motion */
+    --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out:  cubic-bezier(0.65, 0, 0.35, 1);
+
+    /* Type scale — editorial, capped intentionally */
+    --text-display:    clamp(48px, 6vw, 88px);
+    --text-chapter:    clamp(40px, 4.5vw, 64px);
+    --text-headline:   clamp(32px, 3.6vw, 52px);
+    --text-subhead:    clamp(22px, 2.2vw, 32px);
+    --text-body-lg:    18px;
+    --text-body:       16px;
+    --text-mono-sm:    11px;
+    --text-mono-xs:    10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection { background: var(--ink); color: var(--paper); }
+
+  /* ===== CHROME (persistent UI) ===== */
+  .chrome { position: fixed; inset: 0; pointer-events: none; z-index: 100; }
+  .chrome > * { pointer-events: auto; }
+
+  .colophon {
+    position: absolute; bottom: 36px; left: 32px;
+    font-family: var(--serif); font-size: 14px; letter-spacing: 0.01em;
+    color: var(--ink); text-decoration: none; transition: opacity 0.3s ease; z-index: 101;
+  }
+  .colophon:hover { opacity: 0.6; }
+  body.dark .colophon { color: var(--void-ink); }
+
+  .breadcrumb {
+    position: absolute; top: 36px; left: 32px;
+    font-family: var(--mono); font-size: var(--text-mono-sm); letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-soft); transition: color 0.4s ease;
+  }
+  .breadcrumb .crumb-section { color: var(--ink-faint); }
+  .breadcrumb .crumb-current { color: var(--ink); font-weight: 500; }
+  body.dark .breadcrumb .crumb-section { color: var(--void-faint); }
+  body.dark .breadcrumb .crumb-current { color: var(--void-ink); }
+
+  .close-btn {
+    position: absolute; top: 32px; right: 32px; width: 44px; height: 44px;
+    border: 1px solid var(--hairline); border-radius: 50%; background: transparent;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    color: var(--ink); transition: background 0.3s ease, transform 0.4s var(--ease-out);
+    text-decoration: none;
+  }
+  .close-btn:hover { background: var(--ink); color: var(--paper); transform: rotate(90deg); }
+  .close-btn svg { width: 14px; height: 14px; }
+  body.dark .close-btn { border-color: var(--void-line); color: var(--void-ink); }
+  body.dark .close-btn:hover { background: var(--void-ink); color: var(--void); }
+
+  .paginator {
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .page-num {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em;
+    color: var(--ink-soft); font-variant-numeric: tabular-nums;
+  }
+  body.dark .page-num { color: var(--void-faint); }
+
+  .dots { display: flex; gap: 6px; align-items: center; }
+  .dot {
+    width: 5px; height: 5px; border-radius: 50%; background: var(--ink-faint);
+    border: none; cursor: pointer; padding: 0; transition: all 0.3s var(--ease-out); opacity: 0.6;
+  }
+  .dot:hover { opacity: 1; }
+  .dot.active { width: 22px; border-radius: 3px; background: var(--ink); opacity: 1; }
+  body.dark .dot { background: var(--void-faint); }
+  body.dark .dot.active { background: var(--void-ink); }
+
+  .nav-arrows { position: absolute; bottom: 32px; right: 32px; display: flex; gap: 8px; }
+  .arrow {
+    width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--hairline);
+    background: var(--paper); cursor: pointer; display: flex; align-items: center;
+    justify-content: center; color: var(--ink); transition: all 0.3s var(--ease-out);
+  }
+  .arrow:hover:not(:disabled) { background: var(--ink); color: var(--paper); transform: translateY(-1px); }
+  .arrow:disabled { opacity: 0.3; cursor: not-allowed; }
+  .arrow svg { width: 14px; height: 14px; }
+  body.dark .arrow { background: var(--void); border-color: var(--void-line); color: var(--void-ink); }
+  body.dark .arrow:hover:not(:disabled) { background: var(--void-ink); color: var(--void); }
+
+  /* ===== LIGHTBOX ===== */
+  .lightbox {
+    position: fixed; inset: 0; background: rgba(20, 17, 13, 0.94);
+    display: flex; align-items: center; justify-content: center; z-index: 200;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease; cursor: zoom-out;
+  }
+  .lightbox.open { opacity: 1; pointer-events: auto; }
+  .lightbox-img { max-width: 92vw; max-height: 88vh; object-fit: contain; display: block; cursor: default; }
+  .lightbox-close {
+    position: absolute; top: 32px; right: 32px; width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid var(--void-line); background: transparent; color: var(--void-ink);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.4s var(--ease-out);
+  }
+  .lightbox-close svg { width: 14px; height: 14px; }
+  .lightbox-close:hover { background: var(--void-ink); color: var(--void); transform: rotate(90deg); }
+  .figure-frame img { cursor: zoom-in; }
+
+  /* ===== SLIDES ===== */
+  .deck { position: relative; width: 100vw; height: 100vh; }
+  .slide {
+    position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: center;
+    padding: 80px 96px 140px; opacity: 0; pointer-events: none; transform: translateY(8px);
+    transition: opacity 0.5s var(--ease-out), transform 0.6s var(--ease-out);
+  }
+  .slide[data-align="center"] { align-items: center; }
+  .slide.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .slide.dark { background: var(--void); color: var(--void-ink); }
+  .slide-inner { width: 100%; max-width: 1280px; margin: 0 auto; }
+
+  .section-eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-soft); margin-bottom: 24px;
+  }
+  .slide.dark .section-eyebrow { color: var(--void-soft); }
+  .sec-dbx .section-eyebrow { color: var(--dbx); }
+  .sec-stripe .section-eyebrow { color: var(--stripe); }
+
+  /* ===== COVER ===== */
+  .cover { width: 100%; text-align: center; }
+  .cover-eyebrow {
+    font-family: var(--mono); font-size: var(--text-mono-sm); letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--void-soft); margin-bottom: 36px;
+  }
+  .cover-title {
+    font-family: var(--serif); font-size: var(--text-display); line-height: 0.95;
+    letter-spacing: -0.01em; color: var(--void-ink); margin-bottom: 28px;
+  }
+  .cover-sub {
+    font-family: var(--mono); font-size: 13px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--void-soft);
+  }
+  .cover-sub .dbx { color: var(--dbx); }
+  .cover-sub .stripe { color: var(--stripe); }
+
+  /* ===== SECTION DIVIDER ===== */
+  .divider { width: 100%; display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px; align-items: center; }
+  .divider-index {
+    font-family: var(--mono); font-size: var(--text-mono-sm); letter-spacing: 0.2em;
+    text-transform: uppercase; margin-bottom: 24px;
+  }
+  .sec-dbx .divider-index { color: var(--dbx); }
+  .sec-stripe .divider-index { color: var(--stripe); }
+  .divider-name {
+    font-family: var(--serif); font-size: var(--text-chapter); line-height: 1; letter-spacing: -0.01em;
+    color: var(--void-ink); margin-bottom: 24px;
+  }
+  .divider-note {
+    font-family: var(--sans); font-size: var(--text-body-lg); line-height: 1.55; color: var(--void-soft);
+    max-width: 420px;
+  }
+  .divider-figure { margin: 0; }
+  .divider-figure .figure-frame {
+    position: relative; width: 100%; aspect-ratio: 16 / 10; background: rgba(244, 240, 232, 0.04);
+    border: 1px solid var(--void-line); border-radius: 4px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .divider-figure .figure-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .divider-figure figcaption {
+    margin-top: 14px; display: flex; gap: 16px; align-items: baseline; font-family: var(--mono);
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--void-soft);
+  }
+  .divider-figure .cap-num { color: var(--void-faint); flex-shrink: 0; }
+
+  /* ===== EXAMPLE (image + headline) ===== */
+  .slide-example .slide-inner { height: 100%; display: flex; flex-direction: column; }
+  .example-header { flex-shrink: 0; margin-bottom: 28px; }
+  .example-headline {
+    font-family: var(--serif); font-size: var(--text-headline); line-height: 1.08;
+    letter-spacing: -0.01em; color: var(--ink); margin: 0; max-width: 1000px;
+  }
+  .example-headline em { font-style: italic; }
+  .sec-dbx .example-headline em { color: var(--dbx); }
+  .sec-stripe .example-headline em { color: var(--stripe); }
+
+  .example-figure { flex: 1; min-height: 0; margin: 0; display: flex; flex-direction: column; }
+  .example-figure .figure-frame {
+    position: relative; flex: 1; min-height: 0; width: 100%; background: var(--paper-deep);
+    border: 1px solid var(--hairline); border-radius: 4px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .example-figure .figure-frame img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .example-figure figcaption {
+    flex-shrink: 0; margin-top: 14px; display: flex; gap: 16px; align-items: baseline;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .example-figure .cap-num { color: var(--ink-faint); flex-shrink: 0; }
+  .example-figure .cap-text { color: var(--ink-soft); }
+
+  /* ===== DOCSEND SURFACES — before/after comparison layout (ported from DocSend deck) ===== */
+  .challenge-grid {
+    display: grid; grid-template-columns: minmax(280px, 360px) 1fr; gap: 80px;
+    width: 100%; height: 100%; min-height: 70vh; align-items: stretch;
+  }
+  .challenge-left { display: flex; flex-direction: column; padding: 0; }
+  .challenge-right {
+    display: flex; align-items: flex-start; justify-content: center; position: relative; padding: 8px 0;
+  }
+
+  .setup-headline {
+    font-family: var(--serif); font-size: var(--text-headline); line-height: 1.1;
+    letter-spacing: -0.01em; color: var(--ink);
+  }
+  .setup-headline em { font-style: italic; color: var(--ink-soft); }
+
+  .surface-text {
+    font-family: var(--sans); font-size: 16px; line-height: 1.6; color: var(--ink-soft);
+    margin: 0; max-width: 540px;
+  }
+
+  .figure-slot { display: block; margin: 0; }
+  .figure-frame {
+    position: relative; width: 100%; background: var(--paper-deep);
+    border: 1px solid var(--hairline); border-radius: 4px;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .figure-slot[data-aspect="16/10"] .figure-frame { aspect-ratio: 16 / 10; }
+  .figure-slot[data-aspect="4/3"] .figure-frame { aspect-ratio: 4 / 3; }
+  .figure-slot[data-aspect="3/2"] .figure-frame { aspect-ratio: 3 / 2; }
+  .figure-frame img, .figure-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .figure-frame--inset { padding: 32px; }
+  .figure-frame--inset img, .figure-frame--inset video { object-fit: contain; }
+  .figure-slot figcaption {
+    margin-top: 14px; display: flex; gap: 16px; align-items: baseline; font-family: var(--mono);
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .figure-slot .cap-num { color: var(--ink-faint); flex-shrink: 0; }
+  .figure-slot .cap-text { color: var(--ink-soft); }
+
+  /* Portrait prototype framed as a phone, centered in an example figure */
+  .example-figure .figure-frame .proto-phone {
+    height: 100%; aspect-ratio: 9 / 16; background: var(--void);
+    border-radius: 36px; overflow: hidden;
+  }
+  .example-figure .figure-frame .proto-phone iframe { width: 100%; height: 100%; border: none; display: block; }
+  /* Landscape iframes (AI checkout) fill the frame */
+  .example-figure .figure-frame > iframe { width: 100%; height: 100%; border: none; display: block; }
+
+  @media (max-width: 900px) {
+    .slide { padding: 64px 32px 120px; }
+    .divider { grid-template-columns: 1fr; gap: 40px; }
+    .challenge-grid { grid-template-columns: 1fr; gap: 40px; min-height: 0; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     CHROME — persistent UI
+============================================================ -->
+<div class="chrome">
+  <a href="/" class="colophon" aria-label="Back to portfolio">LN</a>
+
+  <div class="breadcrumb">
+    <span class="crumb-section" id="crumb-section">VISUAL DESIGN</span>
+    <span class="crumb-divider"> / </span>
+    <span class="crumb-current" id="crumb-current">COVER</span>
+  </div>
+
+  <a href="/" class="close-btn" aria-label="Close deck">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="1" y1="1" x2="13" y2="13"/>
+      <line x1="13" y1="1" x2="1" y2="13"/>
+    </svg>
+  </a>
+
+  <div class="paginator">
+    <div class="page-num"><span id="page-current">01</span> / <span id="page-total">16</span></div>
+    <div class="dots" id="dots" role="tablist" aria-label="Slide navigation"></div>
+  </div>
+
+  <div class="nav-arrows">
+    <button class="arrow" id="prev-btn" aria-label="Previous slide">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 2 L4 7 L9 12"/>
+      </svg>
+    </button>
+    <button class="arrow" id="next-btn" aria-label="Next slide">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M5 2 L10 7 L5 12"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     LIGHTBOX — click-to-expand for figure images
+============================================================ -->
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Expanded figure">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close expanded figure">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="1" y1="1" x2="13" y2="13"/>
+      <line x1="13" y1="1" x2="1" y2="13"/>
+    </svg>
+  </button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="">
+</div>
+
+<!-- ============================================================
+     DECK — slides
+============================================================ -->
+<main class="deck" id="deck">
+
+  <!-- ========== SLIDE 01 — COVER ========== -->
+  <section class="slide active dark" data-section="Visual Design" data-crumb="cover" data-theme="dark" data-align="center">
+    <div class="slide-inner">
+      <div class="cover">
+        <div class="cover-eyebrow">Lawrence Ntim · Selected work</div>
+        <h1 class="cover-title">Visual Design.</h1>
+        <div class="cover-sub"><span class="dbx">Dropbox</span> &nbsp;·&nbsp; <span class="stripe">Stripe</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 02 — DROPBOX DIVIDER ========== -->
+  <section class="slide dark sec-dbx" data-section="Dropbox" data-crumb="section" data-theme="dark" data-align="center">
+    <div class="slide-inner">
+      <div class="divider">
+        <div class="divider-copy">
+          <div class="divider-index">01 / Dropbox</div>
+          <h2 class="divider-name">Dropbox.</h2>
+          <p class="divider-note">Visual design across Dropbox — from its first AI surfaces to DocSend, designed into products used by millions.</p>
+        </div>
+        <figure class="divider-figure">
+          <div class="figure-frame">
+            <img src="../public/images/dropbox-ai-launch.png" alt="Dropbox AI shown on the keynote stage.">
+          </div>
+          <figcaption><span class="cap-num">00</span><span class="cap-text">Shipped on the Dropbox keynote stage.</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 03 — DROPBOX: Q&A ========== -->
+  <section class="slide slide-example sec-dbx" data-section="Dropbox" data-crumb="answers in search" data-theme="light">
+    <div class="slide-inner">
+      <div class="example-header">
+        <div class="section-eyebrow">Dropbox AI · Visual design</div>
+        <h2 class="example-headline">Answers, <em>inline with search.</em></h2>
+      </div>
+      <figure class="example-figure">
+        <div class="figure-frame">
+          <iframe
+            src="https://embed.figma.com/proto/WwehM5TjxUIUN8dpBQym2p/DBX-AI-Future?node-id=0-18909&amp;viewport=60%2C132%2C0.56&amp;scaling=scale-down&amp;content-scaling=fixed&amp;page-id=0%3A1&amp;embed-host=share"
+            title="Dropbox AI Future — AI-powered workflows prototype"
+            style="width:100%; height:100%; border:none;"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <figcaption><span class="cap-num">01</span><span class="cap-text">A plain-language answer, with its source, above the results.</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ========== DOCSEND — Sign up: before ========== -->
+  <section class="slide sec-dbx" data-section="Dropbox" data-crumb="docsend · sign up · before" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">DocSend · Sign up · Visual design</div>
+          <h2 class="setup-headline">Sign up: <em>Before.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Sign up was surfaced by a modal with information split across steps. Users were dropped into a trial with no context for what it was or when it would end.</p>
+          <p class="surface-text" style="margin-top:12px;">The biggest single drop in the funnel sat here.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-sign-up-before.png" alt="Sign up, before: modal entry, fragmented context">
+            </div>
+            <figcaption>
+              <span class="cap-num">Before</span>
+              <span class="cap-text">Modal sign-up, split context, no trial framing.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DOCSEND — Sign up: after ========== -->
+  <section class="slide sec-dbx" data-section="Dropbox" data-crumb="docsend · sign up · after" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">DocSend · Sign up · Visual design</div>
+          <h2 class="setup-headline">Sign up: <em>After.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Surfaced the most important information first. Gave the auto-trial an explicit start, midpoint reminder, and end date. Removed the modal, gave the page room to breathe.</p>
+          <p class="surface-text" style="margin-top:12px;">"Experience the best of DocSend free for 14 days," said up front, instead of inferred from a banner three pages in.</p>
+          <p class="surface-text" style="margin-top:12px; font-family:var(--mono); font-size:12px; color:var(--ink-faint); letter-spacing:0.05em;">Designed with Treyce, special guest.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-sign-up-after.png" alt="Sign up, after: full page, trial explained up front">
+            </div>
+            <figcaption>
+              <span class="cap-num">After</span>
+              <span class="cap-text">Full page sign-up. Trial explained up front.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DOCSEND — Survey: before ========== -->
+  <section class="slide sec-dbx" data-section="Dropbox" data-crumb="docsend · survey · before" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">DocSend · Survey · Visual design</div>
+          <h2 class="setup-headline">Survey: <em>Before.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Multiple steps, and a visual language that didn't match Dropbox. Users coming in from Dropbox surfaces hit it and bounced. The change in design felt like leaving the product.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-survey-before.png" alt="Survey, before: DocSend-styled, separate from Dropbox system">
+            </div>
+            <figcaption>
+              <span class="cap-num">Before</span>
+              <span class="cap-text">DocSend-styled survey, separate from Dropbox system.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DOCSEND — Survey: after ========== -->
+  <section class="slide sec-dbx" data-section="Dropbox" data-crumb="docsend · survey · after" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">DocSend · Survey · Visual design</div>
+          <h2 class="setup-headline">Survey: <em>After.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Bridged DocSend and Dropbox's design systems by hand. DocSend wasn't resourced with DSE support, so this was a one-person port. Consolidated steps, used Dropbox-native components.</p>
+          <p class="surface-text" style="margin-top:12px;">A user coming from Dropbox sees a continuous experience instead of a context switch.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-survey-after.png" alt="Survey, after: ported to Dropbox design language">
+            </div>
+            <figcaption>
+              <span class="cap-num">After</span>
+              <span class="cap-text">Survey ported to Dropbox design language.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DOCSEND — Checkout: before ========== -->
+  <section class="slide sec-dbx" data-section="Dropbox" data-crumb="docsend · checkout · before" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">DocSend · Checkout · Visual design</div>
+          <h2 class="setup-headline">Checkout: <em>Before.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Multiple steps, no modular controls. Changing plan details meant going back three pages, and starting over if you got it wrong.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-checkout-before.png" alt="Checkout, before: multi-page, no inline plan editing">
+            </div>
+            <figcaption>
+              <span class="cap-num">Before</span>
+              <span class="cap-text">Multi-page checkout. No way to edit plan inline.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DOCSEND — Checkout: after ========== -->
+  <section class="slide sec-dbx" data-section="Dropbox" data-crumb="docsend · checkout · after" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">DocSend · Checkout · Visual design</div>
+          <h2 class="setup-headline">Checkout: <em>After.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Condensed to one screen, modular, with inline editability. Plan details, team size, and payment all visible at once.</p>
+          <p class="surface-text" style="margin-top:12px;">A new pattern for the team: billing surfaces that don't lock the user into a path.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame figure-frame--inset">
+              <img src="../public/images/docsend-checkout-after.png" alt="Checkout, after: single-screen, modular, editable">
+            </div>
+            <figcaption>
+              <span class="cap-num">After</span>
+              <span class="cap-text">Single-screen checkout. Modular, editable, clear tax notes.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DOCSEND — Decided prototype ========== -->
+  <section class="slide sec-dbx" data-section="Dropbox" data-crumb="docsend · prototype" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">DocSend · Prototype · Visual design</div>
+          <h2 class="setup-headline">Decided <em>prototype.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">After aligning on the appropriate treatment, I set up a prototype representing the expected end-to-end experience. The single source of truth for the eng spec.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <iframe
+                src="https://embed.figma.com/proto/qjAsrd505J8AH8tyaDBDMQ/Docsend-Activation-prototype?node-id=0-18964&amp;viewport=533%2C426%2C0.13&amp;scaling=scale-down&amp;content-scaling=fixed&amp;page-id=0%3A1&amp;embed-host=share"
+                title="DocSend Activation prototype"
+                style="width:100%; height:100%; border:none;"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <figcaption>
+              <span class="cap-num">Prototype</span>
+              <span class="cap-text">DocSend Activation. Figma prototype.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DOCSEND — Existing site ========== -->
+  <section class="slide sec-dbx" data-section="Dropbox" data-crumb="docsend · existing site" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">DocSend · Marketing site · Visual design</div>
+          <h2 class="setup-headline">Existing <em>site.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">DocSend.com as it stood: pre-acquisition design, gradually patched but never reframed. Visitors couldn't quickly tell what DocSend was for, or where to go.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <video autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover; display:block;">
+                <source src="../public/videos/docsend-pptx/slide-23-01.mp4" type="video/mp4">
+              </video>
+            </div>
+            <figcaption>
+              <span class="cap-num">Before</span>
+              <span class="cap-text">DocSend.com pre-redesign.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DOCSEND — Refreshed site ========== -->
+  <section class="slide sec-dbx" data-section="Dropbox" data-crumb="docsend · refreshed site" data-theme="light">
+    <div class="slide-inner">
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">DocSend · Marketing site · Visual design</div>
+          <h2 class="setup-headline">Refreshed <em>site.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Fully refreshed DocSend.com. New hero, sharper positioning, and a path to sign-up that doesn't bury the value proposition.</p>
+        </div>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <video autoplay muted loop playsinline style="width:100%; height:100%; object-fit:cover; display:block;">
+                <source src="../public/videos/docsend-pptx/slide-25-01.mp4" type="video/mp4">
+              </video>
+            </div>
+            <figcaption>
+              <span class="cap-num">After</span>
+              <span class="cap-text">DocSend.com. Refreshed.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SLIDE 07 — STRIPE DIVIDER ========== -->
+  <section class="slide dark sec-stripe" data-section="Stripe" data-crumb="section" data-theme="dark" data-align="center">
+    <div class="slide-inner">
+      <div class="divider">
+        <div class="divider-copy">
+          <div class="divider-index">02 / Stripe</div>
+          <h2 class="divider-name">Stripe.</h2>
+          <p class="divider-note">Consumer payments across surfaces — a native iOS 26 system, the Tap to Add NFC flow, and an AI-powered checkout.</p>
+        </div>
+        <figure class="divider-figure">
+          <div class="figure-frame">
+            <img src="../public/images/tap-to-add-fig-01.png" alt="Tap to Add — present to pay and tap behind device to add a card.">
+          </div>
+          <figcaption><span class="cap-num">00</span><span class="cap-text">Tap to Pay, inverted into Tap to Add.</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== STRIPE — iOS 26 ========== -->
+  <section class="slide slide-example sec-stripe" data-section="Stripe" data-crumb="ios 26" data-theme="light">
+    <div class="slide-inner">
+      <div class="example-header">
+        <div class="section-eyebrow">Stripe · iOS 26 · Visual design</div>
+        <h2 class="example-headline">Stripe, native to <em>iOS 26.</em></h2>
+      </div>
+      <figure class="example-figure">
+        <div class="figure-frame">
+          <img src="../public/images/stripe-ios-26.png" alt="Stripe payment surfaces in the iOS 26 design language.">
+        </div>
+        <figcaption><span class="cap-num">01</span><span class="cap-text">Payment surfaces, rebuilt for the iOS 26 design language.</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ========== STRIPE — Tap to Add (GA prototype) ========== -->
+  <section class="slide slide-example sec-stripe" data-section="Stripe" data-crumb="tap to add" data-theme="light">
+    <div class="slide-inner">
+      <div class="example-header">
+        <div class="section-eyebrow">Stripe · Tap to Add · Visual design</div>
+        <h2 class="example-headline">Tap to Pay, <em>inverted into Tap to Add.</em></h2>
+      </div>
+      <figure class="example-figure">
+        <div class="figure-frame">
+          <div class="proto-phone">
+            <iframe
+              src="https://embed.figma.com/proto/HsvRnuILKO2bAlkTEeUulS/Tap-to-Add-_-Tap-to-Verify?node-id=2669-18721&amp;viewport=296%2C-300%2C0.18&amp;scaling=scale-down&amp;content-scaling=fixed&amp;starting-point-node-id=2669%3A18721&amp;show-proto-sidebar=1&amp;page-id=2669%3A18266&amp;embed-host=share"
+              title="Tap to Add — GA prototype (Figma)"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+        <figcaption><span class="cap-num">02</span><span class="cap-text">GA build — the full Tap to Add flow, device-aware. Live prototype.</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ========== STRIPE — AI-powered Checkout ========== -->
+  <section class="slide slide-example sec-stripe" data-section="Stripe" data-crumb="ai checkout" data-theme="light">
+    <div class="slide-inner">
+      <div class="example-header">
+        <div class="section-eyebrow">Stripe · AI Checkout · Visual design</div>
+        <h2 class="example-headline">Checkout, <em>AI-powered.</em></h2>
+      </div>
+      <figure class="example-figure">
+        <div class="figure-frame">
+          <iframe
+            src="https://embed.figma.com/proto/yrcuWnRQ2WtqVqScfQM2bf/Mobile-Habanero?node-id=1-23774&amp;viewport=-3528%2C-169%2C0.15&amp;scaling=scale-down&amp;content-scaling=fixed&amp;starting-point-node-id=1%3A23774&amp;show-proto-sidebar=1&amp;page-id=0%3A1&amp;embed-host=share"
+            title="AI-powered checkout — Figma prototype"
+            style="width:100%; height:100%; border:none;"
+            allowfullscreen></iframe>
+        </div>
+        <figcaption><span class="cap-num">03</span><span class="cap-text">A conversational, AI-assisted checkout. Live prototype.</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function() {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsEl = document.getElementById('dots');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const pageCurrent = document.getElementById('page-current');
+  const pageTotal = document.getElementById('page-total');
+  const crumbSection = document.getElementById('crumb-section');
+  const crumbCurrent = document.getElementById('crumb-current');
+  const body = document.body;
+
+  let current = 0;
+  const total = slides.length;
+
+  // Build dots
+  pageTotal.textContent = String(total).padStart(2, '0');
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('role', 'tab');
+    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+    dot.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(dot);
+  });
+
+  function goTo(index) {
+    if (index < 0 || index >= total || index === current) return;
+    slides[current].classList.remove('active');
+    slides[index].classList.add('active');
+    dotsEl.children[current].classList.remove('active');
+    dotsEl.children[index].classList.add('active');
+    current = index;
+    syncChrome();
+  }
+
+  function syncChrome() {
+    const slide = slides[current];
+    pageCurrent.textContent = String(current + 1).padStart(2, '0');
+    crumbSection.textContent = (slide.dataset.section || 'Visual Design').toUpperCase();
+    crumbCurrent.textContent = (slide.dataset.crumb || '').toUpperCase();
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+
+    if (slide.dataset.theme === 'dark') {
+      body.classList.add('dark');
+    } else {
+      body.classList.remove('dark');
+    }
+  }
+
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+
+  document.querySelectorAll('[data-jump]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const target = parseInt(e.currentTarget.dataset.jump, 10);
+      if (!isNaN(target)) goTo(target);
+    });
+  });
+
+  // Lightbox — click any figure image to expand
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxClose = document.getElementById('lightbox-close');
+  function openLightbox(src, alt) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    setTimeout(() => { lightboxImg.src = ''; }, 300);
+  }
+  document.querySelectorAll('.figure-frame img').forEach(img => {
+    img.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightbox(img.src, img.alt);
+    });
+  });
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Keyboard nav (lightbox-aware)
+  document.addEventListener('keydown', (e) => {
+    if (lightbox.classList.contains('open')) {
+      if (e.key === 'Escape') { e.preventDefault(); closeLightbox(); }
+      return;
+    }
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); goTo(current + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); goTo(current - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    else if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
+    else if (e.key === 'Escape') { window.location.href = '/'; }
+  });
+
+  // Hash deep-linking
+  function applyHash() {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    const map = { 'cover': 0, 'dropbox': 1, 'docsend': 3, 'stripe': 12 };
+    if (map[hash] !== undefined) goTo(map[hash]);
+  }
+  window.addEventListener('hashchange', applyHash);
+  applyHash();
+
+  syncChrome();
+})();
+</script>
+
+</body>
+</html>
