@@ -286,14 +286,10 @@
   .figure-slot .cap-num { color: var(--ink-faint); flex-shrink: 0; }
   .figure-slot .cap-text { color: var(--ink-soft); }
 
-  /* Portrait prototype framed as a phone, centered in an example figure */
-  .example-figure .figure-frame .proto-phone {
-    height: 100%; aspect-ratio: 9 / 16; background: var(--void);
-    border-radius: 36px; overflow: hidden;
-  }
-  .example-figure .figure-frame .proto-phone iframe { width: 100%; height: 100%; border: none; display: block; }
-  /* Landscape iframes (AI checkout) fill the frame */
-  .example-figure .figure-frame > iframe { width: 100%; height: 100%; border: none; display: block; }
+  /* Portrait prototype framed as a phone (9/16) in a challenge-grid right column */
+  .figure-slot[data-aspect="9/16"] .figure-frame { aspect-ratio: 9 / 16; }
+  /* Iframes fill their figure frame (challenge-grid + example layouts) */
+  .figure-frame > iframe { width: 100%; height: 100%; border: none; display: block; }
 
   @media (max-width: 900px) {
     .slide { padding: 64px 32px 120px; }
@@ -391,24 +387,32 @@
     </div>
   </section>
 
-  <!-- ========== SLIDE 03 — DROPBOX: Q&A ========== -->
-  <section class="slide slide-example sec-dbx" data-section="Dropbox" data-crumb="answers in search" data-theme="light">
+  <!-- ========== SLIDE 03 — DROPBOX AI: AI-powered workflows ========== -->
+  <section class="slide sec-dbx" data-section="Dropbox" data-crumb="ai workflows" data-theme="light">
     <div class="slide-inner">
-      <div class="example-header">
-        <div class="section-eyebrow">Dropbox AI · Visual design</div>
-        <h2 class="example-headline">Answers, <em>inline with search.</em></h2>
-      </div>
-      <figure class="example-figure">
-        <div class="figure-frame">
-          <iframe
-            src="https://embed.figma.com/proto/WwehM5TjxUIUN8dpBQym2p/DBX-AI-Future?node-id=0-18909&amp;viewport=60%2C132%2C0.56&amp;scaling=scale-down&amp;content-scaling=fixed&amp;page-id=0%3A1&amp;embed-host=share"
-            title="Dropbox AI Future — AI-powered workflows prototype"
-            style="width:100%; height:100%; border:none;"
-            allowfullscreen>
-          </iframe>
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Dropbox AI · Visual design</div>
+          <h2 class="setup-headline">AI, woven into the <em>workflow.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Moving AI at Dropbox from isolated, one-off moments to an integral part of how people work — anticipating the next step, not just answering the last question.</p>
         </div>
-        <figcaption><span class="cap-num">01</span><span class="cap-text">A plain-language answer, with its source, above the results.</span></figcaption>
-      </figure>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <iframe
+                src="https://embed.figma.com/proto/WwehM5TjxUIUN8dpBQym2p/DBX-AI-Future?node-id=0-18909&amp;viewport=60%2C132%2C0.56&amp;scaling=scale-down&amp;content-scaling=fixed&amp;page-id=0%3A1&amp;embed-host=share"
+                title="Dropbox AI — AI-powered workflows prototype"
+                style="width:100%; height:100%; border:none;"
+                allowfullscreen>
+              </iframe>
+            </div>
+            <figcaption>
+              <span class="cap-num">01</span>
+              <span class="cap-text">AI-powered workflows — from search to an active part of the work. Live prototype.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -653,9 +657,9 @@
         </div>
         <figure class="divider-figure">
           <div class="figure-frame">
-            <img src="../public/images/tap-to-add-fig-01.png" alt="Tap to Add — present to pay and tap behind device to add a card.">
+            <img src="../public/logos/stripe.png" alt="Stripe" style="width:168px; height:168px; object-fit:contain;">
           </div>
-          <figcaption><span class="cap-num">00</span><span class="cap-text">Tap to Pay, inverted into Tap to Add.</span></figcaption>
+          <figcaption><span class="cap-num">00</span><span class="cap-text">Consumer payments, designed end to end.</span></figcaption>
         </figure>
       </div>
     </div>
@@ -670,51 +674,70 @@
       </div>
       <figure class="example-figure">
         <div class="figure-frame">
-          <img src="../public/images/stripe-ios-26.png" alt="Stripe payment surfaces in the iOS 26 design language.">
+          <iframe
+            src="https://embed.figma.com/proto/cnJcIjdNOu3OxSQKC8RXhB/Stripe-iOS-26?node-id=1-9&amp;viewport=423%2C358%2C0.08&amp;scaling=scale-down-width&amp;content-scaling=fixed&amp;page-id=0%3A1&amp;embed-host=share"
+            title="Stripe on iOS 26 — Figma prototype"
+            style="width:100%; height:100%; border:none;"
+            allowfullscreen></iframe>
         </div>
-        <figcaption><span class="cap-num">01</span><span class="cap-text">Payment surfaces, rebuilt for the iOS 26 design language.</span></figcaption>
+        <figcaption><span class="cap-num">01</span><span class="cap-text">Payment surfaces, rebuilt for the iOS 26 design language. Live prototype.</span></figcaption>
       </figure>
     </div>
   </section>
 
   <!-- ========== STRIPE — Tap to Add (GA prototype) ========== -->
-  <section class="slide slide-example sec-stripe" data-section="Stripe" data-crumb="tap to add" data-theme="light">
+  <section class="slide sec-stripe" data-section="Stripe" data-crumb="tap to add" data-theme="light">
     <div class="slide-inner">
-      <div class="example-header">
-        <div class="section-eyebrow">Stripe · Tap to Add · Visual design</div>
-        <h2 class="example-headline">Tap to Pay, <em>inverted into Tap to Add.</em></h2>
-      </div>
-      <figure class="example-figure">
-        <div class="figure-frame">
-          <div class="proto-phone">
-            <iframe
-              src="https://embed.figma.com/proto/HsvRnuILKO2bAlkTEeUulS/Tap-to-Add-_-Tap-to-Verify?node-id=2669-18721&amp;viewport=296%2C-300%2C0.18&amp;scaling=scale-down&amp;content-scaling=fixed&amp;starting-point-node-id=2669%3A18721&amp;show-proto-sidebar=1&amp;page-id=2669%3A18266&amp;embed-host=share"
-              title="Tap to Add — GA prototype (Figma)"
-              allowfullscreen></iframe>
-          </div>
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Stripe · Tap to Add · Visual design</div>
+          <h2 class="setup-headline">Tap to Pay, <em>inverted into Tap to Add.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">Stripe's NFC primitive, turned around — one tap behind the phone saves a card for next time. The GA build is the full flow: device-aware, exit-affordant.</p>
         </div>
-        <figcaption><span class="cap-num">02</span><span class="cap-text">GA build — the full Tap to Add flow, device-aware. Live prototype.</span></figcaption>
-      </figure>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="9/16" style="width:300px; max-width:100%;">
+            <div class="figure-frame" style="background:var(--void); border-radius:36px;">
+              <iframe
+                src="https://embed.figma.com/proto/HsvRnuILKO2bAlkTEeUulS/Tap-to-Add-_-Tap-to-Verify?node-id=2669-18721&amp;viewport=296%2C-300%2C0.18&amp;scaling=scale-down&amp;content-scaling=fixed&amp;starting-point-node-id=2669%3A18721&amp;show-proto-sidebar=1&amp;page-id=2669%3A18266&amp;embed-host=share"
+                title="Tap to Add — GA prototype (Figma)"
+                style="width:100%; height:100%; border:none;"
+                allowfullscreen></iframe>
+            </div>
+            <figcaption>
+              <span class="cap-num">02</span>
+              <span class="cap-text">GA build — the full Tap to Add flow. Live prototype.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ========== STRIPE — AI-powered Checkout ========== -->
-  <section class="slide slide-example sec-stripe" data-section="Stripe" data-crumb="ai checkout" data-theme="light">
+  <section class="slide sec-stripe" data-section="Stripe" data-crumb="ai checkout" data-theme="light">
     <div class="slide-inner">
-      <div class="example-header">
-        <div class="section-eyebrow">Stripe · AI Checkout · Visual design</div>
-        <h2 class="example-headline">Checkout, <em>AI-powered.</em></h2>
-      </div>
-      <figure class="example-figure">
-        <div class="figure-frame">
-          <iframe
-            src="https://embed.figma.com/proto/yrcuWnRQ2WtqVqScfQM2bf/Mobile-Habanero?node-id=1-23774&amp;viewport=-3528%2C-169%2C0.15&amp;scaling=scale-down&amp;content-scaling=fixed&amp;starting-point-node-id=1%3A23774&amp;show-proto-sidebar=1&amp;page-id=0%3A1&amp;embed-host=share"
-            title="AI-powered checkout — Figma prototype"
-            style="width:100%; height:100%; border:none;"
-            allowfullscreen></iframe>
+      <div class="challenge-grid">
+        <div class="challenge-left">
+          <div class="section-eyebrow">Stripe · AI Checkout · Visual design</div>
+          <h2 class="setup-headline">Checkout, <em>AI-powered.</em></h2>
+          <p class="surface-text" style="margin-top:16px;">A conversational checkout that assembles the order, payment, and confirmation in one assisted flow — the buyer talks, the sheet keeps up.</p>
         </div>
-        <figcaption><span class="cap-num">03</span><span class="cap-text">A conversational, AI-assisted checkout. Live prototype.</span></figcaption>
-      </figure>
+        <div class="challenge-right">
+          <figure class="figure-slot" data-aspect="16/10" style="width:100%;">
+            <div class="figure-frame">
+              <iframe
+                src="https://embed.figma.com/proto/yrcuWnRQ2WtqVqScfQM2bf/Mobile-Habanero?node-id=1-23774&amp;viewport=-3528%2C-169%2C0.15&amp;scaling=scale-down&amp;content-scaling=fixed&amp;starting-point-node-id=1%3A23774&amp;show-proto-sidebar=1&amp;page-id=0%3A1&amp;embed-host=share"
+                title="AI-powered checkout — Figma prototype"
+                style="width:100%; height:100%; border:none;"
+                allowfullscreen></iframe>
+            </div>
+            <figcaption>
+              <span class="cap-num">03</span>
+              <span class="cap-text">A conversational, AI-assisted checkout. Live prototype.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
     </div>
   </section>
 
