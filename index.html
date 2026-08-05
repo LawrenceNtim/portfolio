@@ -2188,6 +2188,7 @@ body.panel-open .grid-dim { opacity: 0.3; pointer-events: none; }
   border: none;
 }
 .panel-field { display: flex; flex-direction: column; gap: 6px; }
+.panel-field[hidden] { display: none; }
 .panel-field .label {
   font-family: "DM Sans", sans-serif;
   font-weight: 500;
@@ -2499,11 +2500,15 @@ body.panel-open .grid-dim { opacity: 0.3; pointer-events: none; }
   <div class="content-axis content-axis-wide">
     <div class="project-grid" role="list">
 
-      <!-- Card 01 — Tap to Add (mobile) — HIDDEN from home page; case study still live at /case-studies/tap-to-add.html
+      <!-- Card 01 — Tap to Add (mobile) -->
       <button class="card" role="listitem" data-project="01" data-cursor-hover aria-label="Open project details — Tap to Add">
         <div class="card-well">
           <div class="device-iphone">
-            <div class="screen"></div>
+            <div class="screen">
+              <video autoplay muted loop playsinline preload="metadata">
+                <source src="public/videos/tap-to-add-fig-05.mp4" type="video/mp4">
+              </video>
+            </div>
           </div>
         </div>
         <div class="card-meta">
@@ -2516,7 +2521,6 @@ body.panel-open .grid-dim { opacity: 0.3; pointer-events: none; }
           </div>
         </div>
       </button>
-      -->
 
       <!-- Card 05 — Wing (desktop/web) — HIDDEN from home page; case study live at /case-studies/wing.html, linked from the Tap to Add deck coda
       <button class="card" role="listitem" data-project="05" data-cursor-hover aria-label="Open project details — Wing">
@@ -2545,7 +2549,7 @@ body.panel-open .grid-dim { opacity: 0.3; pointer-events: none; }
       </button>
       -->
 
-      <!-- Card 02 — iOS 26 Redesign (mobile) -->
+      <!-- Card 02 — iOS 26 Redesign (mobile) — HIDDEN from home page; in the chamber until its case study is built (planned Aug 2026)
       <button class="card" role="listitem" data-project="02" data-cursor-hover aria-label="Open project details — iOS 26 Redesign">
         <div class="card-well">
           <div class="ios-carousel" data-carousel data-interval="4000" data-fade="800" aria-label="iOS 26 Redesign">
@@ -2564,6 +2568,7 @@ body.panel-open .grid-dim { opacity: 0.3; pointer-events: none; }
           </div>
         </div>
       </button>
+      -->
 
       <!-- Card 03 — Dropbox AI (desktop/web) -->
       <button class="card" role="listitem" data-project="03" data-cursor-hover aria-label="Open project details — Dropbox AI">
@@ -2948,9 +2953,9 @@ const PROJECTS = {
     status: "v0 · In build",
     role: "Founder · Product & Design",
     company: "Eighty Labs",
-    about: "An AI travel assistant that learns how you fly once and applies it to every search forever — built end to end on an MCP infrastructure of my own. My agentic experience design practice, in the open.",
-    problem: "Booking a trip well means optimizing fifteen variables at once — cabin, seat, connection risk, cash vs. award, status, transfer ratios — across ten-plus tools that don't talk to each other. You are the orchestrator, the cognitive load is the product, and $100B+ in loyalty points sit unredeemed because redemption is too confusing to bother with. Search tools find awards, planners book cash fares, trackers know your balance — but nobody manages the whole portfolio, and nobody positions as an assistant rather than an autonomous agent that only 2% of people trust to book for them.",
-    solution: "Designed and built Wing as agentic experience design at the orchestration layer, not the pixel layer. Preference memory across ~17 axes captured progressively; a parallel cash-vs-points results matrix that rejects the single-answer-with-reasoning-expander pattern; intervention points that keep the user in control. Powered by an 8-server MCP stack — live flight and points data, seat maps, airport intelligence — surfaced both inside an LLM and on its own web app. Built solo with Claude Code, Cursor, and Codex. v0 in build, 2026.",
+    about: "An AI travel assistant that learns how you fly once and applies it to every search forever, built end to end on an MCP infrastructure of my own. My agentic experience design practice, in the open.",
+    problem: "Booking a trip well means optimizing fifteen variables at once (cabin, seat, connection risk, cash vs. award, status, transfer ratios) across ten-plus tools that don't talk to each other. You are the orchestrator, the cognitive load is the product, and $100B+ in loyalty points sit unredeemed because redemption is too confusing to bother with. Search tools find awards, planners book cash fares, trackers know your balance, but nobody manages the whole portfolio, and nobody positions as an assistant rather than an autonomous agent that only 2% of people trust to book for them.",
+    solution: "Designed and built Wing as agentic experience design at the orchestration layer, not the pixel layer. Preference memory across ~17 axes captured progressively; a parallel cash-vs-points results matrix that rejects the single-answer-with-reasoning-expander pattern; intervention points that keep the user in control. Powered by an 8-server MCP stack (live flight and points data, seat maps, airport intelligence) surfaced both inside an LLM and on its own web app. Built solo with Claude Code, Cursor, and Codex. v0 in build, 2026.",
     collaborators: ["Product & Design", "Engineering", "Built solo · Claude Code, Cursor, Codex", "Lawrence Ntim"],
     caseStudyUrl: "/case-studies/wing.html"
   },
@@ -2962,8 +2967,8 @@ const PROJECTS = {
     role: "Senior Product Designer (sole)",
     company: "Stripe",
     about: "The first card-present interaction designed for enrollment, not payment. Built into the Stripe Mobile Payment Element.",
-    problem: "Adding a card was the slowest moment in checkout, and the most fraud-prone. Every existing method — manual entry, OCR, autofill, wallet provisioning — was authenticated by typing. Card-not-present by default, with all the auth-rate, fraud, and friction costs that follow. No competitor offered a card-present primitive at the moment of saving a card.",
-    solution: "Repointed Stripe Terminal's Tap to Pay infrastructure at a different moment — enrollment, not payment. A SetupIntent with card_present, surfaced through the Mobile Payment Element. Visa pilot data: 85–90% reduction in provisioning fraud, +11% lift in authorization. Shipped to private preview on Android, April 29, 2026. Sole designer; led cross-team alignment with Stripe Terminal.",
+    problem: "Adding a card was the slowest moment in checkout, and the most fraud-prone. Every existing method (manual entry, OCR, autofill, wallet provisioning) was authenticated by typing. Card-not-present by default, with all the auth-rate, fraud, and friction costs that follow. No competitor offered a card-present primitive at the moment of saving a card.",
+    solution: "Repointed Stripe Terminal's Tap to Pay infrastructure at a different moment: enrollment, not payment. A SetupIntent with card_present, surfaced through the Mobile Payment Element. Visa pilot data: 85–90% reduction in provisioning fraud, +11% lift in authorization. Shipped to private preview on Android, April 29, 2026. Sole designer; led cross-team alignment with Stripe Terminal.",
     collaborators: ["Engineering", "Product Management", "Stripe Terminal", "Lawrence Ntim"],
     caseStudyUrl: "/case-studies/tap-to-add.html"
   },
