@@ -1462,6 +1462,400 @@
   /* ---- */
 
   /* ===== STREAM B CSS: start ===== */
+  /* Shared status tag (identical definition may exist in other streams) */
+  .status-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 4px 6px 3px;
+    border: 1px solid var(--hairline-2);
+    border-radius: 2px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .status-tag[data-status="shipped"] { color: var(--ink); border-color: var(--ink); }
+  .status-tag[data-status="future"]  { color: var(--ink-faint); border-style: dashed; }
+
+  /* TODO marks for Lawrence */
+  .b-todo {
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.06em;
+    color: var(--stripe);
+    white-space: nowrap;
+  }
+  .b-todo--block {
+    display: block;
+    white-space: normal;
+    line-height: 1.5;
+    padding: 8px 10px;
+    border: 1px dashed var(--stripe);
+    border-radius: 3px;
+    background: var(--stripe-soft);
+    max-width: 540px;
+  }
+
+  /* 09 · reference wall */
+  .b-wall .ref-table tbody td { font-size: 12.5px; padding-top: 10px; padding-bottom: 10px; }
+  .b-wall .ref-table .ref-standard { font-weight: 400; color: var(--ink-soft); }
+  .b-wall .ref-table tbody tr.feature .ref-designed { font-weight: 400; }
+  .b-wall .ref-table .b-todo { white-space: normal; }
+
+  /* 10 · references */
+  .b-refs .flow-grid { grid-template-columns: 1fr 1fr 0.55fr 1fr 1fr; margin-top: 24px; }
+  .b-refs .flow-cell--divider .divider-rule { height: 240px; }
+
+  /* 11 · surface audit */
+  .b-audit-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: end;
+  }
+  .b-audit-head .surface-text { max-width: 560px; }
+  .b-audit-fig { margin-top: 28px; }
+  .b-audit {
+    background: var(--paper-deep);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 22px 28px 8px;
+  }
+  .b-audit-axis {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--hairline-2);
+  }
+  .b-audit-axis .b-todo { letter-spacing: 0.06em; text-transform: none; }
+  .b-tier {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 24px;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .b-tier:last-child { border-bottom: 0; }
+  .b-tier-label { display: flex; align-items: baseline; gap: 12px; }
+  .b-tier-num {
+    font-family: var(--serif);
+    font-size: 36px;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .b-tier[data-tier="p0"] .b-tier-num { color: var(--stripe); }
+  .b-tier[data-tier="p2"] .b-tier-num { color: var(--ink-soft); }
+  .b-tier-sub {
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .b-chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .b-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 8px 8px 14px;
+    background: var(--paper);
+    border: 1px solid var(--hairline-2);
+    border-radius: 999px;
+  }
+  .b-tier[data-tier="p0"] .b-chip { border-color: var(--ink); }
+  .b-tier[data-tier="p2"] .b-chip { background: transparent; }
+  .b-chip-kind {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .b-chip-name {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .b-chip .status-tag { border-radius: 999px; padding: 4px 8px 3px; }
+
+  /* Mock UI (Fig. 04, Fig. 05). Merchant brand swatches live only here. */
+  .b-mock {
+    --b-brand: #1F6F5C;
+    --b-sun:   #F2B544;
+    --b-clay:  #E0634A;
+    --b-sky:   #7FB2D9;
+    --b-brand-deep: #183A33;
+  }
+  .b-mock-backdrop {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 18px;
+    aspect-ratio: 4 / 3;
+    border-radius: 18px;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 22% 28%, var(--b-sun) 0 16%, transparent 38%),
+      radial-gradient(circle at 78% 62%, var(--b-clay) 0 14%, transparent 40%),
+      radial-gradient(circle at 40% 92%, var(--b-sky) 0 12%, transparent 36%),
+      linear-gradient(150deg, var(--b-brand), var(--b-brand-deep));
+  }
+  .b-mock-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 44px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: #fff;
+  }
+  .b-mock-btn--glass {
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.18);
+    -webkit-backdrop-filter: blur(14px) saturate(1.7);
+    backdrop-filter: blur(14px) saturate(1.7);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 6px 18px rgba(0, 0, 0, 0.18);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  }
+  .b-mock-btn--brand {
+    border-radius: 8px;
+    background: var(--b-brand);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  /* 12 · the tension */
+  .b-tension-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 48px;
+    align-items: start;
+    margin-top: 28px;
+  }
+  .b-versus { border-top: 2px solid var(--ink); }
+  .b-versus-row {
+    display: grid;
+    grid-template-columns: 130px 1fr 1fr;
+    gap: 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--hairline);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .b-versus-head { border-bottom: 1px solid var(--ink); padding: 14px 0 12px; }
+  .b-versus-head span {
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .b-versus-head b {
+    display: block;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 20px;
+    letter-spacing: -0.005em;
+    text-transform: none;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .b-versus-label {
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-top: 3px;
+  }
+  .b-mock-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .b-mock-cell { display: flex; flex-direction: column; gap: 10px; }
+  .b-mock-label {
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .b-mock-fig figcaption .cap-text { display: inline-flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .b-whynot {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--hairline);
+  }
+  .b-whynot-q {
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .b-whynot .surface-text { font-size: 14px; }
+
+  /* 13 · the reposition */
+  .b-repo .surface-grid { margin-top: 0; align-items: center; }
+  .b-repo .surface-right { gap: 16px; }
+  .b-repo-stage {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    gap: 28px;
+    align-items: center;
+    padding: 28px;
+    background: var(--paper-deep);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+  }
+  .b-phone {
+    position: relative;
+    aspect-ratio: 9 / 19;
+    max-height: 56vh;
+    border-radius: 34px;
+    border: 6px solid var(--ink);
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .b-phone-app {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 18%, var(--b-sun) 0 14%, transparent 34%),
+      radial-gradient(circle at 76% 34%, var(--b-clay) 0 12%, transparent 32%),
+      radial-gradient(circle at 20% 58%, var(--b-sky) 0 10%, transparent 30%),
+      linear-gradient(170deg, var(--b-brand), var(--b-brand-deep));
+  }
+  .b-sheet {
+    position: absolute;
+    left: 7px; right: 7px; bottom: 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 10px 10px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.22);
+    -webkit-backdrop-filter: blur(16px) saturate(1.6);
+    backdrop-filter: blur(16px) saturate(1.6);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  .b-sheet-head { display: flex; gap: 6px; align-items: center; }
+  .b-glass-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+  .b-glass-pill--icon { width: 28px; padding: 0; font-size: 15px; font-weight: 400; }
+  .b-sheet-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--hairline-2);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .b-field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 7px 9px;
+    background: var(--paper);
+    font-family: var(--sans);
+  }
+  .b-field--full { grid-column: 1 / -1; }
+  .b-field span { font-size: 8.5px; color: var(--ink-soft); }
+  .b-field b { font-size: 11px; font-weight: 500; color: var(--ink); letter-spacing: 0.02em; }
+  .b-sheet-pay { height: 36px; font-size: 12px; }
+  .b-key { list-style: none; display: grid; gap: 16px; }
+  .b-key li {
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    gap: 2px 12px;
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .b-key li::before {
+    content: '';
+    grid-row: 1 / 3;
+    width: 14px; height: 14px;
+    margin-top: 2px;
+    border-radius: 4px;
+  }
+  .b-key li[data-k="glass"]::before  { background: rgba(255, 255, 255, 0.5); border: 1px solid var(--ink-faint); }
+  .b-key li[data-k="opaque"]::before { background: var(--paper); border: 1px solid var(--ink); }
+  .b-key li[data-k="brand"]::before  { background: var(--b-brand); }
+  .b-key b {
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .b-repo-fig figcaption .cap-text { display: inline-flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+  @media (max-width: 1100px) {
+    .b-refs .flow-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .b-refs .figure-slot figcaption { flex-direction: column; gap: 4px; }
+    .b-refs .flow-cell--divider { display: none; }
+    .b-tension-grid { grid-template-columns: 1fr; gap: 28px; }
+    .b-mock-fig { max-width: 520px; }
+  }
+  @media (max-width: 900px) {
+    .b-audit-head { grid-template-columns: 1fr; gap: 12px; }
+    .b-audit { padding: 16px 16px 4px; }
+    .b-tier { grid-template-columns: 1fr; gap: 12px; padding: 14px 0; }
+    .b-chip-name { font-size: 13px; }
+    .b-versus-row { grid-template-columns: 1fr 1fr; gap: 6px 14px; font-size: 13px; }
+    .b-versus-row > :first-child { grid-column: 1 / -1; }
+    .b-versus-head > :first-child { display: none; }
+    .b-versus-head b { font-size: 17px; }
+    .b-whynot { grid-template-columns: 1fr; gap: 18px; }
+    .b-repo-stage { grid-template-columns: 1fr; justify-items: center; padding: 20px; }
+    .b-phone { width: 210px; max-height: none; }
+  }
   /* ===== STREAM B CSS: end ===== */
   /* ---- */
 
@@ -1746,40 +2140,208 @@
   </section>
 
   <!-- ===== STREAM B · 09 reference-wall ===== -->
-  <section class="slide ref-slide" data-section="ios 26" data-crumb="reference wall" data-theme="light">
+  <section class="slide ref-slide b-wall" data-section="ios 26" data-crumb="reference wall" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">Process · Reference wall</div>
         <h2 class="setup-headline">iOS 18 to iOS 26, <em>component by component.</em></h2>
-        <!-- SCAFFOLD NOTE (B): Table: sheets, buttons, nav, keyboard, alerts. iOS 18 / iOS 26 / what it meant for Stripe. -->
+        <p class="surface-text" style="margin-top: 10px; max-width: 760px;">Before I drew a single sheet, I took the system apart. Every component a Stripe checkout touches, old against new, and what each change asked of us.</p>
+
+        <div class="ref-table-wrap">
+          <table class="ref-table">
+            <thead>
+              <tr>
+                <th style="width: 16%;">Component</th>
+                <th style="width: 21%;">iOS 18</th>
+                <th style="width: 30%;">iOS 26 · Liquid Glass</th>
+                <th style="width: 33%;">What it meant for Stripe</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="ref-method">Sheets<span class="sub">Presentation</span></span></td>
+                <td><span class="ref-standard">Opaque, pinned to the bottom edge</span></td>
+                <td>Floating glass, inset from the screen edges at partial heights. Turns opaque as it expands.</td>
+                <td>PaymentSheet detents and margins rebuilt around an inset, floating sheet.</td>
+              </tr>
+              <tr>
+                <td><span class="ref-method">Navigation<span class="sub">Bars, toolbars, tab bars</span></span></td>
+                <td><span class="ref-standard">Full-width bars with a hairline divider</span></td>
+                <td>Bars dissolve. Controls float in glass capsules. Tab bars shrink on scroll.</td>
+                <td>Sheet header (close, back, edit) rebuilt as floating glass controls.</td>
+              </tr>
+              <tr>
+                <td><span class="ref-method">Buttons<span class="sub">Primary actions</span></span></td>
+                <td><span class="ref-standard">Filled rounded rects in the app tint</span></td>
+                <td>Capsule shapes. New glass and prominent glass styles.</td>
+                <td>The Pay button: capsule by default, or the merchant's own corner radius? <span class="b-todo">[TODO: Lawrence verify]</span></td>
+              </tr>
+              <tr>
+                <td><span class="ref-method">Controls<span class="sub">Toggles, segmented, sliders</span></span></td>
+                <td><span class="ref-standard">Solid thumbs and tracks</span></td>
+                <td>Thumbs lift into glass while dragged.</td>
+                <td>Save-card toggle and method selectors rechecked against the new pressed states. <span class="b-todo">[TODO: Lawrence verify]</span></td>
+              </tr>
+              <tr>
+                <td><span class="ref-method">Keyboard<span class="sub">Text entry</span></span></td>
+                <td><span class="ref-standard">Full-width tray, square top</span></td>
+                <td>Glass tray with rounded top corners.</td>
+                <td>Card form re-spaced so number, expiry, and CVC stay legible above the glass.</td>
+              </tr>
+              <tr>
+                <td><span class="ref-method">Alerts<span class="sub">Confirmations</span></span></td>
+                <td><span class="ref-standard">Centered panel, stacked text buttons</span></td>
+                <td>Glass panel, larger radius, capsule buttons. <span class="b-todo">[TODO: Lawrence verify]</span></td>
+                <td>Remove-card and decline confirmations inherit the new system alert.</td>
+              </tr>
+              <tr class="feature">
+                <td><span class="ref-method">Corners &amp; tint<span class="sub">Geometry, color</span></span></td>
+                <td><span class="ref-standard">Fixed radii. Tint fills the control.</span></td>
+                <td><span class="ref-designed">Concentric corners, from the device outline inward. Color borrowed from the content beneath.</span></td>
+                <td><span class="ref-higher">Merchants set radius and brand color through the Appearance API.</span> The collision this chapter is about.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="source-line" style="margin-top: 16px;">Drafted from Apple's public iOS 26 design materials. Cells marked TODO need a check against the HIG.</div>
       </div>
     </div>
   </section>
   <!-- ===== /STREAM B · 09 ===== -->
 
   <!-- ===== STREAM B · 10 references ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="the references" data-theme="light">
+  <section class="slide b-refs" data-section="ios 26" data-crumb="the references" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">Process · The references</div>
         <h2 class="setup-headline">Where glass <em>already lived.</em></h2>
-        <!-- SCAFFOLD NOTE (B): REF 01–04: Apple Pay / Wallet glass adoption + 2–3 peer checkouts. -->
+        <p class="surface-text" style="margin-top: 10px; max-width: 760px;">Apple had already shipped the moments buyers trust most with a card. I studied those first, then the checkouts merchants hold us up against.</p>
+
+        <div class="flow-grid">
+          <div class="flow-cell">
+            <div class="flow-step">Apple</div>
+            <div class="flow-name">Apple Pay sheet.</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-ref-01.png -->
+              <div class="figure-frame"><span class="figure-mark">[ REF. 01 ]</span></div>
+              <figcaption>
+                <span class="cap-num">Ref. 01</span>
+                <span class="cap-text">Apple Pay: payment sheet.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">The sheet buyers already trust with a card. The bar ours is measured against.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Apple</div>
+            <div class="flow-name">Wallet.</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-ref-02.png -->
+              <div class="figure-frame"><span class="figure-mark">[ REF. 02 ]</span></div>
+              <figcaption>
+                <span class="cap-num">Ref. 02</span>
+                <span class="cap-text">Wallet: card stack.</span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">How Apple treats card art and card data under the new material.</p>
+          </div>
+          <div class="flow-cell flow-cell--divider">
+            <div class="divider-rule"></div>
+            <div class="divider-label">Apple's own vs. peer checkouts</div>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Peer</div>
+            <div class="flow-name">Checkout A.</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-ref-03.png -->
+              <div class="figure-frame"><span class="figure-mark">[ REF. 03 ]</span></div>
+              <figcaption>
+                <span class="cap-num">Ref. 03</span>
+                <span class="cap-text">Peer checkout. <span class="b-todo">[TODO: Lawrence pick]</span></span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">A peer in-app checkout on iOS 26. What it kept opaque, and what it let go to glass.</p>
+          </div>
+          <div class="flow-cell">
+            <div class="flow-step">Peer</div>
+            <div class="flow-name">Checkout B.</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-ref-04.png -->
+              <div class="figure-frame"><span class="figure-mark">[ REF. 04 ]</span></div>
+              <figcaption>
+                <span class="cap-num">Ref. 04</span>
+                <span class="cap-text">Peer checkout. <span class="b-todo">[TODO: Lawrence pick]</span></span>
+              </figcaption>
+            </figure>
+            <p class="flow-body">A second peer, to tell a pattern apart from one team's taste.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
   <!-- ===== /STREAM B · 10 ===== -->
 
   <!-- ===== STREAM B · 11 surface-audit ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="surface audit" data-theme="light">
+  <section class="slide b-audit-slide" data-section="ios 26" data-crumb="surface audit" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
-        <div class="section-eyebrow">Process · Surface audit</div>
-        <h2 class="setup-headline">Every surface, <em>ranked.</em></h2>
-        <!-- SCAFFOLD NOTE (B): Map of every PaymentSheet + Element surface, ranked by priority. -->
-        <figure class="figure-slot" data-aspect="16/10">
-          <!-- asset: /public/images/ios-26-fig-03.png -->
-          <div class="figure-frame"><span class="figure-mark">[ FIG. 03 ]</span></div>
-          <figcaption><span class="cap-num">Fig. 03</span><span class="cap-text">Surface audit.</span></figcaption>
+        <div class="b-audit-head">
+          <div>
+            <div class="section-eyebrow">Process · Surface audit</div>
+            <h2 class="setup-headline">Every surface, <em>ranked.</em></h2>
+          </div>
+          <p class="surface-text">Thirteen surfaces, one designer. I ranked them by how many buyers see them and how close they sit to the moment money moves, then rebuilt every one. We shipped all thirteen ahead of GA.</p>
+        </div>
+
+        <!-- asset: /public/images/ios-26-fig-03.png (optional static export; the live figure is HTML/CSS) -->
+        <figure class="figure-slot b-audit-fig">
+          <div class="b-audit">
+            <div class="b-audit-axis">
+              <span>Ranked by reach × proximity to payment</span>
+              <span class="b-todo">[TODO: Lawrence confirm ranking]</span>
+            </div>
+
+            <div class="b-tier" data-tier="p0">
+              <div class="b-tier-label">
+                <span class="b-tier-num">P0</span>
+                <span class="b-tier-sub">Every checkout</span>
+              </div>
+              <ul class="b-chips">
+                <li class="b-chip"><span class="b-chip-kind">Sheet</span><span class="b-chip-name">PaymentSheet · vertical list</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Form</span><span class="b-chip-name">Card form</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Row</span><span class="b-chip-name">Apple Pay row</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">State</span><span class="b-chip-name">Processing</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">State</span><span class="b-chip-name">Success</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              </ul>
+            </div>
+
+            <div class="b-tier" data-tier="p1">
+              <div class="b-tier-label">
+                <span class="b-tier-num">P1</span>
+                <span class="b-tier-sub">Most checkouts</span>
+              </div>
+              <ul class="b-chips">
+                <li class="b-chip"><span class="b-chip-kind">Sheet</span><span class="b-chip-name">PaymentSheet · carousel</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">List</span><span class="b-chip-name">Saved payment methods</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Flow</span><span class="b-chip-name">Link</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">State</span><span class="b-chip-name">Decline</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Handoff</span><span class="b-chip-name">3DS handoff</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              </ul>
+            </div>
+
+            <div class="b-tier" data-tier="p2">
+              <div class="b-tier-label">
+                <span class="b-tier-num">P2</span>
+                <span class="b-tier-sub">Embedded &amp; setup</span>
+              </div>
+              <ul class="b-chips">
+                <li class="b-chip"><span class="b-chip-kind">Element</span><span class="b-chip-name">Embedded Payment Element</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Sheet</span><span class="b-chip-name">CustomerSheet</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Element</span><span class="b-chip-name">AddressElement</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              </ul>
+            </div>
+          </div>
+          <figcaption><span class="cap-num">Fig. 03</span><span class="cap-text">Surface audit: 13 PaymentSheet and Element surfaces in three tiers. Draft ranking.</span></figcaption>
         </figure>
       </div>
     </div>
@@ -1787,24 +2349,120 @@
   <!-- ===== /STREAM B · 11 ===== -->
 
   <!-- ===== STREAM B · 12 the-tension ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="the tension" data-theme="light">
+  <section class="slide b-tension" data-section="ios 26" data-crumb="the tension" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">Process · The tension</div>
         <h2 class="setup-headline">Apple's material. <em>The merchant's brand.</em></h2>
-        <!-- SCAFFOLD NOTE (B): Liquid Glass vs the Appearance API. Mirror the "why not purple" logic from Tap to Add. -->
+        <p class="surface-text" style="margin-top: 10px; max-width: 760px;">Liquid Glass wants to be see-through and borrow its color from whatever sits behind it. A merchant's checkout wants to be their color, every time, on every phone.</p>
+
+        <div class="b-tension-grid">
+          <div class="b-versus">
+            <div class="b-versus-row b-versus-head">
+              <span></span>
+              <span><b>Liquid Glass</b>Apple's material</span>
+              <span><b>Appearance API</b>The merchant's brand</span>
+            </div>
+            <div class="b-versus-row">
+              <span class="b-versus-label">Surface</span>
+              <span>Translucent</span>
+              <span>Opaque</span>
+            </div>
+            <div class="b-versus-row">
+              <span class="b-versus-label">Color</span>
+              <span>Borrowed from the content beneath</span>
+              <span>A brand hex, set once</span>
+            </div>
+            <div class="b-versus-row">
+              <span class="b-versus-label">Owner</span>
+              <span>Apple, per OS release</span>
+              <span>The merchant, per app release</span>
+            </div>
+            <div class="b-versus-row">
+              <span class="b-versus-label">Moves under you</span>
+              <span>Yes. iOS 27 adds a translucency slider for users.</span>
+              <span>Only when the merchant ships</span>
+            </div>
+          </div>
+
+          <figure class="figure-slot b-mock-fig">
+            <!-- asset: /public/images/ios-26-fig-04.png (optional static export; the live figure is HTML/CSS) -->
+            <div class="b-mock b-mock-pair" aria-label="The same Pay button rendered in Liquid Glass and in a merchant's brand color.">
+              <div class="b-mock-cell">
+                <div class="b-mock-backdrop">
+                  <span class="b-mock-btn b-mock-btn--glass">Pay $42.00</span>
+                </div>
+                <span class="b-mock-label">Glass · system-owned</span>
+              </div>
+              <div class="b-mock-cell">
+                <div class="b-mock-backdrop">
+                  <span class="b-mock-btn b-mock-btn--brand">Pay $42.00</span>
+                </div>
+                <span class="b-mock-label">Brand · merchant-owned</span>
+              </div>
+            </div>
+            <figcaption><span class="cap-num">Fig. 04</span><span class="cap-text">One button, two owners. <span class="status-tag" data-status="explored">Explored</span></span></figcaption>
+          </figure>
+        </div>
+
+        <div class="b-whynot">
+          <div>
+            <div class="b-whynot-q">Why not all glass?</div>
+            <p class="surface-text">A card number over moving content loses contrast, and the merchant's brand washes out to whatever happens to be behind the sheet.</p>
+          </div>
+          <div>
+            <div class="b-whynot-q">Why not all opaque?</div>
+            <p class="surface-text">The sheet reads as iOS 18 inside an iOS 26 app, and Apple's floating controls land on top of it anyway.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
   <!-- ===== /STREAM B · 12 ===== -->
 
   <!-- ===== STREAM B · 13 the-reposition ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="the reposition" data-theme="light">
+  <section class="slide b-repo" data-section="ios 26" data-crumb="the reposition" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
-        <div class="section-eyebrow">Process · The reposition</div>
-        <h2 class="setup-headline">Glass for chrome. <em>Opaque for card data.</em></h2>
-        <!-- SCAFFOLD NOTE (B): Placeholder rule. [TODO: Lawrence] supply the real reposition rule. -->
+        <div class="surface-grid">
+          <div class="surface-left">
+            <figure class="figure-slot b-repo-fig">
+              <!-- asset: /public/images/ios-26-fig-05.png (optional static export; the live figure is HTML/CSS) -->
+              <div class="b-mock b-repo-stage" aria-label="A payment sheet split into glass chrome, opaque card data, and a merchant-branded Pay button.">
+                <div class="b-phone">
+                  <div class="b-phone-app"></div>
+                  <div class="b-sheet">
+                    <div class="b-sheet-head">
+                      <span class="b-glass-pill b-glass-pill--icon" aria-hidden="true">×</span>
+                      <span class="b-glass-pill">Add payment</span>
+                    </div>
+                    <div class="b-sheet-data">
+                      <div class="b-field b-field--full"><span>Card number</span><b>4242 4242 4242 4242</b></div>
+                      <div class="b-field"><span>Expiry</span><b>12 / 29</b></div>
+                      <div class="b-field"><span>CVC</span><b>•••</b></div>
+                    </div>
+                    <span class="b-mock-btn b-mock-btn--brand b-sheet-pay">Pay $42.00</span>
+                  </div>
+                </div>
+                <ul class="b-key">
+                  <li data-k="glass"><b>Glass</b><span>Chrome. Header, controls, the sheet's edge. System-owned.</span></li>
+                  <li data-k="opaque"><b>Opaque</b><span>Card data. Number, expiry, CVC, totals. Never over moving content.</span></li>
+                  <li data-k="brand"><b>Brand</b><span>The Pay button. Merchant-owned, through the Appearance API.</span></li>
+                </ul>
+              </div>
+              <figcaption><span class="cap-num">Fig. 05</span><span class="cap-text">The split, on one sheet. <span class="status-tag" data-status="shipped">Shipped</span></span></figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="section-eyebrow">Process · The reposition</div>
+            <h2 class="surface-headline">Glass for chrome. <em>Opaque for card data.</em></h2>
+            <p class="b-todo b-todo--block">[TODO: Lawrence supply the real rule] Placeholder rule, drafted to show the shape of the move.</p>
+            <p class="surface-text">I stopped asking which material wins. I asked <em style="font-style:italic; color:var(--ink);">what each layer is for.</em></p>
+            <p class="surface-text">Anything that frames the sheet went to the system. Anything that holds a card number, a total, or the merchant's button stayed opaque and stayed theirs. We shipped that split across every surface in the audit.</p>
+            <p class="pull-quote" style="margin-top: 8px;">Let Apple own the frame. <em>Let the merchant own the money.</em></p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
