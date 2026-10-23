@@ -2173,6 +2173,418 @@
   /* ---- */
 
   /* ===== STREAM C CSS: start ===== */
+  /* Shared status tag (identical across streams; integration dedupes) */
+  .status-tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 4px 7px;
+    border: 1px solid var(--hairline-2);
+    border-radius: 2px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .status-tag[data-status="shipped"] { color: var(--ink); }
+  .status-tag[data-status="explored"] { color: var(--ink-faint); }
+  .status-tag[data-status="future"] { color: var(--stripe); border-color: var(--stripe); }
+
+  .c-todo {
+    font-family: var(--mono);
+    font-size: 0.78em;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    font-style: normal;
+    white-space: nowrap;
+  }
+
+  /* ---- 15 · Sheet & material: exploded z-stack ---- */
+  .c-material .surface-grid { grid-template-columns: 1.15fr 0.85fr; align-items: center; }
+  .c-material .surface-text { font-size: 15px; }
+  .c-stage { background: var(--paper-deep); }
+  .c-frame-tag {
+    position: absolute;
+    top: 14px; left: 14px;
+    background: var(--paper);
+    z-index: 2;
+  }
+  .c-toggle {
+    position: absolute;
+    top: 12px; right: 12px;
+    z-index: 2;
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 9px 14px;
+    min-height: 32px;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--hairline-2);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+  .c-toggle:hover { background: var(--ink); color: var(--paper); }
+  .c-toggle:focus-visible { outline: 2px solid var(--stripe); outline-offset: 2px; }
+
+  .c-scene {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 600px; height: 450px;
+    margin: -225px 0 0 -300px;
+    transform: scale(var(--c-fit, 1));
+    perspective: 1800px;
+    perspective-origin: 50% 35%;
+  }
+  .c-stack {
+    position: absolute;
+    left: 205px; top: 35px;
+    width: 190px; height: 380px;
+    transform-style: preserve-3d;
+    transition: transform 1.2s var(--ease-out);
+  }
+  .c-scene.is-exploded .c-stack {
+    transform: translate(-104px, 56px) scale3d(0.9, 0.9, 0.9) rotateX(55deg) rotateZ(-38deg);
+  }
+  .c-layer {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: translateZ(calc(var(--i) * 0.5px));
+    transition: transform 1.2s var(--ease-out);
+    transition-delay: calc((3 - var(--i)) * 50ms);
+  }
+  .c-scene.is-exploded .c-layer {
+    transform: translateZ(calc(var(--i) * 66px));
+    transition-delay: calc(150ms + var(--i) * 90ms);
+  }
+  .c-plane {
+    position: absolute;
+    inset: 0;
+    border-radius: 26px;
+  }
+  .c-plane::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px dashed var(--ink-faint);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .c-scene.is-exploded .c-ghost::after { opacity: 0.9; transition-delay: 0.6s; }
+
+  /* Layer 01 · merchant app (brand swatches: mock merchant only) */
+  .c-app {
+    background: var(--paper);
+    overflow: hidden;
+    box-shadow: 0 0 0 1px var(--hairline-2), 0 24px 40px rgba(26, 24, 20, 0.12);
+  }
+  .c-app-status {
+    position: absolute; top: 10px; left: 18px; right: 18px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--sans); font-size: 8px; font-weight: 600; color: var(--ink);
+  }
+  .c-app-pill { width: 46px; height: 12px; border-radius: 8px; background: var(--ink); }
+  .c-app-bar { position: absolute; top: 30px; left: 12px; right: 12px; display: flex; gap: 6px; align-items: center; }
+  .c-app-logo { width: 12px; height: 12px; border-radius: 3px; background: #E2525C; }
+  .c-app-line { height: 6px; width: 60px; border-radius: 3px; background: var(--hairline-2); }
+  .c-app-hero {
+    position: absolute; top: 48px; left: 12px; right: 12px; height: 62px;
+    border-radius: 12px;
+    background:
+      radial-gradient(circle at 72% 40%, #FFD27A 0 14px, transparent 15px),
+      linear-gradient(135deg, #F7A072, #E2525C 55%, #5B3A8C);
+  }
+  .c-app-grid {
+    position: absolute; top: 120px; left: 12px; right: 12px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }
+  .c-app-grid span { height: 108px; border-radius: 10px; }
+  .c-app-grid span:nth-child(1) { background: linear-gradient(160deg, #A3C4BC, #4F7C74); }
+  .c-app-grid span:nth-child(2) { background: linear-gradient(160deg, #F2C14E, #E07A2F); }
+  .c-app-grid span:nth-child(3) { background: linear-gradient(160deg, #6C8EAD, #2E4A6B); }
+  .c-app-grid span:nth-child(4) { background: linear-gradient(160deg, #E86A92, #8E3B66); }
+
+  /* Layer 02 · glass */
+  .c-glass-sheet {
+    position: absolute;
+    left: 0; right: 0; top: 118px; bottom: 0;
+    border-radius: 24px 24px 26px 26px;
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0.62));
+    -webkit-backdrop-filter: blur(10px) saturate(1.6);
+    backdrop-filter: blur(10px) saturate(1.6);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), inset 0 -12px 24px rgba(255, 255, 255, 0.3), 0 -6px 20px rgba(26, 24, 20, 0.10);
+  }
+
+  /* Layer 03 · content rows */
+  .c-row {
+    position: absolute; left: 10px; right: 10px; height: 24px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    font-family: var(--sans); font-size: 8.5px; font-weight: 600;
+  }
+  .c-row--apple { top: 152px; background: #000; color: #fff; }
+  .c-row--link { top: 182px; background: #00D66F; color: #011E0F; }
+  .c-or {
+    position: absolute; top: 212px; left: 0; right: 0; text-align: center;
+    font-family: var(--sans); font-size: 7px; color: var(--ink-soft);
+  }
+  .c-row--card {
+    top: 228px; height: 28px; justify-content: flex-start; padding-left: 12px;
+    background: var(--paper); color: var(--ink); font-weight: 500;
+    box-shadow: 0 0 0 1px var(--hairline);
+  }
+  .c-row--b { top: 262px; }
+  .c-row-ico { width: 13px; height: 9px; border-radius: 2px; background: var(--ink); }
+  .c-row-ico--bank { border-radius: 1px 1px 2px 2px; clip-path: polygon(50% 0, 100% 35%, 100% 100%, 0 100%, 0 35%); }
+
+  /* Layer 04 · controls */
+  .c-close {
+    position: absolute; top: 126px; left: 10px; width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--sans); font-size: 13px; line-height: 1; color: var(--ink);
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 0 1px var(--hairline), 0 2px 6px rgba(26, 24, 20, 0.12);
+  }
+  .c-pay {
+    position: absolute; left: 10px; right: 10px; top: 326px; height: 28px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--sans); font-size: 9px; font-weight: 600; color: var(--paper);
+    background: var(--stripe);
+    box-shadow: 0 6px 14px rgba(99, 91, 255, 0.35);
+  }
+
+  /* Callouts: counter-rotated so they face the viewer */
+  .c-tag {
+    position: absolute;
+    left: 100%; top: 100%;
+    transform-origin: 0 0;
+    transform: rotateZ(38deg) rotateX(-55deg) translate(-2px, -50%);
+    display: flex; align-items: center; gap: 8px;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .c-tag::before { content: ''; width: 28px; height: 1px; background: var(--ink-soft); flex-shrink: 0; }
+  .c-tag::after {
+    content: ''; position: absolute; left: -3px; top: 50%;
+    width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: var(--ink);
+  }
+  .c-tag-text {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+  .c-tag-text b { font-weight: 500; color: var(--stripe); margin-right: 4px; }
+  .c-tag-text small {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: none;
+    color: var(--ink-soft);
+  }
+  .c-scene.is-exploded .c-tag {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    transition-delay: calc(0.95s + var(--i) * 110ms);
+  }
+  .c-no-anim .c-stack,
+  .c-no-anim .c-layer,
+  .c-no-anim .c-tag,
+  .c-no-anim .c-plane::after { transition: none !important; }
+
+  .c-legend {
+    list-style: none;
+    margin-top: 4px;
+    border-top: 1px solid var(--hairline);
+  }
+  .c-legend li {
+    display: grid;
+    grid-template-columns: 36px 96px 1fr;
+    gap: 12px;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--hairline);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .c-legend li > span {
+    font-family: var(--mono); font-size: var(--text-mono-sm); letter-spacing: 0.14em; color: var(--stripe);
+  }
+  .c-legend li > em { font-style: normal; font-weight: 400; font-size: 13px; color: var(--ink-soft); }
+
+  /* ---- 16 · Inputs & legibility ---- */
+  .c-leg-grid { grid-template-columns: 0.8fr 1.3fr; align-items: center; }
+  .c-leg-frame {
+    aspect-ratio: 16 / 10;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+  .c-half {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 40px 18px 18px;
+    overflow: hidden;
+  }
+  /* busy merchant backdrops (mock merchant swatches) */
+  .c-half--light {
+    background:
+      radial-gradient(circle at 18% 22%, #FFF3B0 0 34px, transparent 35px),
+      radial-gradient(circle at 82% 70%, #FF5E8A 0 54px, transparent 55px),
+      radial-gradient(circle at 70% 18%, #7BDFF2 0 26px, transparent 27px),
+      repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0 6px, transparent 6px 16px),
+      linear-gradient(160deg, #FFD166, #F25F5C 50%, #7BDFF2);
+  }
+  .c-half--dark {
+    background:
+      radial-gradient(circle at 80% 24%, #FF6B3D 0 30px, transparent 31px),
+      radial-gradient(circle at 20% 76%, #7A5CFF 0 56px, transparent 57px),
+      radial-gradient(circle at 30% 20%, #2EC4B6 0 18px, transparent 19px),
+      repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.07) 0 6px, transparent 6px 16px),
+      linear-gradient(200deg, #1B1F3B, #3A0F4D 45%, #0B3D3A);
+  }
+  .c-mode {
+    position: absolute; top: 14px; right: 14px;
+    font-family: var(--mono); font-size: var(--text-mono-xs); letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 4px 7px; border-radius: 2px;
+    background: var(--paper); color: var(--ink);
+  }
+  .c-half--dark .c-mode { background: var(--void); color: var(--void-ink); }
+  .c-form {
+    width: 100%;
+    max-width: 236px;
+    padding: 14px;
+    border-radius: 22px;
+    display: flex; flex-direction: column; gap: 6px;
+    font-family: var(--sans);
+    -webkit-backdrop-filter: blur(18px) saturate(1.5);
+    backdrop-filter: blur(18px) saturate(1.5);
+  }
+  .c-half--light .c-form {
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 12px 30px rgba(26, 24, 20, 0.18);
+    color: var(--ink);
+  }
+  .c-half--dark .c-form {
+    background: rgba(20, 17, 13, 0.62);
+    border: 1px solid rgba(244, 240, 232, 0.18);
+    box-shadow: inset 0 1px 0 rgba(244, 240, 232, 0.18), 0 12px 30px rgba(0, 0, 0, 0.35);
+    color: var(--void-ink);
+  }
+  .c-form-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .c-form-label { font-size: 10px; font-weight: 500; display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+  .c-fields {
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .c-half--light .c-fields { background: var(--paper); box-shadow: 0 0 0 1px var(--hairline-2); }
+  .c-half--dark .c-fields { background: var(--void); box-shadow: 0 0 0 1px var(--void-line); }
+  .c-field {
+    position: relative;
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 10px;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+  .c-field .c-pin { margin-left: auto; }
+  .c-field-row { display: grid; grid-template-columns: 1fr 1fr; }
+  .c-half--light .c-field-row, .c-half--light .c-field + .c-field-row { border-top: 1px solid var(--hairline); }
+  .c-half--light .c-field-row .c-field + .c-field { border-left: 1px solid var(--hairline); }
+  .c-half--dark .c-field-row { border-top: 1px solid var(--void-line); }
+  .c-half--dark .c-field-row .c-field + .c-field { border-left: 1px solid var(--void-line); }
+  .c-brand { width: 16px; height: 11px; border-radius: 2px; background: linear-gradient(135deg, #1A1F71, #3B4CCA); flex-shrink: 0; }
+  .c-form-pay {
+    margin-top: 6px;
+    height: 30px; border-radius: 15px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600;
+    background: var(--stripe); color: var(--paper);
+  }
+  .c-pin {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 14px; height: 14px; border-radius: 50%;
+    font-family: var(--mono); font-size: 8px; font-style: normal; line-height: 1;
+    background: var(--stripe); color: var(--paper);
+    flex-shrink: 0;
+  }
+  .c-chips { display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 300px; }
+  .c-chip {
+    display: flex; align-items: center; gap: 7px;
+    padding: 5px 9px 5px 5px;
+    border-radius: 999px;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.04em; line-height: 1.3;
+    background: var(--paper); color: var(--ink);
+    box-shadow: 0 0 0 1px var(--hairline-2);
+  }
+  .c-half--dark .c-chip { background: var(--void); color: var(--void-ink); box-shadow: 0 0 0 1px var(--void-line); }
+
+  /* ---- 17–18 · Iterations ---- */
+  .c-cell-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .c-iter .flow-cell.c-shipped .figure-frame { border-color: var(--stripe); box-shadow: 0 0 0 1px var(--stripe); }
+  .c-iter .flow-cell.c-shipped .flow-name { color: var(--stripe); }
+  .c-iter .surface-caption { margin-top: 20px; }
+
+  /* ---- 19 · Tokens ---- */
+  .c-tokens-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: end;
+  }
+  .c-tokens-head .surface-text { font-size: 15px; }
+  .c-table-wrap { margin-top: 28px; }
+  .c-table th { width: 22%; }
+  .c-table th:nth-child(4) { width: 34%; }
+  .c-table tbody td { font-size: 13px; }
+  .c-code {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--stripe);
+    background: var(--stripe-soft);
+    padding: 1px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .c-tokens .surface-caption { align-items: center; }
+
+  @media (max-width: 900px) {
+    .c-material .surface-grid,
+    .c-leg-grid { grid-template-columns: 1fr; }
+    .c-legend li { grid-template-columns: 32px 1fr; }
+    .c-legend li > em { grid-column: 2; }
+    .c-leg-frame { aspect-ratio: auto; grid-template-columns: 1fr; }
+    .c-half { padding: 44px 16px 20px; }
+    .c-tokens-head { grid-template-columns: 1fr; gap: 16px; }
+    .c-tag-text small { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .c-stack, .c-layer, .c-tag, .c-plane::after { transition: none !important; }
+  }
   /* ===== STREAM C CSS: end ===== */
   /* ---- */
 
@@ -3388,70 +3800,324 @@
   </section>
 
   <!-- ===== STREAM C · 15 sheet-material ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="sheet & material" data-theme="light">
+  <section class="slide c-material" data-section="ios 26" data-crumb="sheet & material" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
-        <div class="section-eyebrow">Solutions · Design: Sheet &amp; material</div>
-        <h2 class="setup-headline">The sheet, <em>pulled apart.</em></h2>
-        <!-- SCAFFOLD NOTE (C): Animated exploded z-stack: backdrop, glass, content, controls. Animate on slideenter. -->
-        <figure class="figure-slot" data-aspect="4/3">
-          <!-- asset: inline (CSS layers) -->
-          <div class="figure-frame"><span class="figure-mark">[ FIG. 06 ]</span></div>
-          <figcaption><span class="cap-num">Fig. 06</span><span class="cap-text">Exploded sheet. Backdrop, glass, content, controls.</span></figcaption>
-        </figure>
+        <div class="surface-grid c-grid">
+          <div class="surface-left">
+            <figure class="figure-slot" data-aspect="4/3">
+              <!-- asset: inline (CSS layers). Optional swap: /public/videos/ios-26-fig-06.mp4 -->
+              <div class="figure-frame c-stage">
+                <div class="c-scene" id="c-scene" role="img" aria-label="Payment sheet as four stacked layers: merchant app backdrop, glass material, content rows, and controls.">
+                  <div class="c-stack">
+                    <div class="c-layer" style="--i:0">
+                      <div class="c-plane c-app">
+                        <div class="c-app-status"><span>9:41</span><span class="c-app-pill"></span></div>
+                        <div class="c-app-bar"><span class="c-app-logo"></span><span class="c-app-line"></span></div>
+                        <div class="c-app-hero"></div>
+                        <div class="c-app-grid"><span></span><span></span><span></span><span></span></div>
+                      </div>
+                      <div class="c-tag"><span class="c-tag-text"><b>01</b> Backdrop<small>Merchant app</small></span></div>
+                    </div>
+                    <div class="c-layer" style="--i:1">
+                      <div class="c-plane c-ghost"><div class="c-glass-sheet"></div></div>
+                      <div class="c-tag"><span class="c-tag-text"><b>02</b> Material<small>Blur, tint, rim</small></span></div>
+                    </div>
+                    <div class="c-layer" style="--i:2">
+                      <div class="c-plane c-ghost">
+                        <div class="c-row c-row--apple">Apple Pay</div>
+                        <div class="c-row c-row--link">Pay with Link</div>
+                        <div class="c-or">Or pay using</div>
+                        <div class="c-row c-row--card"><span class="c-row-ico"></span>Card</div>
+                        <div class="c-row c-row--card c-row--b"><span class="c-row-ico c-row-ico--bank"></span>US bank account</div>
+                      </div>
+                      <div class="c-tag"><span class="c-tag-text"><b>03</b> Content<small>Apple Pay, Link, card</small></span></div>
+                    </div>
+                    <div class="c-layer" style="--i:3">
+                      <div class="c-plane c-ghost">
+                        <div class="c-close" aria-hidden="true">&times;</div>
+                        <div class="c-pay">Pay $97.42</div>
+                      </div>
+                      <div class="c-tag"><span class="c-tag-text"><b>04</b> Controls<small>Pay, close</small></span></div>
+                    </div>
+                  </div>
+                </div>
+                <span class="status-tag c-frame-tag" data-status="shipped">Shipped</span>
+                <button class="c-toggle" id="c-toggle" type="button" aria-controls="c-scene" aria-pressed="false">Explode</button>
+              </div>
+              <figcaption><span class="cap-num">Fig. 06</span><span class="cap-text">Exploded sheet. Backdrop, glass, content, controls.</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="surface-right">
+            <div class="section-eyebrow">Solutions · Design: Sheet &amp; material</div>
+            <h2 class="surface-headline">The sheet, <em>pulled apart.</em></h2>
+            <p class="surface-text">Four layers, one job each. The merchant's app stays alive underneath. Glass carries the material and nothing else. Content gets its own plane, so card data never inherits the blur. Controls sit on top, where the thumb expects them.</p>
+            <p class="surface-text">I drew the layer model and the rules between layers. We rebuilt PaymentSheet against it, surface by surface.</p>
+            <ol class="c-legend">
+              <li><span>01</span>Backdrop<em>Merchant app, never tinted by Stripe</em></li>
+              <li><span>02</span>Material<em>System glass, merchant tint via Appearance API</em></li>
+              <li><span>03</span>Content<em>Opaque rows for payment data <span class="c-todo">[TODO: Lawrence]</span></em></li>
+              <li><span>04</span>Controls<em>Pay and close, always on top</em></li>
+            </ol>
+          </div>
+        </div>
       </div>
     </div>
   </section>
   <!-- ===== /STREAM C · 15 ===== -->
 
   <!-- ===== STREAM C · 16 inputs-legibility ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="inputs & legibility" data-theme="light">
+  <section class="slide c-legibility" data-section="ios 26" data-crumb="inputs & legibility" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
-        <div class="section-eyebrow">Solutions · Design: Inputs &amp; legibility</div>
-        <h2 class="setup-headline">Card data, <em>legible over anything.</em></h2>
-        <!-- SCAFFOLD NOTE (C): Card form over busy backgrounds, contrast notes, light + dark. -->
-        <figure class="figure-slot" data-aspect="16/10">
-          <!-- asset: /public/images/ios-26-fig-07.png -->
-          <div class="figure-frame"><span class="figure-mark">[ FIG. 07 ]</span></div>
-          <figcaption><span class="cap-num">Fig. 07</span><span class="cap-text">Card form over busy backgrounds. Light and dark.</span></figcaption>
-        </figure>
+        <div class="surface-grid c-leg-grid">
+          <div class="surface-right">
+            <div class="section-eyebrow">Solutions · Design: Inputs &amp; legibility</div>
+            <h2 class="surface-headline">Card data, <em>legible over anything.</em></h2>
+            <p class="surface-text">A merchant can put anything behind the sheet: a product shot, a gradient, a sale banner. Glass carries that color through. Card data can't afford to.</p>
+            <p class="surface-text">So fields stay opaque, and labels that sit on glass get a tint dense enough to hold contrast in light and dark. I set the floor. We checked it against the busiest backdrops we could find. <span class="c-todo">[TODO: Lawrence]</span></p>
+          </div>
+
+          <div class="surface-left">
+            <figure class="figure-slot c-leg-fig">
+              <!-- asset: inline (CSS mock). Optional swap: /public/images/ios-26-fig-07.png -->
+              <div class="figure-frame c-leg-frame">
+                <div class="c-half c-half--light">
+                  <span class="c-mode">Light</span>
+                  <div class="c-form">
+                    <div class="c-form-title">Add card</div>
+                    <div class="c-form-label">Card information <i class="c-pin">1</i></div>
+                    <div class="c-fields">
+                      <div class="c-field"><span class="c-brand"></span>4242 4242 4242 4242<i class="c-pin">2</i></div>
+                      <div class="c-field-row"><div class="c-field">12 / 28</div><div class="c-field">CVC 123</div></div>
+                    </div>
+                    <div class="c-form-label">Country or region</div>
+                    <div class="c-fields"><div class="c-field">United States</div></div>
+                    <div class="c-form-pay">Pay $97.42</div>
+                  </div>
+                  <div class="c-chips">
+                    <span class="c-chip"><i class="c-pin">1</i>Label on glass: 4.5:1 min [TODO: Lawrence verify]</span>
+                    <span class="c-chip"><i class="c-pin">2</i>Opaque field, text 4.5:1 min [TODO: Lawrence verify]</span>
+                  </div>
+                </div>
+                <div class="c-half c-half--dark">
+                  <span class="c-mode">Dark</span>
+                  <div class="c-form">
+                    <div class="c-form-title">Add card</div>
+                    <div class="c-form-label">Card information <i class="c-pin">1</i></div>
+                    <div class="c-fields">
+                      <div class="c-field"><span class="c-brand"></span>4242 4242 4242 4242<i class="c-pin">2</i></div>
+                      <div class="c-field-row"><div class="c-field">12 / 28</div><div class="c-field">CVC 123</div></div>
+                    </div>
+                    <div class="c-form-label">Country or region</div>
+                    <div class="c-fields"><div class="c-field">United States</div></div>
+                    <div class="c-form-pay">Pay $97.42</div>
+                  </div>
+                  <div class="c-chips">
+                    <span class="c-chip"><i class="c-pin">1</i>Label on glass: 4.5:1 min [TODO: Lawrence verify]</span>
+                    <span class="c-chip"><i class="c-pin">2</i>Opaque field, text 4.5:1 min [TODO: Lawrence verify]</span>
+                  </div>
+                </div>
+                <span class="status-tag c-frame-tag" data-status="shipped">Shipped</span>
+              </div>
+              <figcaption><span class="cap-num">Fig. 07</span><span class="cap-text">Card form over busy backgrounds. Light and dark.</span></figcaption>
+            </figure>
+          </div>
+        </div>
       </div>
     </div>
   </section>
   <!-- ===== /STREAM C · 16 ===== -->
 
   <!-- ===== STREAM C · 17 sheet-iterations ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="sheet iterations" data-theme="light">
+  <section class="slide c-iter" data-section="ios 26" data-crumb="sheet iterations" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">Solutions · Iterations · Sheet</div>
-        <h2 class="setup-headline">Five sheets. <em>One shipped.</em></h2>
-        <!-- SCAFFOLD NOTE (C): flow-grid of 5 cells v.01–v.05, SCR 01–05, tagged EXPLORED / SHIPPED. -->
+        <h2 class="setup-headline" style="max-width:1100px;">Five sheets. <em>One shipped.</em></h2>
+
+        <div class="flow-grid">
+          <div class="flow-cell">
+            <div class="c-cell-head"><span class="flow-step">Sheet</span><span class="status-tag" data-status="explored">Explored</span></div>
+            <div class="flow-name">v.01</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-scr-01.png -->
+              <div class="figure-frame"><span class="figure-mark">[ SCR 01 ]</span></div>
+              <figcaption><span class="cap-num">v. 01</span><span class="cap-text">First take.</span></figcaption>
+            </figure>
+            <p class="flow-body">Glass everywhere. Rows float on the material. <span class="c-todo">[TODO: Lawrence]</span></p>
+          </div>
+          <div class="flow-cell">
+            <div class="c-cell-head"><span class="flow-step">Sheet</span><span class="status-tag" data-status="explored">Explored</span></div>
+            <div class="flow-name">v.02</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-scr-02.png -->
+              <div class="figure-frame"><span class="figure-mark">[ SCR 02 ]</span></div>
+              <figcaption><span class="cap-num">v. 02</span><span class="cap-text">Second take.</span></figcaption>
+            </figure>
+            <p class="flow-body">Glass tinted with the merchant's brand color. <span class="c-todo">[TODO: Lawrence]</span></p>
+          </div>
+          <div class="flow-cell">
+            <div class="c-cell-head"><span class="flow-step">Sheet</span><span class="status-tag" data-status="explored">Explored</span></div>
+            <div class="flow-name">v.03</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-scr-03.png -->
+              <div class="figure-frame"><span class="figure-mark">[ SCR 03 ]</span></div>
+              <figcaption><span class="cap-num">v. 03</span><span class="cap-text">Third take.</span></figcaption>
+            </figure>
+            <p class="flow-body">Opaque sheet, glass only on the header. <span class="c-todo">[TODO: Lawrence]</span></p>
+          </div>
+          <div class="flow-cell">
+            <div class="c-cell-head"><span class="flow-step">Sheet</span><span class="status-tag" data-status="explored">Explored</span></div>
+            <div class="flow-name">v.04</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-scr-04.png -->
+              <div class="figure-frame"><span class="figure-mark">[ SCR 04 ]</span></div>
+              <figcaption><span class="cap-num">v. 04</span><span class="cap-text">Fourth take.</span></figcaption>
+            </figure>
+            <p class="flow-body">Inset floating sheet, detached from the edges. <span class="c-todo">[TODO: Lawrence]</span></p>
+          </div>
+          <div class="flow-cell c-shipped">
+            <div class="c-cell-head"><span class="flow-step">Sheet</span><span class="status-tag" data-status="shipped">Shipped</span></div>
+            <div class="flow-name">v.05</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-scr-05.png -->
+              <div class="figure-frame"><span class="figure-mark">[ SCR 05 ]</span></div>
+              <figcaption><span class="cap-num">v. 05</span><span class="cap-text">Landed.</span></figcaption>
+            </figure>
+            <p class="flow-body">Glass for chrome, opaque rows for card data. <span class="c-todo">[TODO: Lawrence]</span></p>
+          </div>
+        </div>
+        <div class="surface-caption"><span class="fig-num">Fig. 08</span><span class="fig-desc">Sheet iterations, v.01 to v.05.</span></div>
       </div>
     </div>
   </section>
   <!-- ===== /STREAM C · 17 ===== -->
 
   <!-- ===== STREAM C · 18 pay-iterations ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="pay button iterations" data-theme="light">
+  <section class="slide c-iter" data-section="ios 26" data-crumb="pay button iterations" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">Solutions · Iterations · Pay button</div>
-        <h2 class="setup-headline">Five Pay buttons. <em>One shipped.</em></h2>
-        <!-- SCAFFOLD NOTE (C): flow-grid of 5 cells v.01–v.05, SCR 06–10, tagged EXPLORED / SHIPPED. -->
+        <h2 class="setup-headline" style="max-width:1100px;">Five Pay buttons. <em>One shipped.</em></h2>
+
+        <div class="flow-grid">
+          <div class="flow-cell">
+            <div class="c-cell-head"><span class="flow-step">Pay</span><span class="status-tag" data-status="explored">Explored</span></div>
+            <div class="flow-name">v.01</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-scr-06.png -->
+              <div class="figure-frame"><span class="figure-mark">[ SCR 06 ]</span></div>
+              <figcaption><span class="cap-num">v. 01</span><span class="cap-text">First take.</span></figcaption>
+            </figure>
+            <p class="flow-body">The iOS 18 button, reshaped. Solid fill, small radius. <span class="c-todo">[TODO: Lawrence]</span></p>
+          </div>
+          <div class="flow-cell">
+            <div class="c-cell-head"><span class="flow-step">Pay</span><span class="status-tag" data-status="explored">Explored</span></div>
+            <div class="flow-name">v.02</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-scr-07.png -->
+              <div class="figure-frame"><span class="figure-mark">[ SCR 07 ]</span></div>
+              <figcaption><span class="cap-num">v. 02</span><span class="cap-text">Second take.</span></figcaption>
+            </figure>
+            <p class="flow-body">Clear glass button, brand color on the label. <span class="c-todo">[TODO: Lawrence]</span></p>
+          </div>
+          <div class="flow-cell">
+            <div class="c-cell-head"><span class="flow-step">Pay</span><span class="status-tag" data-status="explored">Explored</span></div>
+            <div class="flow-name">v.03</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-scr-08.png -->
+              <div class="figure-frame"><span class="figure-mark">[ SCR 08 ]</span></div>
+              <figcaption><span class="cap-num">v. 03</span><span class="cap-text">Third take.</span></figcaption>
+            </figure>
+            <p class="flow-body">Tinted glass. Brand color through the material. <span class="c-todo">[TODO: Lawrence]</span></p>
+          </div>
+          <div class="flow-cell">
+            <div class="c-cell-head"><span class="flow-step">Pay</span><span class="status-tag" data-status="explored">Explored</span></div>
+            <div class="flow-name">v.04</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-scr-09.png -->
+              <div class="figure-frame"><span class="figure-mark">[ SCR 09 ]</span></div>
+              <figcaption><span class="cap-num">v. 04</span><span class="cap-text">Fourth take.</span></figcaption>
+            </figure>
+            <p class="flow-body">Full-width capsule with a glass rim. <span class="c-todo">[TODO: Lawrence]</span></p>
+          </div>
+          <div class="flow-cell c-shipped">
+            <div class="c-cell-head"><span class="flow-step">Pay</span><span class="status-tag" data-status="shipped">Shipped</span></div>
+            <div class="flow-name">v.05</div>
+            <figure class="figure-slot">
+              <!-- asset: /public/images/ios-26-scr-10.png -->
+              <div class="figure-frame"><span class="figure-mark">[ SCR 10 ]</span></div>
+              <figcaption><span class="cap-num">v. 05</span><span class="cap-text">Landed.</span></figcaption>
+            </figure>
+            <p class="flow-body">Solid capsule in the merchant's color. The one control glass never touches. <span class="c-todo">[TODO: Lawrence]</span></p>
+          </div>
+        </div>
+        <div class="surface-caption"><span class="fig-num">Fig. 09</span><span class="fig-desc">Pay button iterations, v.01 to v.05.</span></div>
       </div>
     </div>
   </section>
   <!-- ===== /STREAM C · 18 ===== -->
 
   <!-- ===== STREAM C · 19 tokens ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="tokens" data-theme="light">
+  <section class="slide c-tokens" data-section="ios 26" data-crumb="tokens" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
-        <div class="section-eyebrow">Solutions · Tokens</div>
-        <h2 class="setup-headline">Before and after, <em>in tokens.</em></h2>
-        <!-- SCAFFOLD NOTE (C): Spec table: radius, blur, tint, elevation, type. iOS 18 / iOS 26 / Appearance API mapping. -->
+        <div class="c-tokens-head">
+          <div>
+            <div class="section-eyebrow">Solutions · Tokens</div>
+            <h2 class="setup-headline">Before and after, <em>in tokens.</em></h2>
+          </div>
+          <p class="surface-text">Every visual change landed as a token, and every token kept its Appearance API hook. Merchants who themed for iOS 18 got iOS 26 without touching their code. <span class="c-todo">[TODO: Lawrence]</span></p>
+        </div>
+
+        <div class="ref-table-wrap c-table-wrap">
+          <table class="ref-table c-table">
+            <thead>
+              <tr><th>Token</th><th>iOS 18</th><th>iOS 26</th><th>Appearance API</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="ref-method">Radius<span class="sub">Sheet, rows, fields</span></span></td>
+                <td>Sheet 10pt, fields 6pt <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td>Concentric with the display. Rows become capsules. <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td><code class="c-code">cornerRadius</code></td>
+              </tr>
+              <tr>
+                <td><span class="ref-method">Blur<span class="sub">Sheet material</span></span></td>
+                <td>None. Opaque background.</td>
+                <td>System Liquid Glass behind chrome <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td><span class="ref-none">System owned, not exposed</span> <span class="c-todo">[TODO: Lawrence]</span></td>
+              </tr>
+              <tr class="feature">
+                <td><span class="ref-method">Tint<span class="sub">Background color</span></span></td>
+                <td>Solid fill</td>
+                <td>Merchant color carried through glass, at reduced opacity <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td><code class="c-code">colors.background</code></td>
+              </tr>
+              <tr>
+                <td><span class="ref-method">Elevation<span class="sub">Fields, sheet</span></span></td>
+                <td>Drop shadow under fields</td>
+                <td>Glass rim and depth. Shadows dropped. <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td><code class="c-code">shadow</code>, <code class="c-code">borderWidth</code></td>
+              </tr>
+              <tr>
+                <td><span class="ref-method">Type<span class="sub">Labels, fields, button</span></span></td>
+                <td>SF Pro, system sizes <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td>SF Pro, heavier headings, larger Pay label <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td><code class="c-code">font.base</code>, <code class="c-code">font.sizeScaleFactor</code></td>
+              </tr>
+              <tr>
+                <td><span class="ref-method">Pay button<span class="sub">Primary action</span></span></td>
+                <td>Rounded rectangle</td>
+                <td>Capsule, solid merchant color</td>
+                <td><code class="c-code">primaryButton.cornerRadius</code>, <code class="c-code">primaryButton.backgroundColor</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="surface-caption"><span class="fig-num">Fig. 10</span><span class="fig-desc">Token spec. iOS 18, iOS 26, and the Appearance API key that carries each.</span><span class="status-tag" data-status="shipped">Shipped</span></div>
       </div>
     </div>
   </section>
@@ -4037,6 +4703,49 @@
   // ----
 
   // ===== STREAM C JS: start =====
+  // Slide 15: exploded z-stack. Explodes on slideenter; toggle collapses/explodes.
+  (function streamC() {
+    const scene = document.getElementById('c-scene');
+    const btn = document.getElementById('c-toggle');
+    if (!scene || !btn) return;
+    const slide = scene.closest('.slide');
+    const idx = slides.indexOf(slide);
+    const frame = scene.parentElement;
+    const reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+    let timer = null;
+
+    function setExploded(on) {
+      scene.classList.toggle('is-exploded', on);
+      btn.setAttribute('aria-pressed', String(on));
+      btn.textContent = on ? 'Collapse' : 'Explode';
+    }
+    function play() {
+      clearTimeout(timer);
+      if (reduce.matches) { setExploded(true); return; }
+      scene.classList.add('c-no-anim');
+      setExploded(false);
+      void scene.offsetWidth;
+      scene.classList.remove('c-no-anim');
+      timer = setTimeout(() => setExploded(true), 500);
+    }
+    function fit() {
+      const w = frame.clientWidth, h = frame.clientHeight;
+      if (!w || !h) return;
+      scene.style.setProperty('--c-fit', Math.min(w / 600, h / 450).toFixed(3));
+    }
+
+    slide.addEventListener('slideenter', play);
+    btn.addEventListener('click', () => {
+      clearTimeout(timer);
+      setExploded(!scene.classList.contains('is-exploded'));
+    });
+    if ('ResizeObserver' in window) new ResizeObserver(fit).observe(frame);
+    window.addEventListener('resize', fit);
+    fit();
+
+    if (current === idx) play();
+    else if (reduce.matches) setExploded(true);
+  })();
   // ===== STREAM C JS: end =====
   // ----
 
