@@ -1659,6 +1659,8 @@
                   linear-gradient(#000, #000) top / 100% 40% no-repeat;
   }
 
+  .slide[data-crumb="cover"] .i26a-credit-wide { grid-column: 1 / -1; }
+  .i26a-code { font-family: var(--mono); font-size: 0.88em; color: var(--stripe); }
   .i26a-hero-tag { position: absolute; top: 16px; left: 16px; z-index: 2; }
   .i26a-hero-mark {
     position: absolute; top: 22px; right: 16px; z-index: 2;
@@ -1746,21 +1748,17 @@
     letter-spacing: 0.16em; color: var(--ink-faint);
   }
   .i26a-tt-figure { margin: 0; }
-  .i26a-ahead-band { fill: var(--stripe-soft); }
-  .i26a-ga-line { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 4 5; }
-  .i26a-ahead-label {
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
-    text-transform: uppercase; fill: var(--stripe);
-  }
+  .i26a-ga-line { stroke: var(--stripe); stroke-width: 1; stroke-dasharray: 4 5; opacity: 0.6; }
+  .i26a-row-single { grid-template-columns: 1fr; }
+  .i26a-team-slot { gap: 6px; border-style: solid; border-color: var(--hairline-2); }
+  .i26a-team-slot i { display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--ink-faint); opacity: 0.55; }
   .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="wwdc"]   { animation-delay: 0s; }
   .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="dev"]    { animation-delay: 0.7s; }
-  .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="public"] { animation-delay: 1.4s; }
-  .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="ship"]   { animation-delay: 2.2s; }
-  .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="ga"],
-  .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="band"]   { animation-delay: 2.7s; }
+  .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="ship"]   { animation-delay: 1.4s; }
+  .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="public"] { animation-delay: 2.1s; }
+  .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="recog"]  { animation-delay: 2.7s; }
   .i26a-tt-figure .timeline-marker .label,
-  .i26a-tt-figure .timeline-marker .week,
-  .i26a-tt-figure .i26a-ahead-label { font-size: 18px; letter-spacing: 0.12em; }
+  .i26a-tt-figure .timeline-marker .week { font-size: 18px; letter-spacing: 0.12em; }
   .i26a-tt-cap {
     display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;
     margin-top: 28px;
@@ -1782,8 +1780,9 @@
     .i26a-tt-grid .i26a-portrait-slot { width: 84px; height: 84px; }
     .i26a-tt-grid .team-portrait-name { font-size: 14px; }
     .i26a-tt-figure .timeline-marker .label,
-    .i26a-tt-figure .timeline-marker .week,
-    .i26a-tt-figure .i26a-ahead-label { font-size: 26px; letter-spacing: 0.06em; }
+    .i26a-tt-figure .timeline-marker .week { font-size: 22px; letter-spacing: 0.04em; }
+    .i26a-team-slot i { width: 9px; height: 9px; }
+    .i26a-team-slot { gap: 3px; }
   }
   /* ===== STREAM A CSS: end ===== */
   /* ---- */
@@ -1864,8 +1863,11 @@
     line-height: 1;
     color: var(--ink);
   }
-  .b-tier[data-tier="p0"] .b-tier-num { color: var(--stripe); }
-  .b-tier[data-tier="p2"] .b-tier-num { color: var(--ink-soft); }
+  .b-audit-slide .b-tier { grid-template-columns: 200px 1fr; padding: 12px 0; }
+  .b-audit-slide .b-tier-label { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .b-audit-slide .b-tier-num { font-size: 22px; letter-spacing: -0.005em; }
+  .b-tier[data-tier="all"] .b-tier-num { color: var(--stripe); }
+  .b-tier[data-tier="all"] { border-top: 1px solid var(--ink); }
   .b-tier-sub {
     font-family: var(--mono);
     font-size: var(--text-mono-xs);
@@ -1888,8 +1890,8 @@
     border: 1px solid var(--hairline-2);
     border-radius: 999px;
   }
-  .b-tier[data-tier="p0"] .b-chip { border-color: var(--ink); }
-  .b-tier[data-tier="p2"] .b-chip { background: transparent; }
+  .b-tier[data-tier="ps"] .b-chip { border-color: var(--ink); }
+  .b-tier[data-tier="all"] .b-chip { background: transparent; border-style: dashed; border-color: var(--stripe); }
   .b-chip-kind {
     font-family: var(--mono);
     font-size: 9px;
@@ -2024,6 +2026,16 @@
     padding-top: 18px;
     border-top: 1px solid var(--hairline);
   }
+  .b-whynot--crux { grid-template-columns: 1.15fr 1fr 1fr; gap: 36px; }
+  .b-crux { padding-left: 16px; border-left: 2px solid var(--stripe); }
+  .b-crux-label {
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--stripe);
+    margin-bottom: 4px;
+  }
   .b-whynot-q {
     font-family: var(--serif);
     font-size: 22px;
@@ -2133,7 +2145,31 @@
     border-radius: 4px;
   }
   .b-key li[data-k="glass"]::before  { background: rgba(255, 255, 255, 0.5); border: 1px solid var(--ink-faint); }
-  .b-key li[data-k="opaque"]::before { background: var(--paper); border: 1px solid var(--ink); }
+  .b-key li[data-k="switch"]::before { background: var(--stripe); border-radius: 999px; }
+  .b-key code { font-family: var(--mono); font-size: 0.92em; color: var(--stripe); }
+  .b-switch {
+    position: absolute;
+    top: 14px; left: 50%;
+    transform: translateX(-50%);
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 9px 5px 5px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.04em;
+    color: #fff; white-space: nowrap;
+  }
+  .b-switch i {
+    position: relative;
+    width: 22px; height: 13px; border-radius: 999px;
+    background: var(--stripe);
+  }
+  .b-switch i::after {
+    content: ''; position: absolute; top: 2px; right: 2px;
+    width: 9px; height: 9px; border-radius: 50%; background: #fff;
+  }
   .b-key li[data-k="brand"]::before  { background: var(--b-brand); }
   .b-key b {
     font-family: var(--mono);
@@ -2161,7 +2197,8 @@
     .b-versus-row > :first-child { grid-column: 1 / -1; }
     .b-versus-head > :first-child { display: none; }
     .b-versus-head b { font-size: 17px; }
-    .b-whynot { grid-template-columns: 1fr; gap: 18px; }
+    .b-whynot, .b-whynot--crux { grid-template-columns: 1fr; gap: 18px; }
+    .b-audit-slide .b-tier { grid-template-columns: 1fr; gap: 8px; padding: 12px 0; }
     .b-repo-stage { grid-template-columns: 1fr; justify-items: center; padding: 20px; }
     .b-phone { width: 210px; max-height: none; }
   }
@@ -3493,7 +3530,7 @@
         <div class="hero-text">
           <div class="hero-meta">2025 · Case Study 03</div>
           <h1 class="hero-title">iOS 26.</h1>
-          <p class="hero-lede">Every Stripe checkout, payment sheet, and in-app mobile surface, rebuilt for Liquid Glass. Shipped ahead of Apple's GA, with every merchant's brand intact.</p>
+          <p class="hero-lede">Opt-in Liquid Glass for every Stripe in-app payment integration: PaymentSheet, Payment Element, CustomerSheet, and AddressElement. One call, layered on the merchant's own theme.</p>
           <div class="hero-credits">
             <div>
               <div class="hero-credit-label">Role</div>
@@ -3505,11 +3542,15 @@
             </div>
             <div>
               <div class="hero-credit-label">Launch</div>
-              <div class="hero-credit-value">Ahead of iOS 26 GA</div>
+              <div class="hero-credit-value">Private preview on iOS 26 launch day · Public preview Nov 2025</div>
             </div>
             <div>
               <div class="hero-credit-label">Tools</div>
               <div class="hero-credit-value">Figma [TODO: Lawrence]</div>
+            </div>
+            <div class="i26a-credit-wide">
+              <div class="hero-credit-label">Platforms</div>
+              <div class="hero-credit-value">iOS · React Native</div>
             </div>
           </div>
         </div>
@@ -3625,8 +3666,8 @@
       <div class="setup-grid">
         <div>
           <div class="section-eyebrow">Problem · Chapter 01</div>
-          <h2 class="setup-headline">Solo designer. <em>Shipped ahead of GA.</em></h2>
-          <p class="i26a-lede">Apple redrew iOS. Stripe's mobile surfaces had to follow before the public did. I owned the design end to end.</p>
+          <h2 class="setup-headline">Solo designer. <em>Live on launch day.</em></h2>
+          <p class="i26a-lede">Apple redrew iOS. Stripe's payment UI had to meet it on day one without overwriting a single merchant's brand. I owned the design end to end.</p>
         </div>
 
         <div class="i26a-role-card">
@@ -3640,28 +3681,28 @@
 
           <div class="i26a-role-outcome">
             <div class="i26a-label">Outcome</div>
-            <p class="i26a-role-text">Every Stripe checkout, PaymentSheet, and in-app mobile surface rebuilt against Liquid Glass. Shipped ahead of GA. <em>In production across Stripe's mobile stack, startups to enterprise.</em></p>
+            <p class="i26a-role-text">An opt-in <code class="i26a-code">applyLiquidGlass</code> API, layered on the Appearance API, across iOS and React Native. Private preview on iOS 26 launch day, public preview in Nov 2025. <em>About 10 merchants in production within the first few weeks of public preview.</em></p>
           </div>
 
           <div class="i26a-iwe">
             <div class="i26a-iwe-col">
               <div class="i26a-iwe-who">I</div>
               <ul class="i26a-iwe-list">
-                <li>Designed every surface, from PaymentSheet to AddressElement.</li>
-                <li>Built the system: material, tokens, motion, states.</li>
-                <li>Wrote the specs engineering built from.</li>
+                <li>Designed the Liquid Glass system across every surface, from PaymentSheet to AddressElement.</li>
+                <li>Defined what the API changes: padding, heights, corner radii, blur.</li>
+                <li>Carried it through the whole feature set, from CVC recollection to card scanning.</li>
               </ul>
             </div>
             <div class="i26a-iwe-col">
               <div class="i26a-iwe-who">We</div>
               <ul class="i26a-iwe-list">
-                <li>SDK engineering partners built and shipped it. [TODO: Lawrence names]</li>
-                <li>Merchants kept their brand through the Appearance API.</li>
+                <li>John Woo and the iOS team built and shipped the API.</li>
+                <li>Merchants opt in, and keep their brand through the Appearance API.</li>
               </ul>
             </div>
           </div>
 
-          <div class="i26a-role-foot">Ship metrics · [TODO: Lawrence]</div>
+          <div class="i26a-role-foot">4 integrations · iOS + React Native · One opt-in call</div>
         </div>
       </div>
     </div>
@@ -3681,22 +3722,29 @@
           <button class="setup-card" data-jump="4">
             <div class="setup-card-num">01</div>
             <div class="setup-card-body">
-              <h3 class="setup-card-title">A new visual language.</h3>
-              <p class="setup-card-text">Liquid Glass changed material, depth, and motion across the whole OS. Anything that looked like iOS 18 would look old on day one.</p>
+              <h3 class="setup-card-title">A moving target.</h3>
+              <p class="setup-card-text">Liquid Glass arrived in Apple's first iOS 26 beta in June 2025. Every beta after it shifted Xcode and iOS under us. We designed and built against software that kept changing.</p>
             </div>
           </button>
           <button class="setup-card" data-jump="4">
             <div class="setup-card-num">02</div>
             <div class="setup-card-body">
-              <h3 class="setup-card-title">Every Stripe mobile surface, rebuilt.</h3>
-              <p class="setup-card-text">PaymentSheet, card form, saved methods, Link, Apple Pay, 3DS, Embedded Payment Element, CustomerSheet, AddressElement. All of it, inside merchants' apps.</p>
+              <h3 class="setup-card-title">Opt in, or opt out?</h3>
+              <p class="setup-card-text">Nobody could say yet whether merchants would want glass by default. Flip it on for everyone and we overwrite themes merchants tuned through the Appearance API. Leave it off and Stripe looks like iOS 18.</p>
             </div>
           </button>
           <button class="setup-card" data-jump="4">
             <div class="setup-card-num">03</div>
             <div class="setup-card-body">
-              <h3 class="setup-card-title">One designer, short runway.</h3>
-              <p class="setup-card-text">No team to split the surfaces with. Apple's GA set the deadline, and it was not going to move for us.</p>
+              <h3 class="setup-card-title">Four integrations, the whole feature set.</h3>
+              <p class="setup-card-text">PaymentSheet, Payment Element, CustomerSheet, AddressElement. Inside each one: saved payment methods, CVC recollection, card brand choice, card scanning. All of it inside merchants' apps.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="4">
+            <div class="setup-card-num">04</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">A fixed date, a small crew.</h3>
+              <p class="setup-card-text">iOS 26 launch day would not move. One designer and a small iOS team, with competing priorities and no spare people to throw at it.</p>
             </div>
           </button>
         </div>
@@ -3711,24 +3759,24 @@
       <div class="bet">
         <div class="section-eyebrow">Problem · The bet</div>
 
-        <h2 class="bet-headline">What <em>done</em> meant: three things, all true before GA.</h2>
+        <h2 class="bet-headline">The bet: <em>respect it now,</em> refine it after launch.</h2>
 
         <div class="bet-rows">
           <div class="bet-row">
-            <div class="bet-label">Native-feeling</div>
-            <div class="bet-text">sits next to Apple's own sheets without a seam. Glass, depth, and motion that belong on iOS 26.</div>
+            <div class="bet-label">Minimal changes now</div>
+            <div class="bet-text">the smallest set of changes that respects Liquid Glass on launch day: padding, heights, corner radii, blur. Nothing a merchant didn't ask for.</div>
           </div>
           <div class="bet-row">
-            <div class="bet-label">Merchant brand intact</div>
-            <div class="bet-text">every Appearance API customization still lands. The checkout still looks like the merchant's.</div>
+            <div class="bet-label">Refine after launch</div>
+            <div class="bet-text">ship on day one, then make small tweaks once real apps run on iOS 26. Every Appearance API customization still lands.</div>
           </div>
           <div class="bet-row">
-            <div class="bet-label">No checkout regressions</div>
-            <div class="bet-text">every flow enterprise merchants rely on behaves as before. <em>Only the surface changes.</em></div>
+            <div class="bet-label">Learn in preview</div>
+            <div class="bet-text">ship opt-in, watch how the iOS ecosystem evolves, then decide the default. <em>The ecosystem informs the default.</em></div>
           </div>
         </div>
 
-        <div class="bet-source">The bet · Definition of done</div>
+        <div class="bet-source">The bet · Opt-in first, default later</div>
       </div>
     </div>
   </section>
@@ -3739,7 +3787,7 @@
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">Problem · Team &amp; timeline</div>
-        <h2 class="setup-headline">One designer. <em>One immovable date.</em></h2>
+        <h2 class="setup-headline">One designer, one iOS team. <em>One launch day.</em></h2>
 
         <div class="team-timeline-grid i26a-tt-grid">
           <div class="team-portraits">
@@ -3750,21 +3798,16 @@
                 <div class="team-portrait-role">Product Designer (sole) · Stripe</div>
               </div>
               <div class="team-portrait">
-                <div class="i26a-portrait-slot" aria-hidden="true">TBD</div>
-                <div class="team-portrait-name">[TODO: Lawrence]</div>
-                <div class="team-portrait-role">Product Manager</div>
+                <div class="i26a-portrait-slot" aria-hidden="true">JW</div>
+                <div class="team-portrait-name">John Woo</div>
+                <div class="team-portrait-role">[TODO: Lawrence role]</div>
               </div>
             </div>
-            <div class="team-portrait-row">
+            <div class="team-portrait-row i26a-row-single">
               <div class="team-portrait">
-                <div class="i26a-portrait-slot" aria-hidden="true">TBD</div>
-                <div class="team-portrait-name">[TODO: Lawrence]</div>
-                <div class="team-portrait-role">iOS SDK Engineering</div>
-              </div>
-              <div class="team-portrait">
-                <div class="i26a-portrait-slot" aria-hidden="true">TBD</div>
-                <div class="team-portrait-name">[TODO: Lawrence]</div>
-                <div class="team-portrait-role">Eng Manager</div>
+                <div class="i26a-portrait-slot i26a-team-slot" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="team-portrait-name">The iOS team</div>
+                <div class="team-portrait-role">5 engineers · built and shipped the API</div>
               </div>
             </div>
           </div>
@@ -3772,44 +3815,43 @@
           <figure class="i26a-tt-figure">
             <!-- asset: inline SVG · Fig. 02 -->
             <div class="timeline-curve" style="margin-top: 0;">
-              <svg class="timeline-svg" viewBox="0 0 1200 380" role="img" aria-label="Timeline from WWDC through developer betas and public beta to iOS 26 GA, with Stripe shipping ahead of GA">
-                <g class="timeline-marker" data-phase="band"><rect class="i26a-ahead-band" x="900" y="40" width="220" height="270"/></g>
+              <svg class="timeline-svg" viewBox="0 0 1200 380" role="img" aria-label="Timeline, June to December 2025: iOS 26 beta 1 at WWDC, design and build through the betas, Stripe private preview on iOS 26 launch day in September, public preview in November, recognized internally in December">
                 <line class="axis" x1="60" y1="310" x2="1140" y2="310"/>
 
-                <path class="curve" d="M 80 260 C 220 260 220 210 360 210 C 500 210 500 160 640 160 C 780 160 780 90 900 90 L 1120 90"/>
+                <path class="curve" d="M 100 270 C 230 270 230 220 350 220 C 480 220 480 110 600 110 C 730 110 730 120 860 120 L 1110 120"/>
 
                 <g class="timeline-marker" data-phase="wwdc">
-                  <circle class="dot" cx="80" cy="260" r="5"/>
-                  <text class="label" x="80" y="240" text-anchor="middle">WWDC</text>
-                  <text class="week" x="80" y="332" text-anchor="middle">Announce</text>
+                  <circle class="dot" cx="100" cy="270" r="5"/>
+                  <text class="label" x="100" y="250" text-anchor="middle">Beta 1</text>
+                  <text class="week" x="100" y="340" text-anchor="middle">June</text>
                 </g>
                 <g class="timeline-marker" data-phase="dev">
-                  <circle class="dot" cx="360" cy="210" r="5"/>
-                  <text class="label" x="360" y="190" text-anchor="middle">Developer betas</text>
-                  <text class="week" x="360" y="332" text-anchor="middle">Design + build</text>
-                </g>
-                <g class="timeline-marker" data-phase="public">
-                  <circle class="dot" cx="640" cy="160" r="5"/>
-                  <text class="label" x="640" y="140" text-anchor="middle">Public beta</text>
-                  <text class="week" x="640" y="332" text-anchor="middle">Harden</text>
+                  <circle class="dot" cx="350" cy="220" r="5"/>
+                  <text class="label" x="350" y="200" text-anchor="middle">Betas</text>
+                  <text class="week" x="350" y="340" text-anchor="middle">Jul–Aug</text>
                 </g>
                 <g class="timeline-marker peak" data-phase="ship">
-                  <circle class="dot" cx="900" cy="90" r="7"/>
-                  <text class="label" x="900" y="68" text-anchor="middle">Stripe ships</text>
-                  <text class="week" x="900" y="332" text-anchor="middle">Ship</text>
+                  <line class="i26a-ga-line" x1="600" y1="110" x2="600" y2="310"/>
+                  <circle class="dot" cx="600" cy="110" r="7"/>
+                  <text class="label" x="600" y="58" text-anchor="middle">Launch day</text>
+                  <text class="label" x="600" y="88" text-anchor="middle">Private preview</text>
+                  <text class="week" x="600" y="340" text-anchor="middle">Sept</text>
                 </g>
-                <g class="timeline-marker" data-phase="ga">
-                  <line class="i26a-ga-line" x1="1120" y1="40" x2="1120" y2="310"/>
-                  <circle class="dot" cx="1120" cy="90" r="5"/>
-                  <text class="label" x="1120" y="28" text-anchor="middle">iOS 26 GA</text>
-                  <text class="week" x="1120" y="332" text-anchor="middle">Release</text>
-                  <text class="i26a-ahead-label" x="1010" y="290" text-anchor="middle">Ahead of GA</text>
+                <g class="timeline-marker" data-phase="public">
+                  <circle class="dot" cx="860" cy="120" r="5"/>
+                  <text class="label" x="860" y="100" text-anchor="middle">Public preview</text>
+                  <text class="week" x="860" y="340" text-anchor="middle">Nov</text>
+                </g>
+                <g class="timeline-marker" data-phase="recog">
+                  <circle class="dot" cx="1110" cy="120" r="5"/>
+                  <text class="label" x="1110" y="100" text-anchor="middle">Recognized</text>
+                  <text class="week" x="1110" y="340" text-anchor="middle">Dec 2025</text>
                 </g>
               </svg>
             </div>
             <figcaption class="i26a-tt-cap">
               <span class="cap-num">Fig. 02</span>
-              <span class="cap-text">Timeline. WWDC to GA, phases only. Stripe's surfaces were live before iOS 26 reached the public.</span>
+              <span class="cap-text">Timeline, 2025. Designed through the betas, live in private preview on iOS 26 launch day, opt-in API in public preview in November.</span>
               <span class="status-tag" data-status="shipped">Shipped</span>
             </figcaption>
           </figure>
@@ -3890,7 +3932,7 @@
       <div style="width:100%;">
         <div class="section-eyebrow">Process · Reference wall</div>
         <h2 class="setup-headline">iOS 18 to iOS 26, <em>component by component.</em></h2>
-        <p class="surface-text" style="margin-top: 10px; max-width: 760px;">Before I drew a single sheet, I took the system apart. Every component a Stripe checkout touches, old against new, and what each change asked of us.</p>
+        <p class="surface-text" style="margin-top: 10px; max-width: 760px;">Before I drew a single sheet, I took the system apart. Every component a Stripe checkout touches, old against new, and what each change asked of us in padding, heights, corner radii, and blur.</p>
 
         <div class="ref-table-wrap">
           <table class="ref-table">
@@ -3907,31 +3949,31 @@
                 <td><span class="ref-method">Sheets<span class="sub">Presentation</span></span></td>
                 <td><span class="ref-standard">Opaque, pinned to the bottom edge</span></td>
                 <td>Floating glass, inset from the screen edges at partial heights. Turns opaque as it expands.</td>
-                <td>PaymentSheet detents and margins rebuilt around an inset, floating sheet.</td>
+                <td>Sheet padding and corner radii retuned so PaymentSheet sits inset and floating, like Apple's own.</td>
               </tr>
               <tr>
                 <td><span class="ref-method">Navigation<span class="sub">Bars, toolbars, tab bars</span></span></td>
                 <td><span class="ref-standard">Full-width bars with a hairline divider</span></td>
                 <td>Bars dissolve. Controls float in glass capsules. Tab bars shrink on scroll.</td>
-                <td>Sheet header (close, back, edit) rebuilt as floating glass controls.</td>
+                <td>Sheet header controls (close, back, edit) get glass blur and new heights.</td>
               </tr>
               <tr>
                 <td><span class="ref-method">Buttons<span class="sub">Primary actions</span></span></td>
                 <td><span class="ref-standard">Filled rounded rects in the app tint</span></td>
                 <td>Capsule shapes. New glass and prominent glass styles.</td>
-                <td>The Pay button: capsule by default, or the merchant's own corner radius? <span class="b-todo">[TODO: Lawrence verify]</span></td>
+                <td>Pay button height and corner radius follow Liquid Glass once the merchant opts in. Otherwise their Appearance API radius holds.</td>
               </tr>
               <tr>
                 <td><span class="ref-method">Controls<span class="sub">Toggles, segmented, sliders</span></span></td>
                 <td><span class="ref-standard">Solid thumbs and tracks</span></td>
                 <td>Thumbs lift into glass while dragged.</td>
-                <td>Save-card toggle and method selectors rechecked against the new pressed states. <span class="b-todo">[TODO: Lawrence verify]</span></td>
+                <td>Payment method rows and selectors retuned: new heights, padding, and radii, vertical and horizontal modes.</td>
               </tr>
               <tr>
                 <td><span class="ref-method">Keyboard<span class="sub">Text entry</span></span></td>
                 <td><span class="ref-standard">Full-width tray, square top</span></td>
                 <td>Glass tray with rounded top corners.</td>
-                <td>Card form re-spaced so number, expiry, and CVC stay legible above the glass.</td>
+                <td>Card input padding re-spaced so number, expiry, and CVC stay clear of the tray. Input heights and roundness come next.</td>
               </tr>
               <tr>
                 <td><span class="ref-method">Alerts<span class="sub">Confirmations</span></span></td>
@@ -3943,7 +3985,7 @@
                 <td><span class="ref-method">Corners &amp; tint<span class="sub">Geometry, color</span></span></td>
                 <td><span class="ref-standard">Fixed radii. Tint fills the control.</span></td>
                 <td><span class="ref-designed">Concentric corners, from the device outline inward. Color borrowed from the content beneath.</span></td>
-                <td><span class="ref-higher">Merchants set radius and brand color through the Appearance API.</span> The collision this chapter is about.</td>
+                <td><span class="ref-higher">One opt-in call updates padding, heights, corner radii, and blur on top of the merchant's Appearance API theme.</span> The collision this chapter is about.</td>
               </tr>
             </tbody>
           </table>
@@ -4033,60 +4075,75 @@
         <div class="b-audit-head">
           <div>
             <div class="section-eyebrow">Process · Surface audit</div>
-            <h2 class="setup-headline">Every surface, <em>ranked.</em></h2>
+            <h2 class="setup-headline">Four integrations. <em>The whole feature set.</em></h2>
           </div>
-          <p class="surface-text">Thirteen surfaces, one designer. I ranked them by how many buyers see them and how close they sit to the moment money moves, then rebuilt every one. We shipped all thirteen ahead of GA.</p>
+          <p class="surface-text">Liquid Glass had to land in every in-app payment integration Stripe ships, and in every feature that runs through them. I designed each one. We shipped all of it: private preview on launch day, public preview in November.</p>
         </div>
 
         <!-- asset: /public/images/ios-26-fig-03.png (optional static export; the live figure is HTML/CSS) -->
         <figure class="figure-slot b-audit-fig">
           <div class="b-audit">
             <div class="b-audit-axis">
-              <span>Ranked by reach × proximity to payment</span>
-              <span class="b-todo">[TODO: Lawrence confirm ranking]</span>
+              <span>Grouped by integration</span>
+              <span>iOS · React Native</span>
             </div>
 
-            <div class="b-tier" data-tier="p0">
+            <div class="b-tier" data-tier="ps">
               <div class="b-tier-label">
-                <span class="b-tier-num">P0</span>
-                <span class="b-tier-sub">Every checkout</span>
+                <span class="b-tier-num">PaymentSheet</span>
+                <span class="b-tier-sub">Full checkout sheet</span>
               </div>
               <ul class="b-chips">
-                <li class="b-chip"><span class="b-chip-kind">Sheet</span><span class="b-chip-name">PaymentSheet · vertical list</span><span class="status-tag" data-status="shipped">Shipped</span></li>
-                <li class="b-chip"><span class="b-chip-kind">Form</span><span class="b-chip-name">Card form</span><span class="status-tag" data-status="shipped">Shipped</span></li>
-                <li class="b-chip"><span class="b-chip-kind">Row</span><span class="b-chip-name">Apple Pay row</span><span class="status-tag" data-status="shipped">Shipped</span></li>
-                <li class="b-chip"><span class="b-chip-kind">State</span><span class="b-chip-name">Processing</span><span class="status-tag" data-status="shipped">Shipped</span></li>
-                <li class="b-chip"><span class="b-chip-kind">State</span><span class="b-chip-name">Success</span><span class="status-tag" data-status="shipped">Shipped</span></li>
-              </ul>
-            </div>
-
-            <div class="b-tier" data-tier="p1">
-              <div class="b-tier-label">
-                <span class="b-tier-num">P1</span>
-                <span class="b-tier-sub">Most checkouts</span>
-              </div>
-              <ul class="b-chips">
-                <li class="b-chip"><span class="b-chip-kind">Sheet</span><span class="b-chip-name">PaymentSheet · carousel</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Select</span><span class="b-chip-name">Payment methods · vertical</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Select</span><span class="b-chip-name">Payment methods · horizontal</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Form</span><span class="b-chip-name">Card input</span><span class="status-tag" data-status="shipped">Shipped</span></li>
                 <li class="b-chip"><span class="b-chip-kind">List</span><span class="b-chip-name">Saved payment methods</span><span class="status-tag" data-status="shipped">Shipped</span></li>
-                <li class="b-chip"><span class="b-chip-kind">Flow</span><span class="b-chip-name">Link</span><span class="status-tag" data-status="shipped">Shipped</span></li>
-                <li class="b-chip"><span class="b-chip-kind">State</span><span class="b-chip-name">Decline</span><span class="status-tag" data-status="shipped">Shipped</span></li>
-                <li class="b-chip"><span class="b-chip-kind">Handoff</span><span class="b-chip-name">3DS handoff</span><span class="status-tag" data-status="shipped">Shipped</span></li>
               </ul>
             </div>
-
-            <div class="b-tier" data-tier="p2">
+            <div class="b-tier" data-tier="pe">
               <div class="b-tier-label">
-                <span class="b-tier-num">P2</span>
-                <span class="b-tier-sub">Embedded &amp; setup</span>
+                <span class="b-tier-num">Payment Element</span>
+                <span class="b-tier-sub">Embedded in the app</span>
               </div>
               <ul class="b-chips">
-                <li class="b-chip"><span class="b-chip-kind">Element</span><span class="b-chip-name">Embedded Payment Element</span><span class="status-tag" data-status="shipped">Shipped</span></li>
-                <li class="b-chip"><span class="b-chip-kind">Sheet</span><span class="b-chip-name">CustomerSheet</span><span class="status-tag" data-status="shipped">Shipped</span></li>
-                <li class="b-chip"><span class="b-chip-kind">Element</span><span class="b-chip-name">AddressElement</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Select</span><span class="b-chip-name">Payment method rows</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Form</span><span class="b-chip-name">Card input</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">List</span><span class="b-chip-name">Saved payment methods</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              </ul>
+            </div>
+            <div class="b-tier" data-tier="cs">
+              <div class="b-tier-label">
+                <span class="b-tier-num">CustomerSheet</span>
+                <span class="b-tier-sub">Manage saved methods</span>
+              </div>
+              <ul class="b-chips">
+                <li class="b-chip"><span class="b-chip-kind">List</span><span class="b-chip-name">Saved payment methods</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Form</span><span class="b-chip-name">Add a card</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              </ul>
+            </div>
+            <div class="b-tier" data-tier="ae">
+              <div class="b-tier-label">
+                <span class="b-tier-num">AddressElement</span>
+                <span class="b-tier-sub">Shipping and billing</span>
+              </div>
+              <ul class="b-chips">
+                <li class="b-chip"><span class="b-chip-kind">Form</span><span class="b-chip-name">Address form</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              </ul>
+            </div>
+            <div class="b-tier" data-tier="all">
+              <div class="b-tier-label">
+                <span class="b-tier-num">Across all four</span>
+                <span class="b-tier-sub">The whole feature set</span>
+              </div>
+              <ul class="b-chips">
+                <li class="b-chip"><span class="b-chip-kind">Feature</span><span class="b-chip-name">CVC recollection</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Feature</span><span class="b-chip-name">Saved payment methods</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Feature</span><span class="b-chip-name">Card brand choice</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+                <li class="b-chip"><span class="b-chip-kind">Feature</span><span class="b-chip-name">Card scanning</span><span class="status-tag" data-status="shipped">Shipped</span></li>
               </ul>
             </div>
           </div>
-          <figcaption><span class="cap-num">Fig. 03</span><span class="cap-text">Surface audit: 13 PaymentSheet and Element surfaces in three tiers. Draft ranking.</span></figcaption>
+          <figcaption><span class="cap-num">Fig. 03</span><span class="cap-text">Surface audit: four in-app payment integrations, and the features that run through all of them.</span></figcaption>
         </figure>
       </div>
     </div>
@@ -4099,7 +4156,7 @@
       <div style="width:100%;">
         <div class="section-eyebrow">Process · The tension</div>
         <h2 class="setup-headline">Apple's material. <em>The merchant's brand.</em></h2>
-        <p class="surface-text" style="margin-top: 10px; max-width: 760px;">Liquid Glass wants to be see-through and borrow its color from whatever sits behind it. A merchant's checkout wants to be their color, every time, on every phone.</p>
+        <p class="surface-text" style="margin-top: 10px; max-width: 760px;">Liquid Glass wants to be see-through and borrow its color from whatever sits behind it. A merchant's checkout wants to be their color, every time, on every phone. And someone had to decide who flips the switch.</p>
 
         <div class="b-tension-grid">
           <div class="b-versus">
@@ -4122,6 +4179,11 @@
               <span class="b-versus-label">Owner</span>
               <span>Apple, per OS release</span>
               <span>The merchant, per app release</span>
+            </div>
+            <div class="b-versus-row">
+              <span class="b-versus-label">Turned on by</span>
+              <span>Apple, for every app on iOS 26</span>
+              <span>The merchant, when they choose</span>
             </div>
             <div class="b-versus-row">
               <span class="b-versus-label">Moves under you</span>
@@ -4150,13 +4212,18 @@
           </figure>
         </div>
 
-        <div class="b-whynot">
-          <div>
-            <div class="b-whynot-q">Why not all glass?</div>
-            <p class="surface-text">A card number over moving content loses contrast, and the merchant's brand washes out to whatever happens to be behind the sheet.</p>
+        <div class="b-whynot b-whynot--crux">
+          <div class="b-crux">
+            <div class="b-crux-label">The crux</div>
+            <div class="b-whynot-q">Opt in, or opt out?</div>
+            <p class="surface-text">Nobody knew yet whether merchants would want glass by default. The answer decided whose checkout changed on launch day.</p>
           </div>
           <div>
-            <div class="b-whynot-q">Why not all opaque?</div>
+            <div class="b-whynot-q">Why not opt out?</div>
+            <p class="surface-text">Glass on for everyone rewrites every merchant's theme the day they update the SDK, whether their brand survives the glass or not.</p>
+          </div>
+          <div>
+            <div class="b-whynot-q">Why not wait?</div>
             <p class="surface-text">The sheet reads as iOS 18 inside an iOS 26 app, and Apple's floating controls land on top of it anyway.</p>
           </div>
         </div>
@@ -4173,7 +4240,7 @@
           <div class="surface-left">
             <figure class="figure-slot b-repo-fig">
               <!-- asset: /public/images/ios-26-fig-05.png (optional static export; the live figure is HTML/CSS) -->
-              <div class="b-mock b-repo-stage" aria-label="A payment sheet split into glass chrome, opaque card data, and a merchant-branded Pay button.">
+              <div class="b-mock b-repo-stage" aria-label="A payment sheet in the merchant's own theme, with a Liquid Glass layer the merchant switches on through applyLiquidGlass.">
                 <div class="b-phone">
                   <div class="b-phone-app"></div>
                   <div class="b-sheet">
@@ -4188,24 +4255,25 @@
                     </div>
                     <span class="b-mock-btn b-mock-btn--brand b-sheet-pay">Pay $42.00</span>
                   </div>
+                  <span class="b-switch" aria-hidden="true"><i></i>applyLiquidGlass</span>
                 </div>
                 <ul class="b-key">
-                  <li data-k="glass"><b>Glass</b><span>Chrome. Header, controls, the sheet's edge. System-owned.</span></li>
-                  <li data-k="opaque"><b>Opaque</b><span>Card data. Number, expiry, CVC, totals. Never over moving content.</span></li>
-                  <li data-k="brand"><b>Brand</b><span>The Pay button. Merchant-owned, through the Appearance API.</span></li>
+                  <li data-k="switch"><b>The switch</b><span>One call, <code>applyLiquidGlass</code>. Off until the merchant turns it on.</span></li>
+                  <li data-k="glass"><b>Glass layer</b><span>Padding, heights, corner radii, blur. Applied on top, never instead.</span></li>
+                  <li data-k="brand"><b>Their theme</b><span>Colors, fonts, the Pay button. Set through the Appearance API, and it stays theirs.</span></li>
                 </ul>
               </div>
-              <figcaption><span class="cap-num">Fig. 05</span><span class="cap-text">The split, on one sheet. <span class="status-tag" data-status="shipped">Shipped</span></span></figcaption>
+              <figcaption><span class="cap-num">Fig. 05</span><span class="cap-text">One sheet, two layers: the merchant's theme, and the glass they switch on. <span class="status-tag" data-status="shipped">Shipped</span></span></figcaption>
             </figure>
           </div>
 
           <div class="surface-right">
             <div class="section-eyebrow">Process · The reposition</div>
-            <h2 class="surface-headline">Glass for chrome. <em>Opaque for card data.</em></h2>
-            <p class="b-todo b-todo--block">[TODO: Lawrence supply the real rule] Placeholder rule, drafted to show the shape of the move.</p>
-            <p class="surface-text">I stopped asking which material wins. I asked <em style="font-style:italic; color:var(--ink);">what each layer is for.</em></p>
-            <p class="surface-text">Anything that frames the sheet went to the system. Anything that holds a card number, a total, or the merchant's button stayed opaque and stayed theirs. We shipped that split across every surface in the audit.</p>
-            <p class="pull-quote" style="margin-top: 8px;">Let Apple own the frame. <em>Let the merchant own the money.</em></p>
+            <h2 class="surface-headline">Opt in, <em>don't overwrite.</em></h2>
+            <p class="surface-text">I stopped asking which material wins. I asked <em style="font-style:italic; color:var(--ink);">who gets to decide.</em></p>
+            <p class="surface-text">Liquid Glass ships as a layer on top of the Appearance API. The merchant turns it on with one call, and it updates padding, heights, corner radii, and blur. Their colors, fonts, and brand stay theirs.</p>
+            <p class="surface-text">Minimal changes to respect Liquid Glass first, small refinements after launch. Public preview let us watch the iOS ecosystem before we pick a default.</p>
+            <p class="pull-quote" style="margin-top: 8px;">Apple sets the material. <em>The merchant flips the switch.</em></p>
           </div>
         </div>
       </div>
