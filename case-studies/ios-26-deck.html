@@ -2410,7 +2410,6 @@
   /* ---- 16 · Inputs & legibility ---- */
   .c-leg-grid { grid-template-columns: 0.8fr 1.3fr; align-items: center; }
   .c-leg-frame {
-    aspect-ratio: 16 / 10;
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: stretch;
@@ -2426,6 +2425,26 @@
     padding: 40px 18px 18px;
     overflow: hidden;
   }
+  .c-shot {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 18px 20px;
+    background: var(--paper-deep);
+  }
+  .c-shot img {
+    display: block;
+    height: clamp(300px, 46vh, 420px);
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 18px;
+    box-shadow: 0 0 0 1px var(--hairline-2), 0 18px 36px rgba(26, 24, 20, 0.14);
+  }
+  .c-half .c-frame-tag, .c-shot .c-frame-tag { top: 14px; left: 14px; }
+  .c-next { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; font-size: 14px; color: var(--ink-soft); }
+  .c-next .status-tag { flex-shrink: 0; }
   /* busy merchant backdrops (mock merchant swatches) */
   .c-half--light {
     background:
@@ -2554,7 +2573,8 @@
     .c-leg-grid { grid-template-columns: 1fr; }
     .c-legend li { grid-template-columns: 32px 1fr; }
     .c-legend li > em { grid-column: 2; }
-    .c-leg-frame { aspect-ratio: auto; grid-template-columns: 1fr; }
+    .c-leg-frame { grid-template-columns: 1fr; }
+    .c-shot img { height: 380px; }
     .c-half { padding: 44px 16px 20px; }
     .c-tokens-head { grid-template-columns: 1fr; gap: 16px; }
     .c-tag-text small { display: none; }
@@ -2580,6 +2600,26 @@
     gap: 32px;
   }
   .sd-slide .sd-lede { margin-top: 16px; max-width: 620px; }
+  .sd-slide .sd-code {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    color: var(--stripe);
+    background: var(--stripe-soft);
+    padding: 1px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .sd-slide .sd-next {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    flex-wrap: wrap;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 620px;
+  }
   .sd-slide .sd-controls {
     display: flex;
     flex-direction: column;
@@ -4291,19 +4331,19 @@
                 <span class="status-tag c-frame-tag" data-status="shipped">Shipped</span>
                 <button class="c-toggle" id="c-toggle" type="button" aria-controls="c-scene" aria-pressed="false">Explode</button>
               </div>
-              <figcaption><span class="cap-num">Fig. 06</span><span class="cap-text">Exploded sheet. Backdrop, glass, content, controls.</span></figcaption>
+              <figcaption><span class="cap-num">Fig. 06</span><span class="cap-text">Exploded sheet. Backdrop, glass, content, controls: every layer the call touches.</span></figcaption>
             </figure>
           </div>
 
           <div class="surface-right">
             <div class="section-eyebrow">Solutions · Design: Sheet &amp; material</div>
             <h2 class="surface-headline">The sheet, <em>pulled apart.</em></h2>
-            <p class="surface-text">Four layers, one job each. The merchant's app stays alive underneath. Glass carries the material and nothing else. Content gets its own plane, so card data never inherits the blur. Controls sit on top, where the thumb expects them.</p>
-            <p class="surface-text">I drew the layer model and the rules between layers. We rebuilt PaymentSheet against it, surface by surface.</p>
+            <p class="surface-text">One call, <code class="c-code">applyLiquidGlass</code>, reaches every layer of the sheet. It updates padding, heights, corner radii and blur at once, so the merchant's app stays alive underneath, glass carries the material, and card data sits on solid rows that never inherit the blur.</p>
+            <p class="surface-text">I designed the Liquid Glass system across every layer and surface. We, John Woo and the iOS team, built it into the API and shipped it.</p>
             <ol class="c-legend">
-              <li><span>01</span>Backdrop<em>Merchant app, never tinted by Stripe</em></li>
-              <li><span>02</span>Material<em>System glass, merchant tint via Appearance API</em></li>
-              <li><span>03</span>Content<em>Opaque rows for payment data <span class="c-todo">[TODO: Lawrence]</span></em></li>
+              <li><span>01</span>Backdrop<em>Merchant app, untouched by the call</em></li>
+              <li><span>02</span>Material<em>New blur, merchant brand via the Appearance API</em></li>
+              <li><span>03</span>Content<em>Solid rows, new padding, heights and corner radii</em></li>
               <li><span>04</span>Controls<em>Pay and close, always on top</em></li>
             </ol>
           </div>
@@ -4321,34 +4361,22 @@
           <div class="surface-right">
             <div class="section-eyebrow">Solutions · Design: Inputs &amp; legibility</div>
             <h2 class="surface-headline">Card data, <em>legible over anything.</em></h2>
-            <p class="surface-text">A merchant can put anything behind the sheet: a product shot, a gradient, a sale banner. Glass carries that color through. Card data can't afford to.</p>
-            <p class="surface-text">So fields stay opaque, and labels that sit on glass get a tint dense enough to hold contrast in light and dark. I set the floor. We checked it against the busiest backdrops we could find. <span class="c-todo">[TODO: Lawrence]</span></p>
+            <p class="surface-text">The card form is where Liquid Glass has to behave. With <code class="c-code">applyLiquidGlass</code> on, field groups get new heights and rounder corners, while the fields themselves stay solid so card numbers never sit on the blur.</p>
+            <p class="surface-text">I designed the input; we shipped it across PaymentSheet, Payment Element, CustomerSheet and AddressElement.</p>
+            <p class="surface-text c-next"><span class="status-tag" data-status="future">Future</span> Still open from the ship note: input heights, roundness of input fields, text contrast and edge cases. Public preview is where we tune them.</p>
           </div>
 
           <div class="surface-left">
             <figure class="figure-slot c-leg-fig">
-              <!-- asset: inline (CSS mock). Optional swap: /public/images/ios-26-fig-07.png -->
+              <!-- asset: ../public/images/ios-26-ba-02-after.png (left). Right panel: inline CSS study. -->
               <div class="figure-frame c-leg-frame">
-                <div class="c-half c-half--light">
-                  <span class="c-mode">Light</span>
-                  <div class="c-form">
-                    <div class="c-form-title">Add card</div>
-                    <div class="c-form-label">Card information <i class="c-pin">1</i></div>
-                    <div class="c-fields">
-                      <div class="c-field"><span class="c-brand"></span>4242 4242 4242 4242<i class="c-pin">2</i></div>
-                      <div class="c-field-row"><div class="c-field">12 / 28</div><div class="c-field">CVC 123</div></div>
-                    </div>
-                    <div class="c-form-label">Country or region</div>
-                    <div class="c-fields"><div class="c-field">United States</div></div>
-                    <div class="c-form-pay">Pay $97.42</div>
-                  </div>
-                  <div class="c-chips">
-                    <span class="c-chip"><i class="c-pin">1</i>Label on glass: 4.5:1 min [TODO: Lawrence verify]</span>
-                    <span class="c-chip"><i class="c-pin">2</i>Opaque field, text 4.5:1 min [TODO: Lawrence verify]</span>
-                  </div>
+                <div class="c-shot">
+                  <span class="status-tag c-frame-tag" data-status="shipped">Shipped</span>
+                  <img src="../public/images/ios-26-ba-02-after.png" width="383" height="834" alt="Stripe Add card form with Liquid Glass on: rounded card number, expiry and CVC fields, billing address, and a blue Pay button." loading="lazy" decoding="async">
                 </div>
                 <div class="c-half c-half--dark">
-                  <span class="c-mode">Dark</span>
+                  <span class="status-tag c-frame-tag" data-status="future">Future</span>
+                  <span class="c-mode">Study</span>
                   <div class="c-form">
                     <div class="c-form-title">Add card</div>
                     <div class="c-form-label">Card information <i class="c-pin">1</i></div>
@@ -4361,13 +4389,12 @@
                     <div class="c-form-pay">Pay $97.42</div>
                   </div>
                   <div class="c-chips">
-                    <span class="c-chip"><i class="c-pin">1</i>Label on glass: 4.5:1 min [TODO: Lawrence verify]</span>
-                    <span class="c-chip"><i class="c-pin">2</i>Opaque field, text 4.5:1 min [TODO: Lawrence verify]</span>
+                    <span class="c-chip"><i class="c-pin">1</i>Text contrast on glass. Ratios: [TODO: Lawrence]</span>
+                    <span class="c-chip"><i class="c-pin">2</i>Input height and field roundness</span>
                   </div>
                 </div>
-                <span class="status-tag c-frame-tag" data-status="shipped">Shipped</span>
               </div>
-              <figcaption><span class="cap-num">Fig. 07</span><span class="cap-text">Card form over busy backgrounds. Light and dark.</span></figcaption>
+              <figcaption><span class="cap-num">Fig. 07</span><span class="cap-text">Card input with Liquid Glass, as shipped. Right: the follow-ups, over a busy dark backdrop.</span></figcaption>
             </figure>
           </div>
         </div>
@@ -4515,55 +4542,43 @@
             <div class="section-eyebrow">Solutions · Tokens</div>
             <h2 class="setup-headline">Before and after, <em>in tokens.</em></h2>
           </div>
-          <p class="surface-text">Every visual change landed as a token, and every token kept its Appearance API hook. Merchants who themed for iOS 18 got iOS 26 without touching their code. <span class="c-todo">[TODO: Lawrence]</span></p>
+          <p class="surface-text"><code class="c-code">applyLiquidGlass</code> is a new call layered on top of the existing Appearance API. It moves four things: padding, heights, corner radius and blur. Everything a merchant already themed still applies, so their brand stays theirs.</p>
         </div>
 
         <div class="ref-table-wrap c-table-wrap">
           <table class="ref-table c-table">
             <thead>
-              <tr><th>Token</th><th>iOS 18</th><th>iOS 26</th><th>Appearance API</th></tr>
+              <tr><th>Token</th><th>iOS 18 style</th><th>Liquid Glass</th><th>With the Appearance API</th></tr>
             </thead>
             <tbody>
               <tr>
-                <td><span class="ref-method">Radius<span class="sub">Sheet, rows, fields</span></span></td>
-                <td>Sheet 10pt, fields 6pt <span class="c-todo">[TODO: Lawrence]</span></td>
-                <td>Concentric with the display. Rows become capsules. <span class="c-todo">[TODO: Lawrence]</span></td>
-                <td><code class="c-code">cornerRadius</code></td>
+                <td><span class="ref-method">Padding<span class="sub">Sheet, rows, fields</span></span></td>
+                <td>Previous spacing <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td>Updated by <code class="c-code">applyLiquidGlass</code> <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td>Layered on top. Merchant theming still applies.</td>
+              </tr>
+              <tr>
+                <td><span class="ref-method">Heights<span class="sub">Rows, inputs, buttons</span></span></td>
+                <td>Previous heights <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td>Updated by <code class="c-code">applyLiquidGlass</code>. Input heights still being tuned. <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td>Layered on top. Merchant theming still applies.</td>
+              </tr>
+              <tr class="feature">
+                <td><span class="ref-method">Corner radius<span class="sub">Sheet, rows, fields</span></span></td>
+                <td>Previous radii <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td>Rounder, matched to Liquid Glass. Field roundness still being tuned. <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td>Merchant <code class="c-code">cornerRadius</code> and brand still carry through.</td>
               </tr>
               <tr>
                 <td><span class="ref-method">Blur<span class="sub">Sheet material</span></span></td>
                 <td>None. Opaque background.</td>
-                <td>System Liquid Glass behind chrome <span class="c-todo">[TODO: Lawrence]</span></td>
-                <td><span class="ref-none">System owned, not exposed</span> <span class="c-todo">[TODO: Lawrence]</span></td>
-              </tr>
-              <tr class="feature">
-                <td><span class="ref-method">Tint<span class="sub">Background color</span></span></td>
-                <td>Solid fill</td>
-                <td>Merchant color carried through glass, at reduced opacity <span class="c-todo">[TODO: Lawrence]</span></td>
-                <td><code class="c-code">colors.background</code></td>
-              </tr>
-              <tr>
-                <td><span class="ref-method">Elevation<span class="sub">Fields, sheet</span></span></td>
-                <td>Drop shadow under fields</td>
-                <td>Glass rim and depth. Shadows dropped. <span class="c-todo">[TODO: Lawrence]</span></td>
-                <td><code class="c-code">shadow</code>, <code class="c-code">borderWidth</code></td>
-              </tr>
-              <tr>
-                <td><span class="ref-method">Type<span class="sub">Labels, fields, button</span></span></td>
-                <td>SF Pro, system sizes <span class="c-todo">[TODO: Lawrence]</span></td>
-                <td>SF Pro, heavier headings, larger Pay label <span class="c-todo">[TODO: Lawrence]</span></td>
-                <td><code class="c-code">font.base</code>, <code class="c-code">font.sizeScaleFactor</code></td>
-              </tr>
-              <tr>
-                <td><span class="ref-method">Pay button<span class="sub">Primary action</span></span></td>
-                <td>Rounded rectangle</td>
-                <td>Capsule, solid merchant color</td>
-                <td><code class="c-code">primaryButton.cornerRadius</code>, <code class="c-code">primaryButton.backgroundColor</code></td>
+                <td>Liquid Glass blur effects behind chrome <span class="c-todo">[TODO: Lawrence]</span></td>
+                <td>Comes with the call. Merchant colors still apply. <span class="c-todo">[TODO: Lawrence]</span></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <div class="surface-caption"><span class="fig-num">Fig. 10</span><span class="fig-desc">Token spec. iOS 18, iOS 26, and the Appearance API key that carries each.</span><span class="status-tag" data-status="shipped">Shipped</span></div>
+        <div class="surface-caption"><span class="fig-num">Fig. 10</span><span class="fig-desc">Token spec. iOS 18 style, Liquid Glass, and how each sits with the Appearance API. Exact values pending.</span><span class="status-tag" data-status="shipped">Shipped</span></div>
       </div>
     </div>
   </section>
@@ -4577,7 +4592,7 @@
           <div>
             <div class="section-eyebrow">Solutions · Merchant range</div>
             <h2 class="setup-headline">One sheet. <em>Every brand.</em></h2>
-            <p class="surface-text sd-lede">I designed the Liquid Glass sheet once. Merchants theme it through the Appearance API: accent, corner radius, font weight. The glass, the hierarchy and the flow stay ours.</p>
+            <p class="surface-text sd-lede">I designed the Liquid Glass sheet once. Merchants opt in with one call, <code class="sd-code">applyLiquidGlass</code>, and the brand they already set through the Appearance API carries through: accent, corner radius, font weight.</p>
           </div>
           <div class="sd-controls">
             <span class="status-tag" data-status="shipped">Shipped</span>
@@ -4732,7 +4747,7 @@
           </div>
         </div>
           </div>
-          <figcaption><span class="cap-num">Fig. 11</span><span class="cap-text">One PaymentSheet, five fictional merchants. Themed by Appearance API values only.</span></figcaption>
+          <figcaption><span class="cap-num">Fig. 11</span><span class="cap-text">One PaymentSheet with Liquid Glass on, five fictional merchants. Themed by Appearance API values only.</span></figcaption>
         </figure>
       </div>
     </div>
@@ -4784,7 +4799,7 @@
             <span class="status-tag" data-status="shipped">Shipped</span>
           </div>
           <h2 class="setup-headline">Present. Type. <em>Pay.</em></h2>
-          <p class="surface-text sd-lede">Five beats on one continuous surface. I specced each transition and the material behavior inside it; we built it into PaymentSheet.</p>
+          <p class="surface-text sd-lede">Five beats on one continuous surface. I specced each transition and the material behavior inside it; we, John Woo and the iOS team, shipped it in PaymentSheet.</p>
           <ol class="sd-steps">
             <li><button type="button" class="sd-step" data-step="1">
               <span class="sd-step-num">01</span>
@@ -4825,7 +4840,8 @@
           <div>
             <div class="section-eyebrow">Solutions · Accessibility</div>
             <h2 class="setup-headline">When glass <em>steps aside.</em></h2>
-            <p class="surface-text sd-lede">Liquid Glass is a default, not a requirement. When a buyer turns on an accessibility setting, the sheet follows it and the payment flow does not change.</p>
+            <p class="surface-text sd-lede">Merchants opt in to Liquid Glass, and buyers' settings still win. When a buyer turns on an accessibility setting, the sheet follows it and the payment flow does not change.</p>
+            <p class="sd-next"><span class="status-tag" data-status="future">Future</span><span>Text contrast is an active follow-up from the ship note. Ratios: [TODO: Lawrence]</span></p>
           </div>
           <div class="sd-controls">
             <span class="status-tag" data-status="shipped">Shipped</span>
