@@ -1868,6 +1868,338 @@
   /* ---- */
 
   /* ===== STREAM E CSS: start ===== */
+  /* Shared status tag (streams may define identically; integration dedupes) */
+  .status-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 4px 7px 3px;
+    border: 1px solid var(--hairline-2);
+    border-radius: 2px;
+    color: var(--ink-soft);
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .status-tag[data-status="shipped"] { color: var(--ink); }
+  .status-tag[data-status="future"] { color: var(--stripe); border-color: rgba(99, 91, 255, 0.35); }
+  .section-eyebrow .status-tag { margin-left: 10px; }
+
+  .e-todo { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-faint); font-style: normal; }
+  .slide.e-cut .e-lede,
+  .slide.e-ba .e-lede,
+  .slide.e-future .e-lede { margin-top: 16px; max-width: 760px; }
+
+  /* --- 24 cutlines --- */
+  .e-cut-grid {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: 48px;
+    margin-top: 44px;
+    width: 100%;
+  }
+  .e-cut-col { padding-top: 18px; border-top: 1px solid var(--hairline-2); }
+  .e-cut-col--shipped { border-top: 2px solid var(--stripe); }
+  .e-cut-kicker {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px;
+  }
+  .e-cut-col--shipped .e-cut-kicker { color: var(--stripe); }
+  .e-cut-title {
+    font-family: var(--serif); font-size: 24px; line-height: 1.15;
+    color: var(--ink); margin-bottom: 14px; letter-spacing: -0.005em;
+  }
+  .e-cut-list { list-style: none; margin: 0; padding: 0; }
+  .e-cut-list--two { columns: 2; column-gap: 40px; }
+  .e-cut-list li {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: 9px 0; border-bottom: 1px solid var(--hairline);
+    break-inside: avoid;
+    font-family: var(--sans); font-size: 14px; color: var(--ink);
+  }
+  .e-cut-name small { display: block; font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+  .e-cut-name small.e-todo { font-size: 10.5px; color: var(--ink-faint); }
+  .e-cut-col--future .e-cut-name { color: var(--ink-soft); }
+
+  /* --- 25 before & after wipe --- */
+  .e-ba-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 72px;
+    align-items: start;
+    width: 100%;
+  }
+  .e-ba-grid .e-ba-fig { justify-self: center; }
+  .e-ba-diff { margin: 32px 0 0; max-width: 520px; }
+  .e-ba-diff > div {
+    display: grid; grid-template-columns: 96px 1fr; gap: 16px;
+    padding: 11px 0; border-top: 1px solid var(--hairline);
+  }
+  .e-ba-diff > div:last-child { border-bottom: 1px solid var(--hairline); }
+  .e-ba-diff dt {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-faint); padding-top: 3px;
+  }
+  .e-ba-diff dd { font-family: var(--sans); font-size: 14px; color: var(--ink); }
+  .e-ba-diff dd span { color: var(--stripe); padding: 0 4px; }
+  .e-hint {
+    margin-top: 20px; font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.06em; color: var(--ink-faint);
+  }
+  .e-ba-fig { width: 290px; }
+  .e-ba-fig figcaption { flex-wrap: wrap; row-gap: 8px; }
+  .e-ba-labels {
+    display: flex; justify-content: space-between; margin-bottom: 10px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .e-wipe {
+    --wipe: 50%;
+    position: relative;
+    width: 290px;
+    height: 588px;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: ew-resize;
+  }
+  .e-phone {
+    position: absolute; inset: 0;
+    border-radius: 44px;
+    border: 8px solid var(--ink);
+    overflow: hidden;
+    background: var(--paper);
+    isolation: isolate;
+  }
+  .e-layer { position: absolute; inset: 0; overflow: hidden; }
+  .e-layer--before { clip-path: inset(0 calc(100% - var(--wipe)) 0 0); z-index: 2; }
+  .e-layer--after { z-index: 1; }
+
+  /* merchant app backdrop (same on both sides) */
+  .e-app { position: absolute; inset: 0; padding: 14px 18px; background: #FBF7F1; font-family: var(--sans); }
+  .e-app-status { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 600; color: var(--ink); }
+  .e-app-status i { width: 18px; height: 8px; border-radius: 2px; background: var(--ink); }
+  .e-app-title { margin-top: 18px; font-family: var(--serif); font-size: 22px; color: var(--ink); }
+  .e-app-hero {
+    margin-top: 12px; height: 150px; border-radius: 12px;
+    background:
+      radial-gradient(circle at 28% 40%, #FFB36B 0 22%, transparent 23%),
+      radial-gradient(circle at 70% 62%, #2FB59A 0 26%, transparent 27%),
+      linear-gradient(135deg, #F2643D, #7B4BD6);
+  }
+  .e-app-line { margin-top: 12px; height: 9px; width: 80%; border-radius: 4px; background: rgba(26, 24, 20, 0.12); }
+  .e-app-line.short { width: 50%; }
+  .e-scrim { position: absolute; inset: 0; background: rgba(20, 17, 13, 0.38); }
+  .e-scrim--soft { background: rgba(20, 17, 13, 0.18); }
+
+  .e-sheet {
+    position: absolute;
+    display: flex; flex-direction: column; gap: 7px;
+    font-family: var(--sans); color: var(--ink);
+  }
+  .e-sheet--solid {
+    left: 0; right: 0; bottom: 0; top: 33%;
+    background: #F2F2F7;
+    border-radius: 12px 12px 0 0;
+    padding: 12px 14px 18px;
+  }
+  .e-sheet--glass {
+    left: 7px; right: 7px; bottom: 7px; top: 32%;
+    border-radius: 32px;
+    padding: 12px 12px 14px;
+    background: rgba(255, 255, 255, 0.55);
+    -webkit-backdrop-filter: blur(18px) saturate(1.8);
+    backdrop-filter: blur(18px) saturate(1.8);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 10px 30px rgba(20, 17, 13, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+  .e-sheet-top { height: 24px; display: flex; align-items: center; }
+  .e-x { font-size: 20px; line-height: 1; color: var(--ink-soft); padding-left: 2px; }
+  .e-x--glass {
+    width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: var(--ink); padding: 0;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 1px 4px rgba(20, 17, 13, 0.12), inset 0 1px 0 #fff;
+  }
+  .e-btn {
+    height: 32px; display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; border-radius: 6px;
+  }
+  .e-sheet--glass .e-btn { border-radius: 999px; }
+  .e-btn--apple { background: #000; color: #fff; }
+  .e-btn--link { background: #00D66F; color: #011E0F; }
+  .e-btn--link b { font-weight: 700; margin-left: 4px; }
+  .e-btn--pay { background: #0A6CFF; color: #fff; margin-top: auto; }
+  .e-or { text-align: center; font-size: 10px; color: var(--ink-soft); padding: 2px 0; }
+  .e-rows { display: flex; flex-direction: column; }
+  .e-row {
+    display: flex; align-items: center; gap: 9px;
+    height: 30px; padding: 0 10px; font-size: 11.5px; background: #fff;
+  }
+  .e-rows--grouped { border-radius: 8px; overflow: hidden; }
+  .e-rows--grouped .e-row + .e-row { border-top: 1px solid rgba(26, 24, 20, 0.08); }
+  .e-rows--split { gap: 5px; }
+  .e-rows--split .e-row { border-radius: 999px; background: rgba(255, 255, 255, 0.85); padding: 0 12px; }
+  .e-ic {
+    width: 16px; height: 12px; border-radius: 2px; flex-shrink: 0;
+    font-style: normal; font-size: 9px; font-weight: 700; line-height: 12px; text-align: center;
+  }
+  .e-ic--card { background: var(--ink); }
+  .e-ic--klarna { background: #FFB3C7; color: #17120F; }
+  .e-ic--cash { background: #00D632; color: #fff; }
+  .e-ic--bank { background: transparent; border: 1.5px solid var(--ink); border-top-width: 3px; }
+
+  .e-handle {
+    position: absolute; top: 0; bottom: 0; left: var(--wipe);
+    width: 44px; margin-left: -22px;
+    z-index: 3; outline: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: ew-resize;
+  }
+  .e-handle::before {
+    content: ''; position: absolute; top: 8px; bottom: 8px; left: 21px; width: 2px;
+    background: #fff; box-shadow: 0 0 0 1px rgba(20, 17, 13, 0.15);
+  }
+  .e-handle-knob {
+    position: relative;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: #fff; color: var(--ink);
+    box-shadow: 0 2px 10px rgba(20, 17, 13, 0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 15px; letter-spacing: 0;
+  }
+  .e-handle:focus-visible .e-handle-knob { box-shadow: 0 0 0 3px var(--stripe), 0 2px 10px rgba(20, 17, 13, 0.25); }
+
+  /* --- 26 numbers --- */
+  .slide.e-num .big-stat-num { white-space: nowrap; }
+  .slide.e-num .big-stat-num.e-word { font-size: clamp(34px, 3.4vw, 50px); padding-top: 0.2em; }
+  .slide.e-num .big-stat-num.e-pending { color: var(--ink-faint); }
+  .slide.e-num .big-stat-label .e-todo { display: block; margin-top: 4px; font-size: 10px; text-transform: none; }
+
+  /* --- 29 future: glass slider --- */
+  .e-future-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 72px;
+    align-items: start;
+    width: 100%;
+  }
+  .e-eras {
+    list-style: none; margin: 40px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    position: relative; max-width: 480px;
+  }
+  .e-eras::before {
+    content: ''; position: absolute; top: 5px; left: 5px; right: 33%;
+    height: 1px; background: var(--hairline-2);
+  }
+  .e-eras::after {
+    content: ''; position: absolute; top: 5px; left: 67%; right: 0;
+    border-top: 1px dashed rgba(99, 91, 255, 0.5);
+  }
+  .e-eras li { position: relative; display: flex; flex-direction: column; gap: 4px; padding-right: 12px; }
+  .e-era-dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--paper); border: 1px solid var(--ink-faint);
+    margin-bottom: 10px; position: relative; z-index: 1;
+  }
+  .e-eras li.is-now .e-era-dot { background: var(--ink); border-color: var(--ink); }
+  .e-eras li.is-next .e-era-dot { border-color: var(--stripe); background: var(--stripe-soft); }
+  .e-era-name { font-family: var(--serif); font-size: 22px; line-height: 1.1; color: var(--ink); }
+  .e-eras li.is-next .e-era-name { color: var(--stripe); }
+  .e-era-sub {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .slide.e-future .source-line a { color: inherit; }
+
+  .e-glass-stage, .e-end {
+    --g: 0.5;
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid var(--hairline);
+    isolation: isolate;
+  }
+  .e-glass-stage { height: 300px; display: flex; align-items: center; justify-content: center; }
+  .e-glass-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 18% 28%, #FF7A59 0 17%, transparent 17.5%),
+      radial-gradient(circle at 80% 22%, #FFC94D 0 13%, transparent 13.5%),
+      radial-gradient(circle at 64% 82%, #3DD6B5 0 20%, transparent 20.5%),
+      radial-gradient(circle at 30% 88%, #FF5FA2 0 11%, transparent 11.5%),
+      linear-gradient(135deg, #2A1E5C, #0E5A6B);
+  }
+  .e-glass-bg span {
+    position: absolute; left: 6%; top: 50%; transform: translateY(-50%);
+    font-family: var(--serif); font-size: 74px; line-height: 0.9;
+    color: #fff; text-transform: lowercase; letter-spacing: -0.02em;
+  }
+  .e-glass-sheet {
+    position: relative; z-index: 1;
+    width: 250px; padding: 14px;
+    display: flex; flex-direction: column; gap: 7px;
+    border-radius: 28px;
+    font-family: var(--sans); color: var(--ink);
+    background: rgba(255, 255, 255, calc(0.08 + var(--g) * 0.72));
+    -webkit-backdrop-filter: blur(calc(4px + var(--g) * 24px)) saturate(calc(1.1 + var(--g) * 0.7));
+    backdrop-filter: blur(calc(4px + var(--g) * 24px)) saturate(calc(1.1 + var(--g) * 0.7));
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 12px 32px rgba(20, 17, 13, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+  .e-glass-total, .e-glass-row {
+    display: flex; align-items: center; gap: 9px;
+    height: 34px; padding: 0 14px; border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92); font-size: 12.5px;
+  }
+  .e-glass-total { justify-content: space-between; }
+  .e-glass-total span { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+  .e-glass-total b { font-weight: 600; }
+  .e-glass-pay {
+    height: 38px; border-radius: 999px; background: #0A6CFF; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+  }
+  .e-glass-control {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center;
+    margin-top: 14px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .e-glass-control output {
+    grid-column: 1 / -1; font-size: 11px; letter-spacing: 0.06em; text-transform: none; color: var(--ink-faint);
+  }
+  .e-glass-control input[type="range"] { width: 100%; accent-color: var(--stripe); cursor: pointer; }
+  .e-glass-control input[type="range"]:focus-visible { outline: 2px solid var(--stripe); outline-offset: 4px; }
+  .e-ends { margin-top: 24px; }
+  .e-ends-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .e-end { height: 96px; display: flex; align-items: center; justify-content: center; }
+  .e-glass-sheet--mini { width: 150px; padding: 8px; border-radius: 22px; }
+  .e-glass-sheet--mini .e-glass-pay { height: 30px; font-size: 11px; }
+  .e-end-label {
+    position: absolute; left: 8px; bottom: 6px; z-index: 2;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: #fff;
+  }
+
+  /* --- 30 throughline --- */
+  .slide.e-through .link-forward { text-decoration: none; color: inherit; transition: opacity 0.3s ease; }
+  .slide.e-through .link-forward:hover { opacity: 0.65; }
+  .slide.e-through .link-forward:focus-visible { outline: 2px solid var(--stripe); outline-offset: 4px; }
+  .slide.e-through .e-arrow { color: var(--stripe); }
+
+  @media (max-width: 900px) {
+    .e-cut-grid, .e-ba-grid, .e-future-grid { grid-template-columns: 1fr; gap: 40px; }
+    .e-cut-list--two { columns: 1; }
+    .e-ba-fig { margin: 0 auto; }
+    .e-glass-bg span { font-size: 54px; }
+    .e-ends-row { gap: 10px; }
+    .e-glass-sheet--mini { width: 120px; }
+  }
   /* ===== STREAM E CSS: end ===== */
   /* ---- */
 </style>
@@ -2692,28 +3024,128 @@
   </section>
 
   <!-- ===== STREAM E · 24 cutlines ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="cutlines" data-theme="light">
+  <section class="slide e-cut" data-section="ios 26" data-crumb="cutlines" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">Release and Impact · Cutlines</div>
         <h2 class="setup-headline">What shipped. <em>What waited.</em></h2>
-        <!-- SCAFFOLD NOTE (E): Shipped vs deferred, SHIPPED / FUTURE labels on every screen. -->
+        <p class="surface-text e-lede">I designed every surface against the new system. We shipped them with engineering ahead of Apple's GA. The rule: anything a merchant's checkout touches ships first. <span class="e-todo">[TODO: Lawrence: confirm rule, name eng partners]</span></p>
+
+        <div class="e-cut-grid">
+          <div class="e-cut-col e-cut-col--shipped">
+            <div class="e-cut-kicker">Made the cut · Ahead of GA</div>
+            <div class="e-cut-title">Shipped.</div>
+            <ul class="e-cut-list e-cut-list--two">
+              <li><span class="e-cut-name">PaymentSheet · vertical list</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              <li><span class="e-cut-name">PaymentSheet · carousel</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              <li><span class="e-cut-name">Card form</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              <li><span class="e-cut-name">Saved payment methods</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              <li><span class="e-cut-name">Link</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              <li><span class="e-cut-name">Apple Pay row</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              <li><span class="e-cut-name">Processing</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              <li><span class="e-cut-name">Success</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              <li><span class="e-cut-name">Decline</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              <li><span class="e-cut-name">3DS handoff</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              <li><span class="e-cut-name">Embedded Payment Element</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              <li><span class="e-cut-name">CustomerSheet</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+              <li><span class="e-cut-name">AddressElement</span><span class="status-tag" data-status="shipped">Shipped</span></li>
+            </ul>
+          </div>
+
+          <div class="e-cut-col e-cut-col--future">
+            <div class="e-cut-kicker">Below the line · Next</div>
+            <div class="e-cut-title">Deferred.</div>
+            <ul class="e-cut-list">
+              <li><span class="e-cut-name">Translucency slider support<small>Tracks iOS 27 glass customization</small></span><span class="status-tag" data-status="future">Future</span></li>
+              <li><span class="e-cut-name">Glass-aware Appearance API tokens<small class="e-todo">[TODO: Lawrence: confirm deferred]</small></span><span class="status-tag" data-status="future">Future</span></li>
+              <li><span class="e-cut-name">Sheet transition motion polish<small class="e-todo">[TODO: Lawrence: confirm deferred]</small></span><span class="status-tag" data-status="future">Future</span></li>
+              <li><span class="e-cut-name">Deferred item<small class="e-todo">[TODO: Lawrence]</small></span><span class="status-tag" data-status="future">Future</span></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
   <!-- ===== /STREAM E · 24 ===== -->
 
   <!-- ===== STREAM E · 25 before-after ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="before & after" data-theme="light">
+  <section class="slide e-ba" data-section="ios 26" data-crumb="before & after" data-theme="light">
     <div class="slide-inner">
-      <div style="width:100%;">
-        <div class="section-eyebrow">Release and Impact · Before and after</div>
-        <h2 class="setup-headline">iOS 18. <em>iOS 26.</em></h2>
-        <!-- SCAFFOLD NOTE (E): Draggable before/after wipe. Seed with public/images/ios-26-1..3.png. -->
-        <figure class="figure-slot" data-aspect="16/10">
-          <!-- asset: /public/images/ios-26-fig-16-before.png + -after.png -->
-          <div class="figure-frame"><span class="figure-mark">[ FIG. 16 ]</span></div>
-          <figcaption><span class="cap-num">Fig. 16</span><span class="cap-text">Before and after. Drag to compare.</span></figcaption>
+      <div class="e-ba-grid">
+        <div class="e-ba-text">
+          <div class="section-eyebrow">Release and Impact · Before and after</div>
+          <h2 class="setup-headline">iOS 18. <em>iOS 26.</em></h2>
+          <p class="surface-text e-lede">Same merchant, same flow, same payment methods in the same order. The flow merchants rely on stays where it was. What changes is the material around it.</p>
+          <dl class="e-ba-diff">
+            <div><dt>Sheet</dt><dd>Opaque, edge to edge <span>&rarr;</span> floating glass, inset</dd></div>
+            <div><dt>Buttons</dt><dd>Rounded rectangle <span>&rarr;</span> capsule</dd></div>
+            <div><dt>Methods</dt><dd>Grouped list <span>&rarr;</span> separate rows</dd></div>
+            <div><dt>Close</dt><dd>Flat glyph <span>&rarr;</span> glass button</dd></div>
+          </dl>
+          <p class="e-hint">Drag the handle, or focus it and use the arrow keys.</p>
+        </div>
+
+        <figure class="figure-slot e-ba-fig">
+          <!-- asset: /public/images/ios-26-fig-16-before.png (iOS 18 PaymentSheet) -->
+          <!-- asset: /public/images/ios-26-fig-16-after.png (iOS 26 PaymentSheet) -->
+          <!-- Until those exist, both sides are CSS mock sheets over the same merchant backdrop. -->
+          <div class="e-ba-labels"><span>iOS 18 · Before</span><span>iOS 26 · After</span></div>
+          <div class="e-wipe" id="e-wipe" style="--wipe:50%;">
+            <div class="e-phone">
+              <!-- AFTER layer (bottom, unclipped) -->
+              <div class="e-layer e-layer--after" aria-hidden="true">
+                <div class="e-app">
+                  <div class="e-app-status"><span>9:41</span><i></i></div>
+                  <div class="e-app-title">Juniper</div>
+                  <div class="e-app-hero"></div>
+                  <div class="e-app-line"></div><div class="e-app-line short"></div>
+                </div>
+                <div class="e-scrim e-scrim--soft"></div>
+                <div class="e-sheet e-sheet--glass">
+                  <div class="e-sheet-top"><span class="e-x e-x--glass">&times;</span></div>
+                  <div class="e-btn e-btn--apple">Apple Pay</div>
+                  <div class="e-btn e-btn--link">Pay with <b>link</b></div>
+                  <div class="e-or">Or pay using</div>
+                  <div class="e-rows e-rows--split">
+                    <div class="e-row"><i class="e-ic e-ic--card"></i>Card</div>
+                    <div class="e-row"><i class="e-ic e-ic--klarna">K</i>Klarna</div>
+                    <div class="e-row"><i class="e-ic e-ic--cash">$</i>Cash App Pay</div>
+                    <div class="e-row"><i class="e-ic e-ic--bank"></i>US bank account</div>
+                  </div>
+                  <div class="e-btn e-btn--pay">Pay $97.42</div>
+                </div>
+              </div>
+              <!-- BEFORE layer (top, clipped to the left of the handle) -->
+              <div class="e-layer e-layer--before" aria-hidden="true">
+                <div class="e-app">
+                  <div class="e-app-status"><span>9:41</span><i></i></div>
+                  <div class="e-app-title">Juniper</div>
+                  <div class="e-app-hero"></div>
+                  <div class="e-app-line"></div><div class="e-app-line short"></div>
+                </div>
+                <div class="e-scrim"></div>
+                <div class="e-sheet e-sheet--solid">
+                  <div class="e-sheet-top"><span class="e-x">&times;</span></div>
+                  <div class="e-btn e-btn--apple">Apple Pay</div>
+                  <div class="e-btn e-btn--link">Pay with <b>link</b></div>
+                  <div class="e-or">Or pay using</div>
+                  <div class="e-rows e-rows--grouped">
+                    <div class="e-row"><i class="e-ic e-ic--card"></i>Card</div>
+                    <div class="e-row"><i class="e-ic e-ic--klarna">K</i>Klarna</div>
+                    <div class="e-row"><i class="e-ic e-ic--cash">$</i>Cash App Pay</div>
+                    <div class="e-row"><i class="e-ic e-ic--bank"></i>US bank account</div>
+                  </div>
+                  <div class="e-btn e-btn--pay">Pay $97.42</div>
+                </div>
+              </div>
+            </div>
+            <div class="e-handle" id="e-wipe-handle" tabindex="0" role="slider" data-own-keys
+                 aria-label="Before and after comparison. Left shows iOS 18, right shows iOS 26."
+                 aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% iOS 18">
+              <span class="e-handle-knob" aria-hidden="true">&lsaquo; &rsaquo;</span>
+            </div>
+          </div>
+          <figcaption><span class="cap-num">Fig. 16</span><span class="cap-text">PaymentSheet, iOS 18 against iOS 26. Mock until captures land.</span><span class="status-tag" data-status="shipped">Shipped</span></figcaption>
         </figure>
       </div>
     </div>
@@ -2721,12 +3153,47 @@
   <!-- ===== /STREAM E · 25 ===== -->
 
   <!-- ===== STREAM E · 26 numbers ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="the numbers" data-theme="light">
+  <section class="slide e-num" data-section="ios 26" data-crumb="the numbers" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">Release and Impact · The numbers</div>
-        <h2 class="setup-headline">The <em>numbers.</em></h2>
-        <!-- SCAFFOLD NOTE (E): Oversized stat spread. Metrics [TODO: Lawrence]. -->
+        <h2 class="setup-headline">Shipped <em>ahead of the OS.</em></h2>
+
+        <div class="numbers-spread">
+          <div class="big-stats">
+            <div class="big-stat">
+              <div class="big-stat-num accent">1</div>
+              <div class="big-stat-label">Designer, end to end</div>
+            </div>
+            <div class="big-stat">
+              <div class="big-stat-num e-pending">NN</div>
+              <div class="big-stat-label">Surfaces rebuilt <span class="e-todo">[TODO: Lawrence]</span></div>
+            </div>
+            <div class="big-stat">
+              <div class="big-stat-num accent e-word">Pre-GA</div>
+              <div class="big-stat-label">In production before Apple shipped iOS 26</div>
+            </div>
+            <div class="big-stat">
+              <div class="big-stat-num e-pending">NN%</div>
+              <div class="big-stat-label">Checkout conversion <span class="e-todo">[TODO: Lawrence]</span></div>
+            </div>
+            <div class="big-stat">
+              <div class="big-stat-num e-pending">NN</div>
+              <div class="big-stat-label">Merchant apps on the new sheet <span class="e-todo">[TODO: Lawrence]</span></div>
+            </div>
+            <div class="big-stat">
+              <div class="big-stat-num e-pending">NN</div>
+              <div class="big-stat-label">Regressions at launch <span class="e-todo">[TODO: Lawrence]</span></div>
+            </div>
+          </div>
+
+          <div class="numbers-side">
+            <h3>Startups to enterprise.</h3>
+            <p>Every checkout, payment sheet, and in-app surface on Stripe's mobile stack moved to the new system before GA. The same sheet runs for a two-person startup and for the largest enterprise merchants.</p>
+            <p>Merchant branding still comes through the Appearance API, so no merchant had to rewrite an integration to get the new look.</p>
+            <p class="source">Metrics: [TODO: Lawrence] · source and date to confirm.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -2773,36 +3240,139 @@
   </section>
 
   <!-- ===== STREAM E · 28 lessons ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="the lessons" data-theme="light">
+  <section class="slide e-lessons" data-section="ios 26" data-crumb="the lessons" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
-        <div class="section-eyebrow">Lessons · The lessons</div>
+        <div class="section-eyebrow">Lessons · The lessons <span class="status-tag" data-status="draft">Draft</span></div>
         <h2 class="setup-headline">The <em>lessons.</em></h2>
-        <!-- SCAFFOLD NOTE (E): 4-card lesson grid. -->
+
+        <div class="lessons-grid">
+          <div class="lesson-card">
+            <div class="lesson-num">01</div>
+            <div>
+              <div class="lesson-title">A system redesign is a brand problem.</div>
+              <p class="lesson-body">Apple changed the material. The hard part was keeping Stripe, and every merchant on top of it, recognizable inside it.</p>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <div class="lesson-num">02</div>
+            <div>
+              <div class="lesson-title">Design the fallbacks first.</div>
+              <p class="lesson-body">Reduce Transparency and Increase Contrast are not edge cases. If the sheet holds with the glass turned off, it holds everywhere.</p>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <div class="lesson-num">03</div>
+            <div>
+              <div class="lesson-title">Glass is for chrome, not content.</div>
+              <p class="lesson-body">Let the frame float. Keep card numbers, totals, and the pay button on solid ground where people read them.</p>
+            </div>
+          </div>
+          <div class="lesson-card">
+            <div class="lesson-num">04</div>
+            <div>
+              <div class="lesson-title">Design ahead of a moving beta.</div>
+              <p class="lesson-body">Every seed changed something. I made decisions that could absorb a new blur value without a redesign.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
   <!-- ===== /STREAM E · 28 ===== -->
 
   <!-- ===== STREAM E · 29 future-ios-27 ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="future: ios 27" data-theme="light">
+  <section class="slide e-future" data-section="ios 26" data-crumb="future: ios 27" data-theme="light">
     <div class="slide-inner">
-      <div style="width:100%;">
-        <div class="section-eyebrow">Lessons · Future · iOS 27</div>
-        <h2 class="setup-headline">Glass, <em>on a slider.</em></h2>
-        <!-- SCAFFOLD NOTE (E): Live glass slider (backdrop-filter). iOS 7 → 26 → 27 eras beat. Tag FUTURE. -->
+      <div class="e-future-grid">
+        <div class="e-future-text">
+          <div class="section-eyebrow">Lessons · Future · iOS 27 <span class="status-tag" data-status="future">Future</span></div>
+          <h2 class="setup-headline">Glass, <em>on a slider.</em></h2>
+          <p class="surface-text e-lede">iOS 27 lets people choose how much glass they want. So the sheet can't be designed at one setting. It has to hold at every point between clear and tinted.</p>
+
+          <ol class="e-eras" aria-label="Eras of the iOS visual language">
+            <li><span class="e-era-dot"></span><span class="e-era-name">iOS 7</span><span class="e-era-sub">Flat</span></li>
+            <li class="is-now"><span class="e-era-dot"></span><span class="e-era-name">iOS 26</span><span class="e-era-sub">Liquid Glass</span></li>
+            <li class="is-next"><span class="e-era-dot"></span><span class="e-era-name">iOS 27</span><span class="e-era-sub">Glass you tune</span></li>
+          </ol>
+
+          <p class="source-line">Source: BGR, iOS 27 Liquid Glass customization. <a href="https://www.bgr.com/2191219/ios-27-liquid-glass-fix-customization/" target="_blank" rel="noopener">bgr.com</a></p>
+        </div>
+
+        <div class="e-future-visual">
+          <figure class="figure-slot">
+            <!-- asset: /public/images/ios-26-fig-17.png (or /public/videos/ios-26-fig-17.mp4): the sheet across the iOS 27 glass range -->
+            <div class="e-glass-stage" id="e-glass-stage" style="--g:0.5;">
+              <div class="e-glass-bg" aria-hidden="true"><span>Summer<br>drop</span></div>
+              <div class="e-glass-sheet" id="e-glass-sheet" aria-hidden="true">
+                <div class="e-glass-total"><span>Total</span><b>$97.42</b></div>
+                <div class="e-glass-row"><i class="e-ic e-ic--card"></i>Visa ending 4242</div>
+                <div class="e-glass-row"><i class="e-ic e-ic--klarna">K</i>Klarna</div>
+                <div class="e-glass-pay">Pay $97.42</div>
+              </div>
+            </div>
+            <div class="e-glass-control">
+              <label for="e-glass-range">Clear</label>
+              <input type="range" id="e-glass-range" min="0" max="100" value="50" step="1"
+                     aria-label="Glass, from clear to tinted" aria-valuetext="50% tinted">
+              <label for="e-glass-range">Tinted</label>
+              <output id="e-glass-out" for="e-glass-range">Blur 16px · Tint 50%</output>
+            </div>
+            <figcaption><span class="cap-num">Fig. 17</span><span class="cap-text">Live: drag from clear to tinted.</span></figcaption>
+          </figure>
+
+          <figure class="figure-slot e-ends">
+            <!-- asset: /public/images/ios-26-fig-18.png: the sheet at both ends of the range -->
+            <div class="e-ends-row">
+              <div class="e-end" style="--g:0;">
+                <div class="e-glass-bg" aria-hidden="true"></div>
+                <div class="e-glass-sheet e-glass-sheet--mini" aria-hidden="true"><div class="e-glass-pay">Pay $97.42</div></div>
+                <span class="e-end-label">Clear · pay stays solid</span>
+              </div>
+              <div class="e-end" style="--g:1;">
+                <div class="e-glass-bg" aria-hidden="true"></div>
+                <div class="e-glass-sheet e-glass-sheet--mini" aria-hidden="true"><div class="e-glass-pay">Pay $97.42</div></div>
+                <span class="e-end-label">Tinted · brand still reads</span>
+              </div>
+            </div>
+            <figcaption><span class="cap-num">Fig. 18</span><span class="cap-text">The system holding at both ends.</span></figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </section>
   <!-- ===== /STREAM E · 29 ===== -->
 
   <!-- ===== STREAM E · 30 throughline ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="the throughline" data-theme="light">
+  <section class="slide e-through" data-section="ios 26" data-crumb="the throughline" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
         <div class="section-eyebrow">Lessons · The throughline</div>
-        <h2 class="setup-headline">The <em>throughline.</em></h2>
-        <!-- SCAFFOLD NOTE (E): Pull-quote + link-forwards incl. Wing coda / Tap to Add on the same surface. -->
+
+        <div class="throughline">
+          <div>
+            <p class="pull-quote">The OS changes the material.<br><em>The brand has to survive it.</em></p>
+            <p class="throughline-lede">iOS 26 taught me to design a system that outlives its own settings: one sheet, every merchant, every accessibility mode, and a slider that hasn't shipped yet. That is the thread I keep pulling.</p>
+          </div>
+
+          <div class="link-forwards">
+            <a class="link-forward" href="tap-to-add-deck.html">
+              <div class="link-forward-name">Tap to Add <span class="e-arrow">&rarr;</span></div>
+              <div class="link-forward-frame">Lives on the same surface. A separate project on the same payment sheet. Read the case study.</div>
+              <div class="link-forward-tag">Stripe</div>
+            </a>
+            <a class="link-forward" href="wing.html">
+              <div class="link-forward-name">Wing <span class="e-arrow">&rarr;</span></div>
+              <div class="link-forward-frame">The coda. An AI-powered travel platform built on agentic infrastructure.</div>
+              <div class="link-forward-tag">Founder</div>
+            </a>
+            <a class="link-forward" href="dropbox-ai-deck.html">
+              <div class="link-forward-name">Dropbox AI <span class="e-arrow">&rarr;</span></div>
+              <div class="link-forward-frame">Designing for AI's real shape: uncertain, fast, trust-sensitive.</div>
+              <div class="link-forward-tag">Dropbox</div>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -2960,6 +3530,73 @@
   // ----
 
   // ===== STREAM E JS: start =====
+  // 25 before & after: draggable wipe (pointer + touch) with a keyboard slider handle.
+  (function initWipe() {
+    const wipe = document.getElementById('e-wipe');
+    const handle = document.getElementById('e-wipe-handle');
+    if (!wipe || !handle) return;
+    let pos = 50;
+    let dragging = false;
+    function set(v) {
+      pos = Math.max(0, Math.min(100, Math.round(v)));
+      wipe.style.setProperty('--wipe', pos + '%');
+      handle.setAttribute('aria-valuenow', String(pos));
+      handle.setAttribute('aria-valuetext', pos + '% iOS 18, ' + (100 - pos) + '% iOS 26');
+    }
+    function fromEvent(e) {
+      const r = wipe.getBoundingClientRect();
+      set(((e.clientX - r.left) / r.width) * 100);
+    }
+    wipe.addEventListener('pointerdown', (e) => {
+      if (e.button !== undefined && e.button !== 0) return;
+      dragging = true;
+      try { wipe.setPointerCapture(e.pointerId); } catch (_) {}
+      fromEvent(e);
+      handle.focus({ preventScroll: true });
+      e.preventDefault();
+    });
+    wipe.addEventListener('pointermove', (e) => { if (dragging) fromEvent(e); });
+    const end = (e) => {
+      dragging = false;
+      try { wipe.releasePointerCapture(e.pointerId); } catch (_) {}
+    };
+    wipe.addEventListener('pointerup', end);
+    wipe.addEventListener('pointercancel', end);
+    handle.addEventListener('keydown', (e) => {
+      const step = e.shiftKey ? 10 : 5;
+      let v = null;
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') v = pos - step;
+      else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') v = pos + step;
+      else if (e.key === 'PageDown') v = pos - 25;
+      else if (e.key === 'PageUp') v = pos + 25;
+      else if (e.key === 'Home') v = 0;
+      else if (e.key === 'End') v = 100;
+      if (v === null) return;
+      e.preventDefault();
+      e.stopPropagation();
+      set(v);
+    });
+    set(50);
+  })();
+
+  // 29 future: live glass slider drives --g (blur + tint) on the mock sheet.
+  (function initGlass() {
+    const stage = document.getElementById('e-glass-stage');
+    const range = document.getElementById('e-glass-range');
+    const out = document.getElementById('e-glass-out');
+    if (!stage || !range) return;
+    function apply() {
+      const t = Math.max(0, Math.min(100, Number(range.value))) / 100;
+      stage.style.setProperty('--g', String(t));
+      const blur = Math.round(4 + t * 24);
+      const tint = Math.round(t * 100);
+      if (out) out.textContent = 'Blur ' + blur + 'px · Tint ' + tint + '%';
+      range.setAttribute('aria-valuetext', tint + '% tinted, blur ' + blur + ' pixels');
+    }
+    range.addEventListener('input', apply);
+    range.addEventListener('change', apply);
+    apply();
+  })();
   // ===== STREAM E JS: end =====
   // ----
 
