@@ -2589,6 +2589,509 @@
   /* ---- */
 
   /* ===== STREAM D CSS: start ===== */
+  /* Shared status tag (scoped to stream D slides; identical shape to other streams) */
+  .sd-slide .status-tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--ink-soft);
+    border: 1px solid var(--hairline-2);
+    border-radius: 999px;
+    padding: 5px 10px;
+    white-space: nowrap;
+  }
+  .sd-slide .sd-todo {
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .sd-slide .sd-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+  }
+  .sd-slide .sd-lede { margin-top: 16px; max-width: 620px; }
+  .sd-slide .sd-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+
+  /* Segmented control */
+  .sd-seg {
+    display: inline-flex;
+    padding: 3px;
+    border: 1px solid var(--hairline-2);
+    border-radius: 999px;
+    background: var(--paper);
+  }
+  .sd-seg button {
+    font-family: var(--mono);
+    font-size: var(--text-mono-sm);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 0;
+    background: transparent;
+    color: var(--ink-soft);
+    padding: 9px 18px;
+    min-height: 34px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+  }
+  .sd-seg button:hover { color: var(--ink); }
+  .sd-seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .sd-slide button:focus-visible { outline: 2px solid var(--stripe); outline-offset: 2px; }
+
+  /* ---- The sheet component (one build, themed by --m-* custom properties) ---- */
+  .sd-phone {
+    --sd-glass: rgba(255, 255, 255, 0.56);
+    --sd-edge: rgba(255, 255, 255, 0.85);
+    --sd-text: #1A1814;
+    --sd-soft: rgba(26, 24, 20, 0.56);
+    --sd-fill: rgba(255, 255, 255, 0.78);
+    --sd-line: rgba(26, 24, 20, 0.08);
+    --sd-wallet: #000000;
+    --sd-wallet-ink: #FFFFFF;
+    --sd-accent: var(--m-accent);
+    --sd-on-accent: var(--m-on);
+    --sd-app: var(--m-app);
+    --sd-app-ink: rgba(26, 24, 20, 0.82);
+    position: relative;
+    height: min(420px, 47vh);
+    min-height: 340px;
+    border-radius: 28px;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--sd-app);
+    border: 1px solid var(--hairline);
+    transition: background 0.45s var(--ease-out);
+  }
+  .sd-range[data-mode="dark"] .sd-phone {
+    --sd-glass: rgba(34, 34, 36, 0.56);
+    --sd-edge: rgba(255, 255, 255, 0.16);
+    --sd-text: #F4F0E8;
+    --sd-soft: rgba(244, 240, 232, 0.6);
+    --sd-fill: rgba(44, 44, 46, 0.84);
+    --sd-line: rgba(255, 255, 255, 0.09);
+    --sd-wallet: #FFFFFF;
+    --sd-wallet-ink: #000000;
+    --sd-accent: var(--m-accent-dk);
+    --sd-on-accent: var(--m-on-dk);
+    --sd-app: var(--m-app-dk);
+    --sd-app-ink: rgba(244, 240, 232, 0.86);
+    border-color: rgba(26, 24, 20, 0.3);
+  }
+
+  /* merchant app behind the sheet */
+  .sd-app {
+    position: absolute;
+    inset: 0;
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 0;
+  }
+  .sd-app-bar { display: flex; justify-content: space-between; align-items: center; }
+  .sd-app-word {
+    font-family: var(--sans);
+    font-weight: var(--m-weight);
+    font-size: 13px;
+    letter-spacing: -0.01em;
+    color: var(--sd-app-ink);
+  }
+  .sd-app-dots {
+    width: 22px; height: 6px; border-radius: 3px;
+    background: color-mix(in srgb, var(--sd-app-ink) 30%, transparent);
+  }
+  .sd-app-hero {
+    height: 52%;
+    border-radius: calc(var(--m-radius) + 6px);
+    background:
+      radial-gradient(circle at 78% 28%, color-mix(in srgb, var(--sd-accent) 55%, #FFFFFF) 0 18%, transparent 19%),
+      linear-gradient(140deg, var(--sd-accent), color-mix(in srgb, var(--sd-accent) 35%, var(--sd-app)));
+  }
+  .sd-app-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex: 1; }
+  .sd-app-tiles span {
+    border-radius: calc(var(--m-radius) + 4px);
+    background: color-mix(in srgb, var(--sd-accent) 22%, var(--sd-app));
+  }
+  .sd-app-tiles span:last-child {
+    background: repeating-linear-gradient(135deg,
+      color-mix(in srgb, var(--sd-accent) 40%, var(--sd-app)) 0 6px,
+      color-mix(in srgb, var(--sd-accent) 15%, var(--sd-app)) 6px 12px);
+  }
+
+  .sd-sheet {
+    position: absolute;
+    left: 6px; right: 6px; bottom: 6px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+    padding: 8px 12px 12px;
+    border-radius: 22px;
+    font-family: var(--sans);
+    font-size: calc(10.5px * var(--sd-scale, 1));
+    line-height: 1.3;
+    color: var(--sd-text);
+    background: var(--sd-glass);
+    -webkit-backdrop-filter: blur(18px) saturate(1.8);
+    backdrop-filter: blur(18px) saturate(1.8);
+    border: 1px solid var(--sd-edge);
+    box-shadow: 0 14px 40px rgba(20, 17, 13, 0.18), inset 0 1px 0 var(--sd-edge);
+    transition: background 0.45s var(--ease-out), color 0.45s var(--ease-out), border-color 0.45s var(--ease-out);
+  }
+  .sd-grab {
+    width: 34px; height: 4px; border-radius: 2px;
+    align-self: center;
+    background: var(--sd-soft);
+    opacity: 0.45;
+  }
+  .sd-head { display: flex; justify-content: space-between; align-items: center; }
+  .sd-head-name { font-size: 1.3em; font-weight: var(--m-weight); letter-spacing: -0.01em; }
+  .sd-x {
+    width: 1.9em; height: 1.9em; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--sd-fill);
+    color: var(--sd-soft);
+    font-size: 1em; line-height: 1;
+  }
+  .sd-body { display: flex; flex-direction: column; gap: 0.8em; }
+  .sd-body > * { flex-shrink: 0; }
+  .sd-total { display: flex; justify-content: space-between; gap: 0.6em; color: var(--sd-soft); }
+  .sd-total-amt { color: var(--sd-text); font-weight: 600; }
+  .sd-wallet {
+    height: 2.9em;
+    display: grid; place-items: center;
+    border-radius: var(--m-radius);
+    background: var(--sd-wallet);
+    color: var(--sd-wallet-ink);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    transition: background 0.45s var(--ease-out), color 0.45s var(--ease-out);
+  }
+  .sd-or {
+    display: flex; align-items: center; gap: 0.8em;
+    color: var(--sd-soft); font-size: 0.9em;
+  }
+  .sd-or::before, .sd-or::after { content: ''; flex: 1; height: 1px; background: var(--sd-line); }
+  .sd-rows {
+    display: flex; flex-direction: column;
+    border-radius: var(--m-radius);
+    background: var(--sd-fill);
+    overflow: hidden;
+    transition: background 0.45s var(--ease-out);
+  }
+  .sd-row {
+    display: flex; align-items: center; gap: 0.65em;
+    padding: 0.7em 0.8em;
+    border-top: 1px solid var(--sd-line);
+    min-width: 0;
+  }
+  .sd-row:first-child { border-top: 0; }
+  .sd-radio {
+    width: 1.2em; height: 1.2em; flex-shrink: 0;
+    border-radius: 50%;
+    border: 1.5px solid var(--sd-soft);
+  }
+  .sd-radio.is-on {
+    border-color: var(--sd-accent);
+    background: var(--sd-accent);
+    box-shadow: inset 0 0 0 0.25em var(--sd-fill);
+  }
+  .sd-chip {
+    width: 2em; height: 1.35em; flex-shrink: 0;
+    border-radius: 3px;
+    background: linear-gradient(135deg, #2B3A67, #5A6FB0);
+  }
+  .sd-chip--alt { background: linear-gradient(135deg, #3A3A3A, #8A8A8A); }
+  .sd-chip--new {
+    background: transparent;
+    border: 1px dashed var(--sd-soft);
+    color: var(--sd-soft);
+    display: grid; place-items: center; font-size: 0.9em; line-height: 1;
+  }
+  .sd-row-label { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sd-row-meta { color: var(--sd-soft); font-size: 0.9em; white-space: nowrap; }
+  .sd-pay {
+    position: relative;
+    height: 3.1em;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--m-radius);
+    background: var(--sd-accent);
+    color: var(--sd-on-accent);
+    font-size: 1.08em;
+    font-weight: var(--m-weight);
+    letter-spacing: -0.005em;
+    flex-shrink: 0;
+    transition: background 0.45s var(--ease-out), color 0.45s var(--ease-out), transform 0.18s var(--ease-out), filter 0.18s var(--ease-out);
+  }
+
+  /* ---- 20 · Merchant range ---- */
+  .sd-range {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .sd-range-fig { margin-top: 32px; }
+  .sd-merchant { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .sd-m-meta { display: flex; flex-direction: column; gap: 4px; }
+  .sd-m-name {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .sd-m-spec {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px;
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .sd-swatch {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--sw);
+    box-shadow: 0 0 0 1px var(--hairline);
+    transition: background 0.45s var(--ease-out);
+  }
+  .sd-range[data-mode="dark"] .sd-swatch { background: var(--sw-dk); }
+
+  /* ---- 21 · The interaction ---- */
+  .sd-motion {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 72px;
+    align-items: start;
+    width: 100%;
+  }
+  .sd-motion-figs {
+    display: grid;
+    grid-template-columns: repeat(2, min(230px, 25.5vh));
+    gap: 20px;
+  }
+  .sd-motion-figs .figure-slot[data-aspect="9/16"] .figure-frame { border-radius: 28px; }
+  .sd-motion-figs figcaption { flex-wrap: wrap; gap: 4px 12px; }
+  .sd-mock { height: auto; min-height: 0; aspect-ratio: 9 / 16; }
+  .sd-mock .sd-sheet { transition: transform 0.7s cubic-bezier(0.22, 1.2, 0.36, 1), bottom 0.45s var(--ease-out), background 0.45s var(--ease-out); }
+  .sd-mock .sd-sheet > :not(.sd-done) { transition: opacity 0.3s var(--ease-out); }
+  .sd-mock[data-step="5"] .sd-sheet > :not(.sd-done) { opacity: 0; }
+  .sd-mock .sd-typed::after {
+    content: '';
+    display: inline-block;
+    width: 1px; height: 1.1em;
+    margin-left: 2px;
+    vertical-align: -0.2em;
+    background: var(--sd-accent);
+    opacity: 0;
+  }
+  .sd-mock .sd-kb {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 36%;
+    z-index: 2;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 4px, rgba(255, 255, 255, 0.92) 4px 10%) 0 14px / calc(100% - 4px) 20% no-repeat,
+      repeating-linear-gradient(90deg, transparent 0 4px, rgba(255, 255, 255, 0.92) 4px 11.11%) 50% 48% / 90% 20% no-repeat,
+      repeating-linear-gradient(90deg, transparent 0 4px, rgba(255, 255, 255, 0.92) 4px 14.28%) 50% 82% / 70% 20% no-repeat,
+      rgba(210, 212, 218, 0.94);
+    transform: translateY(100%);
+    transition: transform 0.45s var(--ease-out);
+  }
+  .sd-mock .sd-spin {
+    position: absolute;
+    width: 1.3em; height: 1.3em;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    opacity: 0;
+  }
+  .sd-mock .sd-pay-label { transition: opacity 0.2s; }
+  .sd-mock .sd-done {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8em;
+    background: var(--sd-glass);
+    font-size: 1.15em;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-out);
+  }
+  .sd-mock .sd-check { width: 3.6em; height: 3.6em; }
+  .sd-mock .sd-check circle { fill: var(--sd-accent); }
+  .sd-mock .sd-check path {
+    fill: none; stroke: var(--sd-on-accent); stroke-width: 4;
+    stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 40; stroke-dashoffset: 40;
+    transition: stroke-dashoffset 0.5s 0.15s var(--ease-out);
+  }
+  .sd-mock .sd-row--split .sd-row-label + .sd-row-label { border-left: 1px solid var(--sd-line); padding-left: 0.8em; }
+  /* step states */
+  .sd-mock[data-step="0"] .sd-sheet { transform: translateY(110%); }
+  .sd-mock[data-step="2"] .sd-sheet { bottom: calc(36% + 6px); }
+  .sd-mock[data-step="2"] .sd-kb { transform: translateY(0); }
+  .sd-mock[data-step="2"] .sd-card-form { box-shadow: inset 0 0 0 1.5px var(--sd-accent); }
+  .sd-mock[data-step="2"] .sd-typed::after { opacity: 1; animation: sd-blink 1s steps(1) infinite; }
+  .sd-mock[data-step="3"] .sd-pay { transform: scale(0.95); filter: brightness(0.88); }
+  .sd-mock[data-step="4"] .sd-pay-label { opacity: 0; }
+  .sd-mock[data-step="4"] .sd-spin { opacity: 1; animation: sd-spin 0.8s linear infinite; }
+  .sd-mock[data-step="5"] .sd-done { opacity: 1; }
+  .sd-mock[data-step="5"] .sd-check path { stroke-dashoffset: 0; }
+  @keyframes sd-spin { to { transform: rotate(360deg); } }
+  @keyframes sd-blink { 50% { opacity: 0; } }
+
+  .sd-motion-copy .sd-top--tight { align-items: center; margin-bottom: 24px; }
+  .sd-motion-copy .sd-top--tight .section-eyebrow { margin: 0; }
+  .sd-steps { list-style: none; margin-top: 24px; }
+  .sd-steps li { border-top: 1px solid var(--hairline); }
+  .sd-steps li:last-child { border-bottom: 1px solid var(--hairline); }
+  .sd-step {
+    position: relative;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 16px;
+    align-items: baseline;
+    padding: 13px 0 13px 14px;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    transition: background 0.3s var(--ease-out);
+  }
+  .sd-step::before {
+    content: '';
+    position: absolute; left: 0; top: 12px; bottom: 12px;
+    width: 2px;
+    background: var(--stripe);
+    transform: scaleY(0);
+    transition: transform 0.35s var(--ease-out);
+  }
+  .sd-step:hover { background: var(--stripe-soft); }
+  .sd-step[aria-current="step"]::before { transform: scaleY(1); }
+  .sd-step-num {
+    font-family: var(--mono);
+    font-size: var(--text-mono-sm);
+    letter-spacing: 0.16em;
+    color: var(--ink-faint);
+  }
+  .sd-step[aria-current="step"] .sd-step-num { color: var(--stripe); }
+  .sd-step-copy { display: flex; flex-wrap: wrap; gap: 2px 10px; align-items: baseline; }
+  .sd-step-title { font-family: var(--sans); font-size: 16px; font-weight: 500; color: var(--ink); }
+  .sd-step-body { font-family: var(--sans); font-size: 14px; line-height: 1.5; color: var(--ink-soft); flex-basis: 100%; }
+  .sd-motion-foot { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
+  .sd-replay {
+    font-family: var(--mono);
+    font-size: var(--text-mono-sm);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--hairline-2);
+    border-radius: 999px;
+    padding: 8px 16px;
+    min-height: 34px;
+    cursor: pointer;
+    transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+  }
+  .sd-replay:hover { background: var(--ink); color: var(--paper); }
+
+  /* ---- 22 · Accessibility ---- */
+  .sd-a11y-fig { margin-top: 32px; }
+  .sd-a11y-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+  .sd-a11y-panel { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .sd-a11y-label {
+    display: flex; gap: 12px; align-items: baseline;
+    font-family: var(--mono);
+    font-size: var(--text-mono-sm);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .sd-a11y-num { color: var(--stripe); }
+  .sd-a11y-note { font-size: 14px; line-height: 1.55; color: var(--ink-soft); max-width: 380px; }
+  .sd-crop { height: min(340px, 38vh); min-height: 290px; border-radius: 22px; }
+  .sd-crop .sd-sheet { left: 10%; right: 10%; }
+  /* Reduce Transparency: glass becomes an opaque system fill */
+  .sd-rt {
+    --sd-glass: #F7F6F3;
+    --sd-edge: rgba(26, 24, 20, 0.12);
+    --sd-fill: #FFFFFF;
+  }
+  .sd-rt .sd-sheet { -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: 0 10px 30px rgba(20, 17, 13, 0.16); }
+  /* Increase Contrast: harder edges, darker secondary text, deeper accent */
+  .sd-ic {
+    --sd-glass: rgba(255, 255, 255, 0.9);
+    --sd-edge: rgba(0, 0, 0, 0.7);
+    --sd-text: #000000;
+    --sd-soft: rgba(0, 0, 0, 0.78);
+    --sd-fill: #FFFFFF;
+    --sd-line: rgba(0, 0, 0, 0.5);
+    --sd-accent: #1B4532;
+  }
+  .sd-ic .sd-sheet { border-width: 1.5px; box-shadow: 0 10px 30px rgba(20, 17, 13, 0.2); }
+  .sd-ic .sd-rows { box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.7); }
+  .sd-ic .sd-pay { box-shadow: inset 0 0 0 1.5px #000000; }
+  /* Larger Text: scale, wrap, full height, Pay pinned */
+  .sd-dt { --sd-scale: 1.6; }
+  .sd-dt .sd-sheet { top: 6px; left: 6px; right: 6px; }
+  .sd-dt .sd-body {
+    flex: 1; min-height: 0; overflow: hidden;
+    -webkit-mask-image: linear-gradient(#000 72%, transparent);
+    mask-image: linear-gradient(#000 72%, transparent);
+  }
+  .sd-dt .sd-total { flex-direction: column; gap: 0.1em; }
+  .sd-dt .sd-row { flex-wrap: wrap; align-items: flex-start; }
+  .sd-dt .sd-row-label { white-space: normal; flex-basis: calc(100% - 4.5em); }
+  .sd-dt .sd-row-meta { flex-basis: 100%; padding-left: 4.5em; margin-top: -0.4em; }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 1180px) {
+    .sd-range {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 236px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 10px;
+    }
+    .sd-merchant { scroll-snap-align: start; }
+    .sd-motion { gap: 48px; }
+  }
+  @media (max-width: 1100px) {
+    .sd-motion { grid-template-columns: 1fr; }
+    .sd-motion-figs { order: 2; grid-template-columns: repeat(2, minmax(0, 230px)); }
+  }
+  @media (max-width: 900px) {
+    .sd-slide .sd-top { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .sd-slide .sd-controls { align-items: flex-start; }
+    .sd-motion-copy .sd-top--tight { flex-direction: row; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .sd-phone { height: 400px; }
+    .sd-mock { height: auto; }
+    .sd-a11y-grid { grid-template-columns: 1fr; gap: 36px; }
+    .sd-crop { height: 340px; }
+    .sd-step { grid-template-columns: 40px 1fr; gap: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sd-slide *, .sd-slide *::before, .sd-slide *::after { transition: none !important; animation: none !important; }
+    .sd-mock .sd-spin { border-top-color: currentColor; border-right-color: transparent; }
+  }
   /* ===== STREAM D CSS: end ===== */
   /* ---- */
 
@@ -4124,41 +4627,352 @@
   <!-- ===== /STREAM C · 19 ===== -->
 
   <!-- ===== STREAM D · 20 merchant-range ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="merchant range" data-theme="light">
+  <section class="slide sd-slide sd-range-slide" data-section="ios 26" data-crumb="merchant range" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
-        <div class="section-eyebrow">Solutions · Merchant range</div>
-        <h2 class="setup-headline">One sheet. <em>Every brand.</em></h2>
-        <!-- SCAFFOLD NOTE (D): Same sheet themed for 4–6 brands. Light/dark toggle. Biggest visual moment. -->
+        <div class="sd-top">
+          <div>
+            <div class="section-eyebrow">Solutions · Merchant range</div>
+            <h2 class="setup-headline">One sheet. <em>Every brand.</em></h2>
+            <p class="surface-text sd-lede">I designed the Liquid Glass sheet once. Merchants theme it through the Appearance API: accent, corner radius, font weight. The glass, the hierarchy and the flow stay ours.</p>
+          </div>
+          <div class="sd-controls">
+            <span class="status-tag" data-status="shipped">Shipped</span>
+            <div class="sd-seg" role="group" aria-label="Sheet appearance">
+              <button type="button" data-mode="light" aria-pressed="true">Light</button>
+              <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+            </div>
+          </div>
+        </div>
+
+        <figure class="figure-slot sd-range-fig">
+          <!-- asset: inline (CSS component, themed per merchant via custom properties) -->
+          <div class="sd-range" data-mode="light">
+        <div class="sd-merchant">
+          <div class="sd-phone" style="--m-accent:#2F6B4F;--m-accent-dk:#6FBF95;--m-on:#FFFFFF;--m-on-dk:#0D1F16;--m-radius:8px;--m-weight:600;--m-app:#DCE7DE;--m-app-dk:#101C16;" role="img" aria-label="Fernway payment sheet, themed with accent #2F6B4F, corner radius 8, font weight 600.">
+            <div class="sd-app" aria-hidden="true">
+              <div class="sd-app-bar"><span class="sd-app-word">Fernway</span><span class="sd-app-dots"></span></div>
+              <div class="sd-app-hero"></div>
+              <div class="sd-app-tiles"><span></span><span></span></div>
+            </div>
+            <div class="sd-sheet">
+              <div class="sd-grab"></div>
+              <div class="sd-head"><span class="sd-head-name">Fernway</span><span class="sd-x">&times;</span></div>
+              <div class="sd-body">
+                <div class="sd-total"><span>Trail shell, moss</span><span class="sd-total-amt">$148.00</span></div>
+                <div class="sd-wallet">Apple Pay</div>
+                <div class="sd-or"><span>Or pay with card</span></div>
+                <div class="sd-rows">
+                  <div class="sd-row"><span class="sd-radio is-on"></span><span class="sd-chip"></span><span class="sd-row-label">Visa &bull;&bull;&bull;&bull; 4242</span><span class="sd-row-meta">Exp 08/29</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--alt"></span><span class="sd-row-label">Amex &bull;&bull;&bull;&bull; 1005</span><span class="sd-row-meta">Exp 02/28</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--new">+</span><span class="sd-row-label">New card</span></div>
+                </div>
+              </div>
+              <div class="sd-pay"><span class="sd-pay-label">Pay $148.00</span></div>
+            </div>
+          </div>
+          <div class="sd-m-meta">
+            <div class="sd-m-name">Fernway</div>
+            <div class="sd-m-spec"><span class="sd-swatch" style="--sw:#2F6B4F;--sw-dk:#6FBF95;"></span><span>Outdoor gear</span><span>R8 &middot; W600</span></div>
+          </div>
+        </div>
+        <div class="sd-merchant">
+          <div class="sd-phone" style="--m-accent:#B4532A;--m-accent-dk:#E8946A;--m-on:#FFFFFF;--m-on-dk:#2A140A;--m-radius:14px;--m-weight:500;--m-app:#F1E3D4;--m-app-dk:#22160F;" role="img" aria-label="Marlow Coffee payment sheet, themed with accent #B4532A, corner radius 14, font weight 500.">
+            <div class="sd-app" aria-hidden="true">
+              <div class="sd-app-bar"><span class="sd-app-word">Marlow Coffee</span><span class="sd-app-dots"></span></div>
+              <div class="sd-app-hero"></div>
+              <div class="sd-app-tiles"><span></span><span></span></div>
+            </div>
+            <div class="sd-sheet">
+              <div class="sd-grab"></div>
+              <div class="sd-head"><span class="sd-head-name">Marlow Coffee</span><span class="sd-x">&times;</span></div>
+              <div class="sd-body">
+                <div class="sd-total"><span>Two flat whites</span><span class="sd-total-amt">$11.50</span></div>
+                <div class="sd-wallet">Apple Pay</div>
+                <div class="sd-or"><span>Or pay with card</span></div>
+                <div class="sd-rows">
+                  <div class="sd-row"><span class="sd-radio is-on"></span><span class="sd-chip"></span><span class="sd-row-label">Visa &bull;&bull;&bull;&bull; 4242</span><span class="sd-row-meta">Exp 08/29</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--alt"></span><span class="sd-row-label">Amex &bull;&bull;&bull;&bull; 1005</span><span class="sd-row-meta">Exp 02/28</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--new">+</span><span class="sd-row-label">New card</span></div>
+                </div>
+              </div>
+              <div class="sd-pay"><span class="sd-pay-label">Pay $11.50</span></div>
+            </div>
+          </div>
+          <div class="sd-m-meta">
+            <div class="sd-m-name">Marlow Coffee</div>
+            <div class="sd-m-spec"><span class="sd-swatch" style="--sw:#B4532A;--sw-dk:#E8946A;"></span><span>Café ordering</span><span>R14 &middot; W500</span></div>
+          </div>
+        </div>
+        <div class="sd-merchant">
+          <div class="sd-phone" style="--m-accent:#1D4ED8;--m-accent-dk:#7EA6FF;--m-on:#FFFFFF;--m-on-dk:#0A1633;--m-radius:10px;--m-weight:500;--m-app:#DDE5F6;--m-app-dk:#0E1528;" role="img" aria-label="Kestrel Air payment sheet, themed with accent #1D4ED8, corner radius 10, font weight 500.">
+            <div class="sd-app" aria-hidden="true">
+              <div class="sd-app-bar"><span class="sd-app-word">Kestrel Air</span><span class="sd-app-dots"></span></div>
+              <div class="sd-app-hero"></div>
+              <div class="sd-app-tiles"><span></span><span></span></div>
+            </div>
+            <div class="sd-sheet">
+              <div class="sd-grab"></div>
+              <div class="sd-head"><span class="sd-head-name">Kestrel Air</span><span class="sd-x">&times;</span></div>
+              <div class="sd-body">
+                <div class="sd-total"><span>Seat 14A, carry-on</span><span class="sd-total-amt">$312.40</span></div>
+                <div class="sd-wallet">Apple Pay</div>
+                <div class="sd-or"><span>Or pay with card</span></div>
+                <div class="sd-rows">
+                  <div class="sd-row"><span class="sd-radio is-on"></span><span class="sd-chip"></span><span class="sd-row-label">Visa &bull;&bull;&bull;&bull; 4242</span><span class="sd-row-meta">Exp 08/29</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--alt"></span><span class="sd-row-label">Amex &bull;&bull;&bull;&bull; 1005</span><span class="sd-row-meta">Exp 02/28</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--new">+</span><span class="sd-row-label">New card</span></div>
+                </div>
+              </div>
+              <div class="sd-pay"><span class="sd-pay-label">Pay $312.40</span></div>
+            </div>
+          </div>
+          <div class="sd-m-meta">
+            <div class="sd-m-name">Kestrel Air</div>
+            <div class="sd-m-spec"><span class="sd-swatch" style="--sw:#1D4ED8;--sw-dk:#7EA6FF;"></span><span>Travel</span><span>R10 &middot; W500</span></div>
+          </div>
+        </div>
+        <div class="sd-merchant">
+          <div class="sd-phone" style="--m-accent:#111111;--m-accent-dk:#F2F0EC;--m-on:#FFFFFF;--m-on-dk:#111111;--m-radius:0px;--m-weight:400;--m-app:#ECE9E4;--m-app-dk:#151515;" role="img" aria-label="Halden payment sheet, themed with accent #111111, corner radius 0, font weight 400.">
+            <div class="sd-app" aria-hidden="true">
+              <div class="sd-app-bar"><span class="sd-app-word">Halden</span><span class="sd-app-dots"></span></div>
+              <div class="sd-app-hero"></div>
+              <div class="sd-app-tiles"><span></span><span></span></div>
+            </div>
+            <div class="sd-sheet">
+              <div class="sd-grab"></div>
+              <div class="sd-head"><span class="sd-head-name">Halden</span><span class="sd-x">&times;</span></div>
+              <div class="sd-body">
+                <div class="sd-total"><span>Wool overcoat</span><span class="sd-total-amt">$420.00</span></div>
+                <div class="sd-wallet">Apple Pay</div>
+                <div class="sd-or"><span>Or pay with card</span></div>
+                <div class="sd-rows">
+                  <div class="sd-row"><span class="sd-radio is-on"></span><span class="sd-chip"></span><span class="sd-row-label">Visa &bull;&bull;&bull;&bull; 4242</span><span class="sd-row-meta">Exp 08/29</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--alt"></span><span class="sd-row-label">Amex &bull;&bull;&bull;&bull; 1005</span><span class="sd-row-meta">Exp 02/28</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--new">+</span><span class="sd-row-label">New card</span></div>
+                </div>
+              </div>
+              <div class="sd-pay"><span class="sd-pay-label">Pay $420.00</span></div>
+            </div>
+          </div>
+          <div class="sd-m-meta">
+            <div class="sd-m-name">Halden</div>
+            <div class="sd-m-spec"><span class="sd-swatch" style="--sw:#111111;--sw-dk:#F2F0EC;"></span><span>Fashion</span><span>R0 &middot; W400</span></div>
+          </div>
+        </div>
+        <div class="sd-merchant">
+          <div class="sd-phone" style="--m-accent:#D6336C;--m-accent-dk:#FF7EAA;--m-on:#FFFFFF;--m-on-dk:#3A0A1C;--m-radius:22px;--m-weight:600;--m-app:#F7E1E9;--m-app-dk:#24111A;" role="img" aria-label="Pipkin payment sheet, themed with accent #D6336C, corner radius 22, font weight 600.">
+            <div class="sd-app" aria-hidden="true">
+              <div class="sd-app-bar"><span class="sd-app-word">Pipkin</span><span class="sd-app-dots"></span></div>
+              <div class="sd-app-hero"></div>
+              <div class="sd-app-tiles"><span></span><span></span></div>
+            </div>
+            <div class="sd-sheet">
+              <div class="sd-grab"></div>
+              <div class="sd-head"><span class="sd-head-name">Pipkin</span><span class="sd-x">&times;</span></div>
+              <div class="sd-body">
+                <div class="sd-total"><span>Family plan, yearly</span><span class="sd-total-amt">$59.99</span></div>
+                <div class="sd-wallet">Apple Pay</div>
+                <div class="sd-or"><span>Or pay with card</span></div>
+                <div class="sd-rows">
+                  <div class="sd-row"><span class="sd-radio is-on"></span><span class="sd-chip"></span><span class="sd-row-label">Visa &bull;&bull;&bull;&bull; 4242</span><span class="sd-row-meta">Exp 08/29</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--alt"></span><span class="sd-row-label">Amex &bull;&bull;&bull;&bull; 1005</span><span class="sd-row-meta">Exp 02/28</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--new">+</span><span class="sd-row-label">New card</span></div>
+                </div>
+              </div>
+              <div class="sd-pay"><span class="sd-pay-label">Pay $59.99</span></div>
+            </div>
+          </div>
+          <div class="sd-m-meta">
+            <div class="sd-m-name">Pipkin</div>
+            <div class="sd-m-spec"><span class="sd-swatch" style="--sw:#D6336C;--sw-dk:#FF7EAA;"></span><span>Kids learning</span><span>R22 &middot; W600</span></div>
+          </div>
+        </div>
+          </div>
+          <figcaption><span class="cap-num">Fig. 11</span><span class="cap-text">One PaymentSheet, five fictional merchants. Themed by Appearance API values only.</span></figcaption>
+        </figure>
       </div>
     </div>
   </section>
   <!-- ===== /STREAM D · 20 ===== -->
 
   <!-- ===== STREAM D · 21 the-interaction ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="the interaction" data-theme="light">
+  <section class="slide sd-slide sd-motion-slide" data-section="ios 26" data-crumb="the interaction" data-theme="light">
     <div class="slide-inner">
-      <div style="width:100%;">
-        <div class="section-eyebrow">Solutions · The interaction</div>
-        <h2 class="setup-headline">Present. Type. <em>Pay.</em></h2>
-        <!-- SCAFFOLD NOTE (D): Motion: present → keyboard → pay → processing → success. <video> placeholder. -->
-        <figure class="figure-slot" data-aspect="9/16">
-          <!-- asset: /public/videos/ios-26-fig-12.mp4 -->
-          <div class="figure-frame"><span class="figure-mark">[ FIG. 12 ]</span></div>
-          <figcaption><span class="cap-num">Fig. 12</span><span class="cap-text">Pay flow motion.</span></figcaption>
-        </figure>
+      <div class="sd-motion">
+        <div class="sd-motion-figs">
+          <figure class="figure-slot" data-aspect="9/16">
+            <!-- asset: /public/videos/ios-26-fig-12.mp4 -->
+            <div class="figure-frame"><span class="figure-mark">[ FIG. 12 ]</span></div>
+            <figcaption><span class="cap-num">Fig. 12</span><span class="cap-text">Pay flow, recorded.</span></figcaption>
+          </figure>
+          <figure class="figure-slot sd-mock-fig">
+            <div class="sd-phone sd-mock" data-step="5" style="--m-accent:#2F6B4F;--m-accent-dk:#6FBF95;--m-on:#FFFFFF;--m-on-dk:#0D1F16;--m-radius:8px;--m-weight:600;--m-app:#DCE7DE;--m-app-dk:#101C16;" role="img" aria-label="Sketch of the pay flow. Current step shown matches the highlighted step in the list.">
+              <div class="sd-app" aria-hidden="true">
+              <div class="sd-app-bar"><span class="sd-app-word">Fernway</span><span class="sd-app-dots"></span></div>
+              <div class="sd-app-hero"></div>
+              <div class="sd-app-tiles"><span></span><span></span></div>
+            </div>
+              <div class="sd-sheet">
+                <div class="sd-grab"></div>
+                <div class="sd-head"><span class="sd-head-name">Fernway</span><span class="sd-x">&times;</span></div>
+                <div class="sd-body">
+                  <div class="sd-total"><span>Trail shell, moss</span><span class="sd-total-amt">$148.00</span></div>
+                  <div class="sd-rows sd-card-form">
+                    <div class="sd-row"><span class="sd-chip"></span><span class="sd-row-label sd-typed">4242 4242 4242 4242</span></div>
+                    <div class="sd-row sd-row--split"><span class="sd-row-label">08 / 29</span><span class="sd-row-label">123</span></div>
+                  </div>
+                </div>
+                <div class="sd-pay"><span class="sd-pay-label">Pay $148.00</span><span class="sd-spin" aria-hidden="true"></span></div>
+                <div class="sd-done" aria-hidden="true">
+                  <svg viewBox="0 0 48 48" class="sd-check"><circle cx="24" cy="24" r="22"></circle><path d="M14 25 l7 7 l13 -15"></path></svg>
+                  <span>Paid $148.00</span>
+                </div>
+              </div>
+              <div class="sd-kb" aria-hidden="true"></div>
+            </div>
+            <figcaption><span class="cap-num">Sketch</span><span class="cap-text">CSS step-through. Not the production motion.</span></figcaption>
+          </figure>
+        </div>
+
+        <div class="sd-motion-copy">
+          <div class="sd-top sd-top--tight">
+            <div class="section-eyebrow">Solutions · The interaction</div>
+            <span class="status-tag" data-status="shipped">Shipped</span>
+          </div>
+          <h2 class="setup-headline">Present. Type. <em>Pay.</em></h2>
+          <p class="surface-text sd-lede">Five beats on one continuous surface. I specced each transition and the material behavior inside it; we built it into PaymentSheet.</p>
+          <ol class="sd-steps">
+            <li><button type="button" class="sd-step" data-step="1">
+              <span class="sd-step-num">01</span>
+              <span class="sd-step-copy"><span class="sd-step-title">Present.</span><span class="sd-step-body">Sheet springs up from the bottom edge. Glass refracts the merchant screen while it travels, then settles.</span></span>
+            </button></li>
+            <li><button type="button" class="sd-step" data-step="2">
+              <span class="sd-step-num">02</span>
+              <span class="sd-step-copy"><span class="sd-step-title">Keyboard.</span><span class="sd-step-body">Sheet rides up with the keyboard. Card fields sit on an opaque fill so digits stay legible.</span></span>
+            </button></li>
+            <li><button type="button" class="sd-step" data-step="3">
+              <span class="sd-step-num">03</span>
+              <span class="sd-step-copy"><span class="sd-step-title">Pay.</span><span class="sd-step-body">Button compresses on touch down, releases on touch up. The merchant color holds.</span></span>
+            </button></li>
+            <li><button type="button" class="sd-step" data-step="4">
+              <span class="sd-step-num">04</span>
+              <span class="sd-step-copy"><span class="sd-step-title">Processing.</span><span class="sd-step-body">Label hands off to a spinner in place. The sheet locks: no swipe to dismiss mid charge.</span></span>
+            </button></li>
+            <li><button type="button" class="sd-step" data-step="5" aria-current="step">
+              <span class="sd-step-num">05</span>
+              <span class="sd-step-copy"><span class="sd-step-title">Success.</span><span class="sd-step-body">Check draws in, the sheet holds a beat, then dismisses back to the merchant.</span></span>
+            </button></li>
+          </ol>
+          <div class="sd-motion-foot">
+            <button type="button" class="sd-replay">Replay</button>
+            <span class="sd-todo">Draft notes. Durations, springs, haptics: [TODO: Lawrence]</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
   <!-- ===== /STREAM D · 21 ===== -->
 
   <!-- ===== STREAM D · 22 accessibility ===== -->
-  <section class="slide" data-section="ios 26" data-crumb="accessibility" data-theme="light">
+  <section class="slide sd-slide sd-a11y-slide" data-section="ios 26" data-crumb="accessibility" data-theme="light">
     <div class="slide-inner">
       <div style="width:100%;">
-        <div class="section-eyebrow">Solutions · Accessibility</div>
-        <h2 class="setup-headline">When glass <em>steps aside.</em></h2>
-        <!-- SCAFFOLD NOTE (D): Reduce Transparency, Increase Contrast, large Dynamic Type. -->
+        <div class="sd-top">
+          <div>
+            <div class="section-eyebrow">Solutions · Accessibility</div>
+            <h2 class="setup-headline">When glass <em>steps aside.</em></h2>
+            <p class="surface-text sd-lede">Liquid Glass is a default, not a requirement. When a buyer turns on an accessibility setting, the sheet follows it and the payment flow does not change.</p>
+          </div>
+          <div class="sd-controls">
+            <span class="status-tag" data-status="shipped">Shipped</span>
+            <span class="sd-todo">[TODO: Lawrence confirm]</span>
+          </div>
+        </div>
+        <figure class="figure-slot sd-a11y-fig">
+          <!-- asset: inline (CSS mocks). Optional capture: /public/images/ios-26-fig-13.png -->
+          <div class="sd-a11y-grid">
+          <div class="sd-a11y-panel">
+            <div class="sd-a11y-label"><span class="sd-a11y-num">01</span>Reduce Transparency</div>
+            <div class="sd-phone sd-crop sd-rt" style="--m-accent:#2F6B4F;--m-accent-dk:#6FBF95;--m-on:#FFFFFF;--m-on-dk:#0D1F16;--m-radius:8px;--m-weight:600;--m-app:#DCE7DE;--m-app-dk:#101C16;" role="img" aria-label="Payment sheet with Reduce Transparency on.">
+              <div class="sd-app" aria-hidden="true">
+              <div class="sd-app-bar"><span class="sd-app-word">Fernway</span><span class="sd-app-dots"></span></div>
+              <div class="sd-app-hero"></div>
+              <div class="sd-app-tiles"><span></span><span></span></div>
+            </div>
+              <div class="sd-sheet">
+              <div class="sd-grab"></div>
+              <div class="sd-head"><span class="sd-head-name">Fernway</span><span class="sd-x">&times;</span></div>
+              <div class="sd-body">
+                <div class="sd-total"><span>Trail shell, moss</span><span class="sd-total-amt">$148.00</span></div>
+                <div class="sd-wallet">Apple Pay</div>
+                <div class="sd-or"><span>Or pay with card</span></div>
+                <div class="sd-rows">
+                  <div class="sd-row"><span class="sd-radio is-on"></span><span class="sd-chip"></span><span class="sd-row-label">Visa &bull;&bull;&bull;&bull; 4242</span><span class="sd-row-meta">Exp 08/29</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--alt"></span><span class="sd-row-label">Amex &bull;&bull;&bull;&bull; 1005</span><span class="sd-row-meta">Exp 02/28</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--new">+</span><span class="sd-row-label">New card</span></div>
+                </div>
+              </div>
+              <div class="sd-pay"><span class="sd-pay-label">Pay $148.00</span></div>
+            </div>
+            </div>
+            <p class="sd-a11y-note">Glass turns opaque. Same layout, same hierarchy, a solid system fill instead of the blur.</p>
+          </div>
+          <div class="sd-a11y-panel">
+            <div class="sd-a11y-label"><span class="sd-a11y-num">02</span>Increase Contrast</div>
+            <div class="sd-phone sd-crop sd-ic" style="--m-accent:#2F6B4F;--m-accent-dk:#6FBF95;--m-on:#FFFFFF;--m-on-dk:#0D1F16;--m-radius:8px;--m-weight:600;--m-app:#DCE7DE;--m-app-dk:#101C16;" role="img" aria-label="Payment sheet with Increase Contrast on.">
+              <div class="sd-app" aria-hidden="true">
+              <div class="sd-app-bar"><span class="sd-app-word">Fernway</span><span class="sd-app-dots"></span></div>
+              <div class="sd-app-hero"></div>
+              <div class="sd-app-tiles"><span></span><span></span></div>
+            </div>
+              <div class="sd-sheet">
+              <div class="sd-grab"></div>
+              <div class="sd-head"><span class="sd-head-name">Fernway</span><span class="sd-x">&times;</span></div>
+              <div class="sd-body">
+                <div class="sd-total"><span>Trail shell, moss</span><span class="sd-total-amt">$148.00</span></div>
+                <div class="sd-wallet">Apple Pay</div>
+                <div class="sd-or"><span>Or pay with card</span></div>
+                <div class="sd-rows">
+                  <div class="sd-row"><span class="sd-radio is-on"></span><span class="sd-chip"></span><span class="sd-row-label">Visa &bull;&bull;&bull;&bull; 4242</span><span class="sd-row-meta">Exp 08/29</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--alt"></span><span class="sd-row-label">Amex &bull;&bull;&bull;&bull; 1005</span><span class="sd-row-meta">Exp 02/28</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--new">+</span><span class="sd-row-label">New card</span></div>
+                </div>
+              </div>
+              <div class="sd-pay"><span class="sd-pay-label">Pay $148.00</span></div>
+            </div>
+            </div>
+            <p class="sd-a11y-note">Edges and separators harden, secondary text darkens, the merchant color steps up a shade.</p>
+          </div>
+          <div class="sd-a11y-panel">
+            <div class="sd-a11y-label"><span class="sd-a11y-num">03</span>Larger Text</div>
+            <div class="sd-phone sd-crop sd-dt" style="--m-accent:#2F6B4F;--m-accent-dk:#6FBF95;--m-on:#FFFFFF;--m-on-dk:#0D1F16;--m-radius:8px;--m-weight:600;--m-app:#DCE7DE;--m-app-dk:#101C16;" role="img" aria-label="Payment sheet with Larger Text on.">
+              <div class="sd-app" aria-hidden="true">
+              <div class="sd-app-bar"><span class="sd-app-word">Fernway</span><span class="sd-app-dots"></span></div>
+              <div class="sd-app-hero"></div>
+              <div class="sd-app-tiles"><span></span><span></span></div>
+            </div>
+              <div class="sd-sheet">
+              <div class="sd-grab"></div>
+              <div class="sd-head"><span class="sd-head-name">Fernway</span><span class="sd-x">&times;</span></div>
+              <div class="sd-body">
+                <div class="sd-total"><span>Trail shell, moss</span><span class="sd-total-amt">$148.00</span></div>
+                <div class="sd-wallet">Apple Pay</div>
+                <div class="sd-or"><span>Or pay with card</span></div>
+                <div class="sd-rows">
+                  <div class="sd-row"><span class="sd-radio is-on"></span><span class="sd-chip"></span><span class="sd-row-label">Visa &bull;&bull;&bull;&bull; 4242</span><span class="sd-row-meta">Exp 08/29</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--alt"></span><span class="sd-row-label">Amex &bull;&bull;&bull;&bull; 1005</span><span class="sd-row-meta">Exp 02/28</span></div>
+                  <div class="sd-row"><span class="sd-radio"></span><span class="sd-chip sd-chip--new">+</span><span class="sd-row-label">New card</span></div>
+                </div>
+              </div>
+              <div class="sd-pay"><span class="sd-pay-label">Pay $148.00</span></div>
+            </div>
+            </div>
+            <p class="sd-a11y-note">Type follows Dynamic Type. Rows wrap instead of truncating, the sheet goes full height, Pay stays pinned.</p>
+          </div>
+          </div>
+          <figcaption><span class="cap-num">Fig. 13</span><span class="cap-text">The same sheet under three iOS accessibility settings.</span></figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -4750,6 +5564,56 @@
   // ----
 
   // ===== STREAM D JS: start =====
+  // 20 · Merchant range: Light / Dark segmented control themes all five sheets
+  (function () {
+    const seg = document.querySelector('.sd-range-slide .sd-seg');
+    const range = document.querySelector('.sd-range-slide .sd-range');
+    if (!seg || !range) return;
+    const btns = Array.from(seg.querySelectorAll('button[data-mode]'));
+    btns.forEach(btn => btn.addEventListener('click', () => {
+      range.dataset.mode = btn.dataset.mode;
+      btns.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+    }));
+  })();
+
+  // 21 · The interaction: CSS step-through, auto-advances on slideenter (reduced motion: end state)
+  (function () {
+    const slide = document.querySelector('.sd-motion-slide');
+    if (!slide) return;
+    const mock = slide.querySelector('.sd-mock');
+    const stepBtns = Array.from(slide.querySelectorAll('.sd-step'));
+    const replay = slide.querySelector('.sd-replay');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const HOLD = [350, 1500, 1700, 1100, 1500];
+    let timer = null;
+
+    function setStep(n) {
+      mock.dataset.step = String(n);
+      stepBtns.forEach((b, i) => {
+        if (i + 1 === n) b.setAttribute('aria-current', 'step');
+        else b.removeAttribute('aria-current');
+      });
+    }
+    function stop() { clearTimeout(timer); timer = null; }
+    function play() {
+      stop();
+      if (reduce.matches) { setStep(5); return; }
+      let n = 0;
+      setStep(0);
+      const tick = () => {
+        if (!slide.classList.contains('active')) { stop(); return; }
+        n += 1;
+        setStep(n);
+        if (n < 5) timer = setTimeout(tick, HOLD[n]);
+      };
+      timer = setTimeout(tick, HOLD[0]);
+    }
+
+    stepBtns.forEach(b => b.addEventListener('click', () => { stop(); setStep(parseInt(b.dataset.step, 10)); }));
+    replay.addEventListener('click', play);
+    slide.addEventListener('slideenter', play);
+    if (slide.classList.contains('active')) play();
+  })();
   // ===== STREAM D JS: end =====
   // ----
 
