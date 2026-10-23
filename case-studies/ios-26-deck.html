@@ -286,7 +286,9 @@
     transition: opacity 0.5s var(--ease-out), transform 0.6s var(--ease-out);
     overflow-y: auto;
   }
-  .slide[data-align="center"] { align-items: center; }
+  /* Safe centering: tall centered slides scroll instead of clipping their top. */
+  .slide[data-align="center"] { align-items: flex-start; }
+  .slide[data-align="center"] > .slide-inner { margin: auto; }
   .slide.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
   .slide.dark { background: var(--void); color: var(--void-ink); }
 
@@ -1387,6 +1389,15 @@
     .close-btn { top: 24px; right: 24px; }
     .paginator { bottom: 64px; }
     .nav-arrows { bottom: 24px; right: 24px; }
+    /* Scrolling slides pass under solid chrome bands instead of colliding with it. */
+    .chrome > * { z-index: 1; }
+    .chrome::before, .chrome::after {
+      content: ''; position: absolute; left: 0; right: 0; pointer-events: none;
+    }
+    .chrome::before { top: 0; height: 72px; background: linear-gradient(to bottom, var(--paper) 75%, transparent); }
+    .chrome::after { bottom: 0; height: 120px; background: linear-gradient(to top, var(--paper) 80%, transparent); }
+    body.dark .chrome::before { background: linear-gradient(to bottom, var(--void) 75%, transparent); }
+    body.dark .chrome::after { background: linear-gradient(to top, var(--void) 80%, transparent); }
     .hero { grid-template-columns: 1fr; gap: 48px; }
     .contents-row { grid-template-columns: 56px 1fr; }
     .contents-row-range { grid-column: 2; padding-top: 4px; }
@@ -1457,24 +1468,31 @@
     font-weight: 500;
   }
 
-  /* ===== STREAM A CSS: start ===== */
-  /* Shared status tag (identical across streams; integration dedupes) */
+  /* ===== STATUS TAG (shared: SHIPPED / EXPLORED / FUTURE) ===== */
   .status-tag {
     display: inline-flex;
     align-items: center;
     font-family: var(--mono);
     font-size: var(--text-mono-xs);
-    font-weight: 500;
+    font-weight: 400;
+    font-style: normal;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     line-height: 1;
-    padding: 5px 8px;
-    border: 1px solid var(--hairline);
-    border-radius: 999px;
+    padding: 4px 7px 3px;
+    border: 1px solid var(--hairline-2);
+    border-radius: 2px;
     color: var(--ink-soft);
     white-space: nowrap;
+    vertical-align: middle;
   }
+  .status-tag[data-status="shipped"]  { color: var(--ink); border-color: var(--ink); }
+  .status-tag[data-status="explored"] { color: var(--ink-faint); }
+  .status-tag[data-status="future"]   { color: var(--stripe); border-color: rgba(99, 91, 255, 0.35); border-style: dashed; }
   .slide.dark .status-tag { border-color: var(--void-line); color: var(--void-soft); }
+  .slide.dark .status-tag[data-status="shipped"] { color: var(--void-ink); border-color: var(--void-soft); }
+
+  /* ===== STREAM A CSS: start ===== */
 
   /* --- 01 cover: Liquid Glass PaymentSheet mock --- */
   .i26a-hero-visual { background: var(--void); }
@@ -1651,10 +1669,6 @@
   @media (prefers-reduced-motion: reduce) {
     .slide.active .i26a-sheet { animation: none; transform: none; }
   }
-  @media (max-width: 900px) {
-    /* Cover is taller than a phone viewport: top-align so nothing clips above the fold. */
-    .slide[data-crumb="cover"] { align-items: flex-start; }
-  }
   @media (max-width: 600px) {
     .i26a-hero-tag { top: 12px; left: 12px; }
     .i26a-hero-mark { top: 44px; left: 14px; right: auto; max-width: 84px; line-height: 1.6; }
@@ -1775,24 +1789,6 @@
   /* ---- */
 
   /* ===== STREAM B CSS: start ===== */
-  /* Shared status tag (identical definition may exist in other streams) */
-  .status-tag {
-    display: inline-block;
-    font-family: var(--mono);
-    font-size: var(--text-mono-xs);
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    line-height: 1;
-    padding: 4px 6px 3px;
-    border: 1px solid var(--hairline-2);
-    border-radius: 2px;
-    color: var(--ink-soft);
-    white-space: nowrap;
-    vertical-align: middle;
-  }
-  .status-tag[data-status="shipped"] { color: var(--ink); border-color: var(--ink); }
-  .status-tag[data-status="future"]  { color: var(--ink-faint); border-style: dashed; }
 
   /* TODO marks for Lawrence */
   .b-todo {
@@ -2173,25 +2169,6 @@
   /* ---- */
 
   /* ===== STREAM C CSS: start ===== */
-  /* Shared status tag (identical across streams; integration dedupes) */
-  .status-tag {
-    display: inline-flex;
-    align-items: center;
-    font-family: var(--mono);
-    font-size: var(--text-mono-xs);
-    font-weight: 400;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    line-height: 1;
-    padding: 4px 7px;
-    border: 1px solid var(--hairline-2);
-    border-radius: 2px;
-    color: var(--ink-soft);
-    white-space: nowrap;
-  }
-  .status-tag[data-status="shipped"] { color: var(--ink); }
-  .status-tag[data-status="explored"] { color: var(--ink-faint); }
-  .status-tag[data-status="future"] { color: var(--stripe); border-color: var(--stripe); }
 
   .c-todo {
     font-family: var(--mono);
@@ -2589,21 +2566,6 @@
   /* ---- */
 
   /* ===== STREAM D CSS: start ===== */
-  /* Shared status tag (scoped to stream D slides; identical shape to other streams) */
-  .sd-slide .status-tag {
-    display: inline-flex;
-    align-items: center;
-    font-family: var(--mono);
-    font-size: var(--text-mono-xs);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    line-height: 1;
-    color: var(--ink-soft);
-    border: 1px solid var(--hairline-2);
-    border-radius: 999px;
-    padding: 5px 10px;
-    white-space: nowrap;
-  }
   .sd-slide .sd-todo {
     font-family: var(--mono);
     font-size: var(--text-mono-xs);
@@ -3096,25 +3058,6 @@
   /* ---- */
 
   /* ===== STREAM E CSS: start ===== */
-  /* Shared status tag (streams may define identically; integration dedupes) */
-  .status-tag {
-    display: inline-block;
-    font-family: var(--mono);
-    font-size: var(--text-mono-xs);
-    font-weight: 400;
-    font-style: normal;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    line-height: 1;
-    padding: 4px 7px 3px;
-    border: 1px solid var(--hairline-2);
-    border-radius: 2px;
-    color: var(--ink-soft);
-    vertical-align: middle;
-    white-space: nowrap;
-  }
-  .status-tag[data-status="shipped"] { color: var(--ink); }
-  .status-tag[data-status="future"] { color: var(--stripe); border-color: rgba(99, 91, 255, 0.35); }
   .section-eyebrow .status-tag { margin-left: 10px; }
 
   .e-todo { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-faint); font-style: normal; }
@@ -5081,8 +5024,8 @@
         </div>
 
         <figure class="figure-slot e-ba-fig">
-          <!-- asset: /public/images/ios-26-fig-16-before.png (iOS 18 PaymentSheet) -->
-          <!-- asset: /public/images/ios-26-fig-16-after.png (iOS 26 PaymentSheet) -->
+          <!-- asset: /public/images/ios-26-fig-14-before.png (iOS 18 PaymentSheet) -->
+          <!-- asset: /public/images/ios-26-fig-14-after.png (iOS 26 PaymentSheet) -->
           <!-- Until those exist, both sides are CSS mock sheets over the same merchant backdrop. -->
           <div class="e-ba-labels"><span>iOS 18 · Before</span><span>iOS 26 · After</span></div>
           <div class="e-wipe" id="e-wipe" style="--wipe:50%;">
@@ -5140,7 +5083,7 @@
               <span class="e-handle-knob" aria-hidden="true">&lsaquo; &rsaquo;</span>
             </div>
           </div>
-          <figcaption><span class="cap-num">Fig. 16</span><span class="cap-text">PaymentSheet, iOS 18 against iOS 26. Mock until captures land.</span><span class="status-tag" data-status="shipped">Shipped</span></figcaption>
+          <figcaption><span class="cap-num">Fig. 14</span><span class="cap-text">PaymentSheet, iOS 18 against iOS 26. Mock until captures land.</span><span class="status-tag" data-status="shipped">Shipped</span></figcaption>
         </figure>
       </div>
     </div>
@@ -5296,7 +5239,7 @@
 
         <div class="e-future-visual">
           <figure class="figure-slot">
-            <!-- asset: /public/images/ios-26-fig-17.png (or /public/videos/ios-26-fig-17.mp4): the sheet across the iOS 27 glass range -->
+            <!-- asset: /public/images/ios-26-fig-15.png (or /public/videos/ios-26-fig-15.mp4): the sheet across the iOS 27 glass range -->
             <div class="e-glass-stage" id="e-glass-stage" style="--g:0.5;">
               <div class="e-glass-bg" aria-hidden="true"><span>Summer<br>drop</span></div>
               <div class="e-glass-sheet" id="e-glass-sheet" aria-hidden="true">
@@ -5313,11 +5256,11 @@
               <label for="e-glass-range">Tinted</label>
               <output id="e-glass-out" for="e-glass-range">Blur 16px · Tint 50%</output>
             </div>
-            <figcaption><span class="cap-num">Fig. 17</span><span class="cap-text">Live: drag from clear to tinted.</span></figcaption>
+            <figcaption><span class="cap-num">Fig. 15</span><span class="cap-text">Live: drag from clear to tinted.</span></figcaption>
           </figure>
 
           <figure class="figure-slot e-ends">
-            <!-- asset: /public/images/ios-26-fig-18.png: the sheet at both ends of the range -->
+            <!-- asset: /public/images/ios-26-fig-16.png: the sheet at both ends of the range -->
             <div class="e-ends-row">
               <div class="e-end" style="--g:0;">
                 <div class="e-glass-bg" aria-hidden="true"></div>
@@ -5330,7 +5273,7 @@
                 <span class="e-end-label">Tinted · brand still reads</span>
               </div>
             </div>
-            <figcaption><span class="cap-num">Fig. 18</span><span class="cap-text">The system holding at both ends.</span></figcaption>
+            <figcaption><span class="cap-num">Fig. 16</span><span class="cap-text">The system holding at both ends.</span></figcaption>
           </figure>
         </div>
       </div>
