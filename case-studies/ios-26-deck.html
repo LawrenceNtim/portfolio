@@ -1458,6 +1458,319 @@
   }
 
   /* ===== STREAM A CSS: start ===== */
+  /* Shared status tag (identical across streams; integration dedupes) */
+  .status-tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1;
+    padding: 5px 8px;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .slide.dark .status-tag { border-color: var(--void-line); color: var(--void-soft); }
+
+  /* --- 01 cover: Liquid Glass PaymentSheet mock --- */
+  .i26a-hero-visual { background: var(--void); }
+  .slide.dark .i26a-hero-visual { background: #0E0C0A; }
+  .i26a-stage {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .i26a-glow {
+    position: absolute;
+    inset: -20%;
+    background:
+      radial-gradient(30% 35% at 38% 40%, rgba(255, 106, 61, 0.45), transparent 70%),
+      radial-gradient(28% 32% at 62% 62%, rgba(124, 77, 255, 0.40), transparent 70%),
+      radial-gradient(24% 28% at 55% 30%, rgba(0, 200, 180, 0.22), transparent 70%);
+    filter: blur(30px);
+  }
+  .i26a-phone {
+    position: relative;
+    height: 90%;
+    aspect-ratio: 1149 / 2355;
+    border-radius: 16% / 7.8%;
+    background: #1B1B1D;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.10), 0 30px 60px rgba(0,0,0,0.5);
+    container-type: inline-size;
+  }
+  .i26a-screen {
+    position: absolute;
+    inset: 3.2cqw;
+    border-radius: 13cqw;
+    overflow: hidden;
+    background: #FFF4EC;
+    font-family: -apple-system, BlinkMacSystemFont, var(--sans);
+  }
+  .i26a-app {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(170deg, #FF6A3D 0%, #FF3D7F 42%, #7C4DFF 100%);
+    color: #fff;
+  }
+  .i26a-status {
+    position: absolute;
+    top: 4.6cqw; left: 9cqw; right: 8cqw;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 4.4cqw; font-weight: 600;
+  }
+  .i26a-status-icons { display: flex; gap: 1.4cqw; align-items: flex-end; }
+  .i26a-status-icons i { display: block; width: 1.3cqw; background: #fff; border-radius: 0.4cqw; }
+  .i26a-status-icons i:nth-child(1) { height: 1.8cqw; }
+  .i26a-status-icons i:nth-child(2) { height: 2.6cqw; }
+  .i26a-status-icons i:nth-child(3) { width: 6cqw; height: 2.8cqw; margin-left: 1cqw; border-radius: 0.8cqw; }
+  .i26a-island {
+    position: absolute;
+    top: 2.6cqw; left: 50%;
+    width: 29cqw; height: 8.4cqw;
+    transform: translateX(-50%);
+    background: #000; border-radius: 999px;
+  }
+  .i26a-app-head {
+    position: absolute; top: 17cqw; left: 7cqw; right: 7cqw;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .i26a-app-brand { font-size: 7cqw; font-weight: 700; letter-spacing: -0.02em; }
+  .i26a-app-bag { width: 7cqw; height: 7cqw; border-radius: 50%; background: rgba(255,255,255,0.3); }
+  .i26a-app-hero {
+    position: absolute; top: 30cqw; left: 7cqw; right: 7cqw; height: 38cqw;
+    border-radius: 6cqw;
+    background: linear-gradient(135deg, #FFD23F 0%, #FF8A3D 100%);
+    padding: 5cqw;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    color: #3A1500;
+  }
+  .i26a-app-kicker { font-size: 3.4cqw; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.7; }
+  .i26a-app-title { font-size: 8cqw; font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
+  .i26a-app-grid {
+    position: absolute; top: 73cqw; left: 7cqw; right: 7cqw;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4cqw;
+  }
+  .i26a-tile { display: block; height: 40cqw; border-radius: 5cqw; }
+  .i26a-tile.t1 { background: #00C8B4; }
+  .i26a-tile.t2 { background: #FFFFFF; }
+  .i26a-tile.t3 { background: #2B1B6B; }
+  .i26a-tile.t4 { background: #FFD23F; }
+
+  .i26a-sheet {
+    position: absolute;
+    left: 1.6cqw; right: 1.6cqw; bottom: 1.6cqw; top: 40%;
+    border-radius: 11cqw;
+    padding: 4.6cqw 5.4cqw 6cqw;
+    display: flex; flex-direction: column; gap: 2.4cqw;
+    background: rgba(255, 255, 255, 0.30);
+    -webkit-backdrop-filter: blur(16px) saturate(1.8);
+    backdrop-filter: blur(16px) saturate(1.8);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.75),
+      inset 0 0 0 1px rgba(255,255,255,0.35),
+      0 -6px 30px rgba(40, 0, 60, 0.25);
+    color: #111;
+  }
+  .slide.active .i26a-sheet { animation: i26aRise 1.2s var(--ease-out) 0.35s both; }
+  @keyframes i26aRise {
+    from { transform: translateY(105%); }
+    to   { transform: translateY(0); }
+  }
+  .i26a-sheet-top { position: relative; height: 8.6cqw; flex-shrink: 0; }
+  .i26a-close {
+    position: absolute; left: 0; top: 0;
+    width: 8.6cqw; height: 8.6cqw; border-radius: 50%;
+    background: rgba(255,255,255,0.55);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+  }
+  .i26a-close::before, .i26a-close::after {
+    content: ''; position: absolute; left: 50%; top: 50%;
+    width: 3.6cqw; height: 0.6cqw; background: #333; border-radius: 1cqw;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  .i26a-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+  .i26a-grabber {
+    position: absolute; left: 50%; top: -2.4cqw; transform: translateX(-50%);
+    width: 10cqw; height: 1.1cqw; border-radius: 1cqw; background: rgba(0,0,0,0.22);
+  }
+  .i26a-btn {
+    flex-shrink: 0;
+    height: 9.6cqw; border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4.2cqw; font-weight: 600; letter-spacing: -0.01em;
+  }
+  .i26a-btn-apple { background: #000; color: #fff; }
+  .i26a-btn-link { background: #00D66F; color: #011E0F; }
+  .i26a-btn-link b { font-weight: 800; margin-left: 1cqw; }
+  .i26a-btn-pay { margin-top: auto; background: #FF3D7F; color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35); }
+  .i26a-or {
+    display: flex; align-items: center; gap: 2.4cqw;
+    font-size: 3.2cqw; color: rgba(0,0,0,0.55);
+  }
+  .i26a-or::before, .i26a-or::after { content: ''; flex: 1; height: 1px; background: rgba(0,0,0,0.14); }
+  .i26a-row {
+    flex-shrink: 0;
+    height: 10cqw; border-radius: 999px;
+    display: flex; align-items: center; gap: 3cqw;
+    padding: 0 5cqw;
+    font-size: 4cqw; font-weight: 500;
+    background: rgba(255,255,255,0.55);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.85);
+  }
+  .i26a-ico {
+    width: 5.4cqw; height: 5.4cqw; border-radius: 1.2cqw;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 3.4cqw; font-weight: 800; flex-shrink: 0;
+  }
+  .i26a-ico-card { height: 3.8cqw; border-radius: 0.8cqw; background: #111; }
+  .i26a-ico-k { background: #FFB3C7; color: #111; }
+  .i26a-ico-cash { background: #00D632; color: #fff; }
+  .i26a-ico-bank {
+    border-radius: 0.6cqw 0.6cqw 0.4cqw 0.4cqw;
+    background: #111;
+    -webkit-mask: linear-gradient(90deg, #000 0 18%, transparent 18% 41%, #000 41% 59%, transparent 59% 82%, #000 82%) bottom / 100% 60% no-repeat,
+                  linear-gradient(#000, #000) top / 100% 40% no-repeat;
+            mask: linear-gradient(90deg, #000 0 18%, transparent 18% 41%, #000 41% 59%, transparent 59% 82%, #000 82%) bottom / 100% 60% no-repeat,
+                  linear-gradient(#000, #000) top / 100% 40% no-repeat;
+  }
+
+  .i26a-hero-tag { position: absolute; top: 16px; left: 16px; z-index: 2; }
+  .i26a-hero-mark {
+    position: absolute; top: 22px; right: 16px; z-index: 2;
+    font-family: var(--mono); font-size: var(--text-mono-xs);
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide.active .i26a-sheet { animation: none; transform: none; }
+  }
+  @media (max-width: 900px) {
+    /* Cover is taller than a phone viewport: top-align so nothing clips above the fold. */
+    .slide[data-crumb="cover"] { align-items: flex-start; }
+  }
+  @media (max-width: 600px) {
+    .i26a-hero-tag { top: 12px; left: 12px; }
+    .i26a-hero-mark { top: 44px; left: 14px; right: auto; max-width: 84px; line-height: 1.6; }
+  }
+
+  /* --- 03 role & outcome --- */
+  .i26a-lede {
+    font-family: var(--sans);
+    font-size: var(--text-body-lg);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin-top: 24px;
+    max-width: 420px;
+  }
+  .i26a-role-card {
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    padding: 32px;
+    background: var(--paper);
+  }
+  .i26a-label {
+    font-family: var(--mono);
+    font-size: var(--text-mono-xs);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+  .i26a-role-head {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .i26a-role-value { font-family: var(--sans); font-size: 16px; font-weight: 500; color: var(--ink); }
+  .i26a-role-outcome { padding: 24px 0; border-bottom: 1px solid var(--hairline); }
+  .i26a-role-text { font-family: var(--sans); font-size: 17px; line-height: 1.5; color: var(--ink); }
+  .i26a-role-text em { font-style: normal; color: var(--ink-soft); }
+  .i26a-iwe {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .i26a-iwe-who {
+    font-family: var(--serif);
+    font-size: var(--text-subhead);
+    line-height: 1;
+    color: var(--stripe);
+    margin-bottom: 14px;
+  }
+  .i26a-iwe-col:last-child .i26a-iwe-who { color: var(--ink); }
+  .i26a-iwe-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .i26a-iwe-list li {
+    font-family: var(--sans); font-size: 14px; line-height: 1.5; color: var(--ink-soft);
+    padding-left: 14px; position: relative;
+  }
+  .i26a-iwe-list li::before {
+    content: ''; position: absolute; left: 0; top: 0.7em;
+    width: 6px; height: 1px; background: var(--ink-faint);
+  }
+  .i26a-role-foot {
+    padding-top: 18px;
+    font-family: var(--mono); font-size: var(--text-mono-xs);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-faint);
+  }
+
+  /* --- 06 team & timeline --- */
+  .i26a-tt-grid { margin-top: 40px; align-items: center; }
+  .i26a-portrait-slot {
+    width: 140px; height: 140px; border-radius: 50%;
+    margin-bottom: 14px;
+    border: 1px dashed var(--ink-faint);
+    background: var(--paper);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: var(--text-mono-xs);
+    letter-spacing: 0.16em; color: var(--ink-faint);
+  }
+  .i26a-tt-figure { margin: 0; }
+  .i26a-ahead-band { fill: var(--stripe-soft); }
+  .i26a-ga-line { stroke: var(--ink-faint); stroke-width: 1; stroke-dasharray: 4 5; }
+  .i26a-ahead-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+    text-transform: uppercase; fill: var(--stripe);
+  }
+  .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="wwdc"]   { animation-delay: 0s; }
+  .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="dev"]    { animation-delay: 0.7s; }
+  .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="public"] { animation-delay: 1.4s; }
+  .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="ship"]   { animation-delay: 2.2s; }
+  .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="ga"],
+  .slide[data-crumb="team & timeline"].timeline-active .timeline-marker[data-phase="band"]   { animation-delay: 2.7s; }
+  .i26a-tt-figure .timeline-marker .label,
+  .i26a-tt-figure .timeline-marker .week,
+  .i26a-tt-figure .i26a-ahead-label { font-size: 18px; letter-spacing: 0.12em; }
+  .i26a-tt-cap {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;
+    margin-top: 28px;
+    font-family: var(--mono); font-size: var(--text-mono-xs);
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .i26a-tt-cap .cap-num { color: var(--ink-faint); }
+  .i26a-tt-cap .cap-text { color: var(--ink-soft); flex: 1 1 260px; }
+
+  @media (max-width: 1100px) {
+    .i26a-tt-grid { grid-template-columns: 1fr; gap: 48px; }
+    .i26a-tt-grid .team-portraits { flex-direction: row; gap: 20px; }
+  }
+  @media (max-width: 900px) {
+    .i26a-role-card { padding: 24px 20px; }
+    .i26a-iwe { grid-template-columns: 1fr; gap: 24px; }
+    .i26a-tt-grid .team-portraits { flex-direction: column; gap: 24px; }
+    .i26a-tt-grid .team-portrait img,
+    .i26a-tt-grid .i26a-portrait-slot { width: 84px; height: 84px; }
+    .i26a-tt-grid .team-portrait-name { font-size: 14px; }
+    .i26a-tt-figure .timeline-marker .label,
+    .i26a-tt-figure .timeline-marker .week,
+    .i26a-tt-figure .i26a-ahead-label { font-size: 26px; letter-spacing: 0.06em; }
+  }
   /* ===== STREAM A CSS: end ===== */
   /* ---- */
 
@@ -2282,15 +2595,70 @@
         <div class="hero-text">
           <div class="hero-meta">2025 · Case Study 03</div>
           <h1 class="hero-title">iOS 26.</h1>
-          <p class="hero-lede">[SCAFFOLD A] Every Stripe mobile payment surface, rebuilt for Liquid Glass.</p>
-          <div class="hero-credits"><!-- SCAFFOLD NOTE (A): Role / Org / Launch / Tools credits --></div>
-        </div>
-        <div class="hero-visual">
-          <!-- asset: /public/videos/ios-26-hero.mp4 · Fig. 01 -->
-          <div class="hero-visual-fallback" aria-hidden="true">
-            <span class="figure-mark">[ HERO MEDIA ]</span>
-            <span>Payment sheet rising over a merchant app, glass picking up the app behind it</span>
+          <p class="hero-lede">Every Stripe checkout, payment sheet, and in-app mobile surface, rebuilt for Liquid Glass. Shipped ahead of Apple's GA, with every merchant's brand intact.</p>
+          <div class="hero-credits">
+            <div>
+              <div class="hero-credit-label">Role</div>
+              <div class="hero-credit-value">Product Designer (sole) [TODO: Lawrence confirm title]</div>
+            </div>
+            <div>
+              <div class="hero-credit-label">Org</div>
+              <div class="hero-credit-value">Stripe · Mobile [TODO: Lawrence team name]</div>
+            </div>
+            <div>
+              <div class="hero-credit-label">Launch</div>
+              <div class="hero-credit-value">Ahead of iOS 26 GA</div>
+            </div>
+            <div>
+              <div class="hero-credit-label">Tools</div>
+              <div class="hero-credit-value">Figma [TODO: Lawrence]</div>
+            </div>
           </div>
+        </div>
+        <div class="hero-visual i26a-hero-visual">
+          <!-- asset: /public/videos/ios-26-hero.mp4 · Fig. 01 -->
+          <!-- Until the video lands: CSS mock of a Liquid Glass PaymentSheet rising over a merchant app. -->
+          <div class="i26a-stage" role="img" aria-label="Mock: a Liquid Glass payment sheet rising over a colorful merchant app, the glass picking up the app behind it">
+            <div class="i26a-glow" aria-hidden="true"></div>
+            <div class="i26a-phone" aria-hidden="true">
+              <div class="i26a-screen">
+                <div class="i26a-app">
+                  <div class="i26a-status"><span>9:41</span><span class="i26a-status-icons"><i></i><i></i><i></i></span></div>
+                  <div class="i26a-island"></div>
+                  <div class="i26a-app-head">
+                    <span class="i26a-app-brand">Bloom</span>
+                    <span class="i26a-app-bag"></span>
+                  </div>
+                  <div class="i26a-app-hero">
+                    <span class="i26a-app-kicker">New season</span>
+                    <span class="i26a-app-title">Spring drop</span>
+                  </div>
+                  <div class="i26a-app-grid">
+                    <span class="i26a-tile t1"></span>
+                    <span class="i26a-tile t2"></span>
+                    <span class="i26a-tile t3"></span>
+                    <span class="i26a-tile t4"></span>
+                  </div>
+                </div>
+                <div class="i26a-sheet">
+                  <div class="i26a-sheet-top">
+                    <span class="i26a-close"></span>
+                    <span class="i26a-grabber"></span>
+                  </div>
+                  <div class="i26a-btn i26a-btn-apple">Apple Pay</div>
+                  <div class="i26a-btn i26a-btn-link">Pay with <b>link</b></div>
+                  <div class="i26a-or"><span>Or pay using</span></div>
+                  <div class="i26a-row"><span class="i26a-ico i26a-ico-card"></span>Card</div>
+                  <div class="i26a-row"><span class="i26a-ico i26a-ico-k">K</span>Klarna</div>
+                  <div class="i26a-row"><span class="i26a-ico i26a-ico-cash">$</span>Cash App Pay</div>
+                  <div class="i26a-row"><span class="i26a-ico i26a-ico-bank"></span>US bank account</div>
+                  <div class="i26a-btn i26a-btn-pay">Pay $97.42</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <span class="status-tag i26a-hero-tag" data-status="shipped">Shipped</span>
+          <span class="figure-mark i26a-hero-mark">[ FIG. 01 ] Mock</span>
         </div>
       </div>
     </div>
@@ -2356,10 +2724,47 @@
   <!-- ===== STREAM A · 03 role-outcome ===== -->
   <section class="slide" data-section="ios 26" data-crumb="role & outcome" data-theme="light">
     <div class="slide-inner">
-      <div style="width:100%;">
-        <div class="section-eyebrow">Problem · Chapter 01</div>
-        <h2 class="setup-headline">Solo designer. <em>Shipped ahead of GA.</em></h2>
-        <!-- SCAFFOLD NOTE (A): Role + outcome card. Tag SHIPPED. I vs we explicit. -->
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">Problem · Chapter 01</div>
+          <h2 class="setup-headline">Solo designer. <em>Shipped ahead of GA.</em></h2>
+          <p class="i26a-lede">Apple redrew iOS. Stripe's mobile surfaces had to follow before the public did. I owned the design end to end.</p>
+        </div>
+
+        <div class="i26a-role-card">
+          <div class="i26a-role-head">
+            <div>
+              <div class="i26a-label">Role</div>
+              <div class="i26a-role-value">Product Designer (sole) [TODO: Lawrence confirm title]</div>
+            </div>
+            <span class="status-tag" data-status="shipped">Shipped</span>
+          </div>
+
+          <div class="i26a-role-outcome">
+            <div class="i26a-label">Outcome</div>
+            <p class="i26a-role-text">Every Stripe checkout, PaymentSheet, and in-app mobile surface rebuilt against Liquid Glass. Shipped ahead of GA. <em>In production across Stripe's mobile stack, startups to enterprise.</em></p>
+          </div>
+
+          <div class="i26a-iwe">
+            <div class="i26a-iwe-col">
+              <div class="i26a-iwe-who">I</div>
+              <ul class="i26a-iwe-list">
+                <li>Designed every surface, from PaymentSheet to AddressElement.</li>
+                <li>Built the system: material, tokens, motion, states.</li>
+                <li>Wrote the specs engineering built from.</li>
+              </ul>
+            </div>
+            <div class="i26a-iwe-col">
+              <div class="i26a-iwe-who">We</div>
+              <ul class="i26a-iwe-list">
+                <li>SDK engineering partners built and shipped it. [TODO: Lawrence names]</li>
+                <li>Merchants kept their brand through the Appearance API.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="i26a-role-foot">Ship metrics · [TODO: Lawrence]</div>
+        </div>
       </div>
     </div>
   </section>
@@ -2368,10 +2773,35 @@
   <!-- ===== STREAM A · 04 setup ===== -->
   <section class="slide" data-section="ios 26" data-crumb="the setup" data-theme="light">
     <div class="slide-inner">
-      <div style="width:100%;">
-        <div class="section-eyebrow">Problem · The setup</div>
-        <h2 class="setup-headline">The biggest iOS redesign <em>since iOS 7.</em></h2>
-        <!-- SCAFFOLD NOTE (A): Three setup-cards: biggest redesign since iOS 7 / every Stripe mobile surface rebuilt / one designer, short runway. -->
+      <div class="setup-grid">
+        <div>
+          <div class="section-eyebrow">Problem · The setup</div>
+          <h2 class="setup-headline">The biggest iOS redesign <em>since iOS 7.</em></h2>
+        </div>
+
+        <div class="setup-cards">
+          <button class="setup-card" data-jump="4">
+            <div class="setup-card-num">01</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">A new visual language.</h3>
+              <p class="setup-card-text">Liquid Glass changed material, depth, and motion across the whole OS. Anything that looked like iOS 18 would look old on day one.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="4">
+            <div class="setup-card-num">02</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">Every Stripe mobile surface, rebuilt.</h3>
+              <p class="setup-card-text">PaymentSheet, card form, saved methods, Link, Apple Pay, 3DS, Embedded Payment Element, CustomerSheet, AddressElement. All of it, inside merchants' apps.</p>
+            </div>
+          </button>
+          <button class="setup-card" data-jump="4">
+            <div class="setup-card-num">03</div>
+            <div class="setup-card-body">
+              <h3 class="setup-card-title">One designer, short runway.</h3>
+              <p class="setup-card-text">No team to split the surfaces with. Apple's GA set the deadline, and it was not going to move for us.</p>
+            </div>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -2380,10 +2810,27 @@
   <!-- ===== STREAM A · 05 the-bet ===== -->
   <section class="slide bet-sans" data-section="ios 26" data-crumb="the bet" data-theme="light">
     <div class="slide-inner">
-      <div style="width:100%;">
+      <div class="bet">
         <div class="section-eyebrow">Problem · The bet</div>
-        <h2 class="setup-headline">What <em>done</em> meant.</h2>
-        <!-- SCAFFOLD NOTE (A): Bet slide: native-feeling, merchant brand intact, no checkout regressions. -->
+
+        <h2 class="bet-headline">What <em>done</em> meant: three things, all true before GA.</h2>
+
+        <div class="bet-rows">
+          <div class="bet-row">
+            <div class="bet-label">Native-feeling</div>
+            <div class="bet-text">sits next to Apple's own sheets without a seam. Glass, depth, and motion that belong on iOS 26.</div>
+          </div>
+          <div class="bet-row">
+            <div class="bet-label">Merchant brand intact</div>
+            <div class="bet-text">every Appearance API customization still lands. The checkout still looks like the merchant's.</div>
+          </div>
+          <div class="bet-row">
+            <div class="bet-label">No checkout regressions</div>
+            <div class="bet-text">every flow enterprise merchants rely on behaves as before. <em>Only the surface changes.</em></div>
+          </div>
+        </div>
+
+        <div class="bet-source">The bet · Definition of done</div>
       </div>
     </div>
   </section>
@@ -2395,12 +2842,80 @@
       <div style="width:100%;">
         <div class="section-eyebrow">Problem · Team &amp; timeline</div>
         <h2 class="setup-headline">One designer. <em>One immovable date.</em></h2>
-        <!-- SCAFFOLD NOTE (A): Timeline curve anchored to WWDC, betas, GA. Collaborators [TODO: Lawrence]. -->
-        <figure class="figure-slot" data-aspect="16/10">
-          <!-- asset: inline SVG -->
-          <div class="figure-frame"><span class="figure-mark">[ FIG. 02 ]</span></div>
-          <figcaption><span class="cap-num">Fig. 02</span><span class="cap-text">Timeline. WWDC to GA.</span></figcaption>
-        </figure>
+
+        <div class="team-timeline-grid i26a-tt-grid">
+          <div class="team-portraits">
+            <div class="team-portrait-row">
+              <div class="team-portrait">
+                <img src="../public/images/team/lawrence.jpg" alt="Lawrence Ntim">
+                <div class="team-portrait-name">Lawrence Ntim</div>
+                <div class="team-portrait-role">Product Designer (sole) · Stripe</div>
+              </div>
+              <div class="team-portrait">
+                <div class="i26a-portrait-slot" aria-hidden="true">TBD</div>
+                <div class="team-portrait-name">[TODO: Lawrence]</div>
+                <div class="team-portrait-role">Product Manager</div>
+              </div>
+            </div>
+            <div class="team-portrait-row">
+              <div class="team-portrait">
+                <div class="i26a-portrait-slot" aria-hidden="true">TBD</div>
+                <div class="team-portrait-name">[TODO: Lawrence]</div>
+                <div class="team-portrait-role">iOS SDK Engineering</div>
+              </div>
+              <div class="team-portrait">
+                <div class="i26a-portrait-slot" aria-hidden="true">TBD</div>
+                <div class="team-portrait-name">[TODO: Lawrence]</div>
+                <div class="team-portrait-role">Eng Manager</div>
+              </div>
+            </div>
+          </div>
+
+          <figure class="i26a-tt-figure">
+            <!-- asset: inline SVG · Fig. 02 -->
+            <div class="timeline-curve" style="margin-top: 0;">
+              <svg class="timeline-svg" viewBox="0 0 1200 380" role="img" aria-label="Timeline from WWDC through developer betas and public beta to iOS 26 GA, with Stripe shipping ahead of GA">
+                <g class="timeline-marker" data-phase="band"><rect class="i26a-ahead-band" x="900" y="40" width="220" height="270"/></g>
+                <line class="axis" x1="60" y1="310" x2="1140" y2="310"/>
+
+                <path class="curve" d="M 80 260 C 220 260 220 210 360 210 C 500 210 500 160 640 160 C 780 160 780 90 900 90 L 1120 90"/>
+
+                <g class="timeline-marker" data-phase="wwdc">
+                  <circle class="dot" cx="80" cy="260" r="5"/>
+                  <text class="label" x="80" y="240" text-anchor="middle">WWDC</text>
+                  <text class="week" x="80" y="332" text-anchor="middle">Announce</text>
+                </g>
+                <g class="timeline-marker" data-phase="dev">
+                  <circle class="dot" cx="360" cy="210" r="5"/>
+                  <text class="label" x="360" y="190" text-anchor="middle">Developer betas</text>
+                  <text class="week" x="360" y="332" text-anchor="middle">Design + build</text>
+                </g>
+                <g class="timeline-marker" data-phase="public">
+                  <circle class="dot" cx="640" cy="160" r="5"/>
+                  <text class="label" x="640" y="140" text-anchor="middle">Public beta</text>
+                  <text class="week" x="640" y="332" text-anchor="middle">Harden</text>
+                </g>
+                <g class="timeline-marker peak" data-phase="ship">
+                  <circle class="dot" cx="900" cy="90" r="7"/>
+                  <text class="label" x="900" y="68" text-anchor="middle">Stripe ships</text>
+                  <text class="week" x="900" y="332" text-anchor="middle">Ship</text>
+                </g>
+                <g class="timeline-marker" data-phase="ga">
+                  <line class="i26a-ga-line" x1="1120" y1="40" x2="1120" y2="310"/>
+                  <circle class="dot" cx="1120" cy="90" r="5"/>
+                  <text class="label" x="1120" y="28" text-anchor="middle">iOS 26 GA</text>
+                  <text class="week" x="1120" y="332" text-anchor="middle">Release</text>
+                  <text class="i26a-ahead-label" x="1010" y="290" text-anchor="middle">Ahead of GA</text>
+                </g>
+              </svg>
+            </div>
+            <figcaption class="i26a-tt-cap">
+              <span class="cap-num">Fig. 02</span>
+              <span class="cap-text">Timeline. WWDC to GA, phases only. Stripe's surfaces were live before iOS 26 reached the public.</span>
+              <span class="status-tag" data-status="shipped">Shipped</span>
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </section>
